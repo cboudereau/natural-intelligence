@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.svg" alt="ni" width="300"></p>
+
 # ni
 
 **ni** stands for natural intelligence, as opposed to artificial. Say it *nickel* (French: spot on, good enough) or *nice* (UK/US). Either way, it is the human staying in the loop.
@@ -14,12 +16,22 @@ ni is a Claude Code plugin, distributed through the [itsaspacestation marketplac
 | `skills/` | The skills, invoked as `ni:<skill>` |
 
 ## Install
+Inside Claude Code:
 ```
 /plugin marketplace add itsaspacestation/claude-marketplace
 /plugin install ni@itsaspacestation
 ```
 
-For a team, add this to the project's `.claude/settings.json`:
+Or from a shell:
+```bash
+claude plugin marketplace add itsaspacestation/claude-marketplace
+claude plugin install ni@itsaspacestation            # user scope, every project
+claude plugin install ni@itsaspacestation -s project # this project only, written to .claude/settings.json
+```
+
+Run `/reload-plugins` or start a new session. `/ni:help` lists the skills.
+
+For a team, commit this to the project's `.claude/settings.json`. Claude Code offers the install on first launch:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -31,11 +43,34 @@ For a team, add this to the project's `.claude/settings.json`:
 
 For other agents, copy `skills/` into `~/.copilot/`, `~/.cursor/`, or `~/.gemini/`.
 
+### Migrate from the skills-dir copy
+An older setup copied ni to `~/.claude/skills/ni/`, loaded as `ni@skills-dir`. Remove it before installing, or every skill, agent, and hook loads twice:
+```bash
+rm -rf ~/.claude/skills/ni
+```
+
+## Update
+Auto-update is off by default for third-party marketplaces. Turn it on in `/plugin`, under **Marketplaces**, or update by hand:
+```bash
+claude plugin marketplace update itsaspacestation
+claude plugin update ni@itsaspacestation
+```
+Restart Claude Code to apply.
+
 ## Develop
 ```bash
 claude plugin validate . --strict
 claude --plugin-dir .   # load from the working tree
 ```
+
+## Release
+Users only get an update when `version` in `.claude-plugin/plugin.json` changes.
+
+1. Bump `version` (semver) and commit.
+2. `claude plugin validate . --strict`
+3. `claude plugin tag .` creates the `ni--v<version>` tag, then push the commit and the tag.
+
+The marketplace entry tracks the default branch, so the marketplace repository needs no change for a release.
 
 ## Terse mode
 ni injects a terse reply ruleset at session start and reminds Claude every turn, so replies stay short even after context compaction. Adapted from [caveman](https://github.com/juliusbrussee/caveman) (MIT), with two levels only.

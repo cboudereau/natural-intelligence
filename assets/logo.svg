@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200" role="img" aria-label="ni">
+  <style>
+    .bg { fill: #ffffff; }
+    .logo-text {
+      font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 72px;
+      fill: #0d1117;
+      letter-spacing: 18px;
+    }
+    .cursor {
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+      font-size: 72px;
+      fill: #0d1117;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      from, to { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+  <rect width="100%" height="100%" class="bg" rx="16" />
+  <g transform="translate(200, 105)" text-anchor="middle" dominant-baseline="middle">
+    <text class="logo-text" x="-10">NI</text>
+    <text class="cursor" x="65" y="-4">|</text>
+  </g>
+</svg>
