@@ -43,12 +43,6 @@ For a team, commit this to the project's `.claude/settings.json`. Claude Code of
 
 For other agents, copy `skills/` into `~/.copilot/`, `~/.cursor/`, or `~/.gemini/`.
 
-### Migrate from the skills-dir copy
-An older setup copied ni to `~/.claude/skills/ni/`, loaded as `ni@skills-dir`. Remove it before installing, or every skill, agent, and hook loads twice:
-```bash
-rm -rf ~/.claude/skills/ni
-```
-
 ## Update
 Auto-update is off by default for third-party marketplaces. Turn it on in `/plugin`, under **Marketplaces**, or update by hand:
 ```bash
