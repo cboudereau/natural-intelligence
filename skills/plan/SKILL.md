@@ -73,15 +73,15 @@ Strict order — each document depends on the previous:
 The **constitution** is the set of rules the agent cannot break unilaterally during implementation. It is built across Phases 2–4 and enforced during Phase 5.
 
 The constitution is composed of:
-- **Requirements** (FR/NFR) — what the system must do and under what constraints
+- **Requirements** (FR/NFR) — what the system must do and under what constraints; each NFR carries a measurable scenario and a verify command (or an explicit `manual: <reason>`)
 - **ADR decisions** — hard-to-reverse choices that are settled and not open for re-evaluation
 - **Domain model** — the planned types, their attributes, and relationships
-- **Requirement traceability** — which types address which FR/NFR
-- **Transformation invariants** — the rules each function must enforce (input → output, with the invariant that must hold)
+- **Requirement traceability** — which types address which FR/NFR, and each type's stability (`internal` or `published`)
+- **Transformation invariants** — the rules each function must enforce (input → output, with the invariant that must hold), including error-path invariants from the failure modes table
 - **External dependencies** — the crates/packages/services the project uses, no new ones without approval
 - **TDD rule** — every code change requires a corresponding test: failing test first, then implementation, then green (see [TDD skill](../tdd/SKILL.md)). No code is committed without a test that proves it works.
 
-**Within the constitution** (agent acts autonomously, no need to stop):
+**Within the constitution** (agent acts autonomously, no need to stop — `internal` stability only):
 - Add fields or attributes to types when needed to satisfy an invariant
 - Rename types or fields for clarity, as long as the traceability table intent is preserved
 - Split a type into smaller types (e.g., extract a value object) when it makes the model cleaner
@@ -91,6 +91,7 @@ The constitution is composed of:
 
 **Outside the constitution** (agent stops *implementing*, then analyzes and proposes — see [Phase 5 severity 3](#phase-5--implement-autopilot)): the agent does not change these unilaterally, but it does the analysis itself and drafts a `proposed` ADR with a recommendation for the human to ratify — it hands the human a decision, not a raw problem:
 - Change an ADR decision (e.g., switch from REST to gRPC, change a persistence strategy)
+- Change a type or function marked `published` in the traceability table (external consumers depend on it)
 - Add, remove, or alter a requirement (FR/NFR)
 - Violate a documented invariant or transformation rule
 - Skip an acceptance criterion that cannot be met
@@ -145,6 +146,8 @@ An ADR records any decision worth explaining. ADRs emerge during design and cont
 - Constraints inherited from external systems or business rules
 - Rejected alternatives that someone might propose again later
 - Conventions chosen among valid options (naming, error handling strategy, logging format)
+- Versioning and compatibility strategy for `published` contracts (wire format, breaking-change policy)
+- Security constraints from a STRIDE pass on a crossed trust boundary
 
 ADRs link back to the requirements they address:
 
@@ -214,7 +217,11 @@ Before moving to Phase 5, the entire TASKS.md must pass this gate. This is the l
 **Constitution completeness**:
 - [ ] Domain model covers every planned domain type in diagram and traceability table
 - [ ] Every type in the traceability table maps to at least one FR or NFR
+- [ ] Every traceability row has a stability value (`internal` or `published`); each `published` row has a compatibility rule
+- [ ] Every NFR has a measure and a verify command (or an explicit `manual: <reason>`)
 - [ ] Transformations table covers every function that enforces a domain rule
+- [ ] Every failure-modes row that yields a rule appears as an error-path invariant in the transformations table
+- [ ] Every DESIGN.md section is filled or marked `N/A: <reason>` — no blank sections
 - [ ] No constraint is ambiguous enough that two reasonable agents would interpret it differently
 
 **Autopilot readiness**:

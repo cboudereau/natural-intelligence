@@ -43,17 +43,27 @@ classDiagram
 ```
 
 ### Requirement traceability
-| Type / Trait / Fn | Addresses | Notes |
-|---|---|---|
-| `Order` | [FR1](./DESIGN.md#fr1) | Aggregate root |
-| `LineItem` | [FR1](./DESIGN.md#fr1) | Value object, immutable |
-| `OrderRepository` | [NFR1](./DESIGN.md#nfr1) | Trait — infra implements |
-| `CreateOrder` | [FR2](./DESIGN.md#fr2) | Validates invariants before persisting |
+
+Stability marks the boundary: `internal` = agent may rename, split, or extend freely;
+`published` = external consumers exist, any change is outside the constitution
+(severity 3). Versioning strategy for published contracts lives in an ADR.
+
+| Type / Trait / Fn | Stability | Addresses | Notes |
+|---|---|---|---|
+| `Order` | internal | [FR1](./DESIGN.md#fr1) | Aggregate root |
+| `LineItem` | internal | [FR1](./DESIGN.md#fr1) | Value object, immutable |
+| `OrderRepository` | internal | [NFR1](./DESIGN.md#nfr1) | Trait — infra implements |
+| `CreateOrder` | published | [FR2](./DESIGN.md#fr2) | REST endpoint — additive changes only |
 
 ### Transformations
+
+Include error-path rows derived from the DESIGN.md failure modes table, not only
+the happy path. Published functions state their compatibility rule.
+
 | Function | Input → Output | Invariant / Rule |
 |---|---|---|
 | `CreateOrder` | `CreateOrderCmd → Result<Order, DomainError>` | At least one line item, total > 0 |
+| `CreateOrder` (repo down) | `CreateOrderCmd → Err(Unavailable)` | Retry ×3 then fail — from DESIGN.md failure modes |
 | `Order::total` | `&self → Money` | Sum of (qty × unit_price) per line item |
 
 ## Tasks
