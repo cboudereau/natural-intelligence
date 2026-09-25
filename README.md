@@ -8,14 +8,54 @@
 
 ni is a Claude Code plugin, distributed through the [itsaspacestation marketplace](https://github.com/itsaspacestation/claude-marketplace). Its `skills/` folder also works as a plain skills source for Copilot CLI, Cursor, and Gemini CLI.
 
-## Layout
-| Path | Purpose |
-|---|---|
-| `.claude-plugin/plugin.json` | Plugin manifest, name `ni` |
-| `agents/` | Subagents with compressed output, spawned as `ni:<agent>` |
-| `commands/` | Slash commands, invoked as `/ni:<command>` |
-| `scripts/` | Hook scripts behind the terse reply mode |
-| `skills/` | The skills, invoked as `ni:<skill>` |
+## Quick tour
+Claude does the heavy lifting. You make the calls. Skills trigger on their own from what you ask; the prompts below are examples.
+
+### 1. Set up
+Install as above, run `/reload-plugins`, then `/ni:help` to check the skills are loaded.
+
+### 2. Pick a terse level
+```
+/ni:terse lite   # default: no filler, full sentences
+/ni:terse full   # fragments, fewest tokens
+/ni:terse off
+```
+The level persists across sessions. See [Terse mode](#terse-mode).
+
+### 3. Claude plans, and I decide
+> /ni:plan a workspace for the invoice export feature.
+
+or simply
+> Plan a workspace for the invoice export feature.
+
+`ni:plan` explores the codebase and drafts `DESIGN.md`, ADRs, and `TASKS.md` under `docs/workspace/<name>/`. You spend about 30 to 40 minutes reviewing scope, settling the ADRs, and approving the tasks. Then say go: Claude runs the tasks on autopilot and stops only when a decision falls outside the plan.
+
+For a small change, Claude Code's built-in plan mode is enough.
+
+### 4. Claude builds, and I steer
+> Fix the rounding bug in the VAT total.
+
+`ni:software-engineer`, `ni:tdd`, and `ni:debug` enforce plan, failing test, fix, and commit, with the root cause found before any fix. `ni:git-conventions` writes the commit and the MR description. Nothing is pushed without your go.
+
+### 5. Claude reviews, and I judge
+> /ni:code-review my branch before I open the MR.
+
+or simply
+
+> Review my branch before I open the MR.
+
+`ni:code-review` checks design, tests, performance, security, and correctness, and cites every finding by file and line. You decide what to fix.
+
+### 6. Claude reviews others, and I sign off
+```
+/ni:review-loop group/project
+```
+Reviews every MR assigned to you in a loop, posts each finding as its own discussion, and reports the links. It never approves, merges, or resolves: those stay yours.
+
+### 7. Claude answers reviewers, and I approve
+> Address the unresolved threads on MR !42.
+
+`ni:code-review` reads the threads, drafts the fixes and replies, and shows you a preview. Nothing is posted or resolved until you approve it.
 
 ## Install
 Inside Claude Code:
@@ -43,7 +83,16 @@ For a team, commit this to the project's `.claude/settings.json`. Claude Code of
 }
 ```
 
-For other agents, copy `skills/` into `~/.copilot/`, `~/.cursor/`, or `~/.gemini/`.
+For other agents, copy `skills/` into `~/.copilot/`, `~/.cursor/`, or `~/.gemini/`. 
+
+## Layout
+| Path | Purpose |
+|---|---|
+| `.claude-plugin/plugin.json` | Plugin manifest, name `ni` |
+| `agents/` | Subagents with compressed output, spawned as `ni:<agent>` |
+| `commands/` | Slash commands, invoked as `/ni:<command>` |
+| `scripts/` | Hook scripts behind the terse reply mode |
+| `skills/` | The skills, invoked as `ni:<skill>` |
 
 ## Update
 Auto-update is off by default for third-party marketplaces. Turn it on in `/plugin`, under **Marketplaces**, or update by hand:
