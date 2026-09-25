@@ -149,6 +149,8 @@ An ADR records any decision worth explaining. ADRs emerge during design and cont
 - Versioning and compatibility strategy for `published` contracts (wire format, breaking-change policy)
 - Security constraints from a STRIDE pass on a crossed trust boundary
 
+When options are weighed with external evidence (benchmarks, adoption, reviews, vendor claims), apply the [`bias-analysis`](../bias-analysis/SKILL.md) skill to that evidence before moving the ADR to `proposed`. In a judge panel, each panellist sweeps its own evidence.
+
 ADRs link back to the requirements they address:
 
 Template: [templates/adr.md](templates/adr.md). Read it before drafting.
