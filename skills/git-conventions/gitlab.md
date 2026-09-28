@@ -3,17 +3,25 @@
 Reference file of the [`git-conventions`](SKILL.md) skill. Read it when an MR lifecycle
 operation targets GitLab: create, describe, diff, gate, merge, rebase, CI status, auth.
 
-**REQUIRED BACKGROUND:** the [`git-conventions`](SKILL.md) skill owns the platform
+**REQUIRED BACKGROUND:** the [`git-conventions`](SKILL.md) skill owns the forge
 routing rule and the git-versus-forge boundary. Load it first. Review threads and
 suggestions belong to the [`code-review`](../code-review/SKILL.md) skill.
 
 ## Create and describe
 
-Write the description markdown to a file, then:
+Write the description markdown to a file, pick the reviewer (rule below), then:
 
 ```bash
-glab mr create --title "<title>" --description-file <file>
+glab mr create --title "<title>" --description-file <file> --assignee @me --reviewer <username>
 ```
+
+Reviewer selection, in order:
+1. `CODEOWNERS` exists (root, `.gitlab/` or `docs/`): the owners matching the touched paths.
+2. Otherwise the top recent committer of the touched files, excluding the author and bots:
+   `git log --since="6 months ago" --format=%ae -- <paths> | sort | uniq -c | sort -rn`
+3. No candidate: create without `--reviewer` and tell the user to pick one.
+
+The assignee is always me (`--assignee @me`).
 
 Edit an existing description:
 

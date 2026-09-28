@@ -17,15 +17,15 @@ description: "Use when the user asks to commit, stage, branch, diff, write a com
 Rules for safe and consistent git usage, from the commit to the change description.
 
 Reviewing code or answering review feedback is the
-[`code-review`](../code-review/SKILL.md) skill. Platform commands live in its
+[`code-review`](../code-review/SKILL.md) skill. Forge commands live in its
 [gitlab.md](../code-review/gitlab.md) (`glab`) and [github.md](../code-review/github.md)
 (`gh`) reference files.
 
-## Platform routing
+## Forge routing
 
 Pick the forge CLI (`gh` or `glab`) in this order. Never guess.
 
-1. An explicit argument or user statement wins. A project path or URL names the platform.
+1. An explicit argument or user statement wins. A project path or URL names the forge.
 2. Otherwise read `git remote get-url origin`. Host `github.com` routes to `gh`;
    host containing `gitlab` routes to `glab`.
 3. Unknown host: check `gh auth status` and `glab auth status` for a matching
@@ -41,12 +41,12 @@ Missing origin remote: ask the user.
 |---|---|
 | stage, commit, branch, local diff, log, worktree | `git` only |
 | push | `git push` — command rules below unchanged |
-| MR/PR create, description, edit | forge CLI — never a clipboard |
+| MR/PR create, description, edit | forge CLI — never a clipboard; assign me, pick the reviewer from the change (rule in the forge file) |
 | MR/PR diff for review | forge CLI — local `git diff` only for uncommitted work |
 | threads, approvals, merge, CI status | forge CLI only |
 | rebase / branch update of a pushed MR/PR branch | forge CLI only — never local rebase plus force-push |
 
-Concrete lifecycle commands per platform: [gitlab.md](gitlab.md) (GitLab, `glab`) and
+Concrete lifecycle commands per forge: [gitlab.md](gitlab.md) (GitLab, `glab`) and
 [github.md](github.md) (GitHub, `gh`).
 
 ## Rules
@@ -121,10 +121,10 @@ Adapted from the MIT-licensed caveman-commit skill by Julius Brussee.
 
 ## Change description
 
-When asked to describe a change for review, whatever the platform calls it (merge
+When asked to describe a change for review, whatever the forge calls it (merge
 request, pull request):
 
 1. Write a concise markdown description of the work done to a file.
-2. Route per [Platform routing](#platform-routing), then create or update the MR/PR from
+2. Route per [Forge routing](#forge-routing), then create or update the MR/PR from
    that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
    [github.md](github.md).

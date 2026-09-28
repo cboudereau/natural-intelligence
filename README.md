@@ -35,7 +35,7 @@ For a small change, Claude Code's built-in plan mode is enough.
 ### 4. Claude builds, and I steer
 > Fix the rounding bug in the VAT total.
 
-`ni:software-engineer`, `ni:tdd`, and `ni:debug` enforce plan, failing test, fix, and commit, with the root cause found before any fix. `ni:git-conventions` writes the commit and the MR or PR description, routing to the right platform from the origin remote. Nothing is pushed without your go.
+`ni:software-engineer`, `ni:tdd`, and `ni:debug` enforce plan, failing test, fix, and commit, with the root cause found before any fix. `ni:git-conventions` writes the commit and the MR or PR description, routing to the right forge from the origin remote. Nothing is pushed without your go.
 
 ### 5. Claude reviews, and I judge
 > /ni:code-review my branch before I open the MR.
@@ -148,8 +148,8 @@ Switch with `/ni:terse lite|full|off`. The level persists in `~/.claude/ni/terse
 | `ni:tdd` | Writing tests first, red-green-refactor |
 | `ni:debug` | Any failure or bug, before proposing a fix |
 | `ni:plan` | Multi-session work with a durable workspace, design doc, and ADRs |
-| `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions; routes to the platform from the origin remote and keeps the git-versus-forge boundary |
-| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included; posts findings as one-click applicable suggestions on both platforms and resolves its own threads once a new commit fixes the finding |
+| `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions; routes to the forge from the origin remote and keeps the git-versus-forge boundary |
+| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included; posts findings as one-click applicable suggestions on both forges and resolves its own threads once a new commit fixes the finding |
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |

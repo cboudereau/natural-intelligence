@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any platform, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
+description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any forge, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
 ---
 # Code Review
 
@@ -17,7 +17,7 @@ description: "Use when the user asks for a full review of a change, pull request
 
 ## Overview
 
-Two sides of a review, both language- and platform-agnostic:
+Two sides of a review, both language- and forge-agnostic:
 
 1. **Giving a review** — the built-in review, then the checklist below run by two
    subagents. Reviews should reduce cognitive load, catch correctness issues, and
@@ -25,8 +25,8 @@ Two sides of a review, both language- and platform-agnostic:
 2. **Answering a review** — the flow in "Answering review feedback". Read, preview,
    get approval, then write. Never write first.
 
-Platform commands (reading threads, posting replies, resolving) live in [gitlab.md](gitlab.md)
-or [github.md](github.md), routed per the [`git-conventions` platform routing rule](../git-conventions/SKILL.md#platform-routing);
+Forge commands (reading threads, posting replies, resolving) live in [gitlab.md](gitlab.md)
+or [github.md](github.md), routed per the [`git-conventions` forge routing rule](../git-conventions/SKILL.md#forge-routing);
 git rules live in the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Giving a review
@@ -49,7 +49,7 @@ When the diff is under 50 changed lines, run step 2 inline instead of with subag
    message. Say which step each finding came from.
 4. **Post after approval.** Once the user approves the findings report, post each finding
    as its own diff-anchored discussion: suggestion per the ladder below, prose fallback,
-   assembled per the read-first rule; platform commands in the reference files, routed as above.
+   assembled per the read-first rule; forge commands in the reference files, routed as above.
 
 For a quick bug pass on a diff without the checklist, spawn the `ni:reviewer` agent
 instead. It returns the same one-line format and nothing else.
@@ -59,7 +59,7 @@ instead. It returns the same one-line format and nothing else.
 A finding posts as an applicable suggestion only when ALL hold: (a) the fix is
 mechanical — replacement text for one contiguous span, no judgement left to the
 reviewee; (b) the span anchors on kept or added lines inside the current diff —
-deleted-line targets never carry a fence; (c) it fits one hunk and the platform's
+deleted-line targets never carry a fence; (c) it fits one hunk and the forge's
 range cap. Otherwise it posts as prose that still states the concrete fix. Severity
 is orthogonal: a mechanical `bug` fix still gets a suggestion. Anchoring errors:
 refetch refs once, retry once, then prose. One concern per thread; a suggestion is
@@ -184,7 +184,7 @@ Adapted from the MIT-licensed caveman-review skill by Julius Brussee.
 ## Answering review feedback
 
 Turn reviewer threads into a table preview of replies and code suggestions; write to
-the platform only after the user approves the preview. The flow is always:
+the forge only after the user approves the preview. The flow is always:
 **read -> preview -> approve -> post + resolve**. Never write first. One approval
 covers the whole write: the preview states, per thread, the reply and whether the
 thread gets resolved; posting then does both in the same pass — never come back to
@@ -194,7 +194,7 @@ were used before.
 
 ### Rules
 
-1. Always preview and wait for explicit approval before any write to the platform.
+1. Always preview and wait for explicit approval before any write to the forge.
 2. Resolve every approved thread whose preview **Disposition** said `reply + resolve`.
    This is required, not optional, and happens in the same pass as the reply.
    Never unresolve, approve, merge, close, or delete anything: those stay the user's calls.
@@ -237,7 +237,7 @@ Column rules:
 - **Reviewer comment** is quoted verbatim, trimmed with `...` only when long.
 - **Suggestion** is `line`, `range`, or `none`, plus the replacement when it fits one
   line, otherwise a summary; the full fenced block goes in the markdown file or the
-  note body. The range syntax is platform-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
+  note body. The range syntax is forge-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
 - **Resolve?** is `yes` for `reply + resolve`, or `no - reason` for `reply only` and
   `leave open`. It maps to the Disposition below.
 
@@ -270,7 +270,7 @@ When a markdown output is asked, create one section per unresolved thread in
 <actual lines read from the file>
 ```
 
-**Proposed reply** (the fence's range syntax is platform-specific):
+**Proposed reply** (the fence's range syntax is forge-specific):
 ```suggestion
 <replacement for line 42>
 ```
@@ -286,7 +286,7 @@ If the user narrows or overrides a disposition in their answer, theirs wins.
 
 Post the replies, resolve the approved threads, then verify and report in one message:
 posted note ids, threads now resolved, and threads left open with their disposition's
-reason. Commands: [gitlab.md](gitlab.md) or [github.md](github.md), per the [platform routing rule](../git-conventions/SKILL.md#platform-routing).
+reason. Commands: [gitlab.md](gitlab.md) or [github.md](github.md), per the [forge routing rule](../git-conventions/SKILL.md#forge-routing).
 
 ### Red flags - the write is not finished
 

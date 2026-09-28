@@ -4,8 +4,8 @@ argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that merges every approved change (MR/PR) authored by me in the
 project given in $ARGUMENTS (default: the current repository's origin). Resolve the
-platform first, per the platform routing rule of the `ni:git-conventions` skill.
-Platform commands are never named here: MR/PR lifecycle (state, gates, merge,
+forge first, per the forge routing rule of the `ni:git-conventions` skill.
+Forge commands are never named here: MR/PR lifecycle (state, gates, merge,
 auto-merge, cancel, branch update, CI status) lives in the gitlab.md or github.md
 reference file of `ni:git-conventions`; listing lives in the gitlab.md or github.md
 reference file of `ni:code-review`. This command's
@@ -15,16 +15,16 @@ anything short of all gates is reported, never merged.
 Each iteration:
 
 1. List my open changes: own-changes listing command in the code-review reference
-   file for the routed platform.
-2. For each change, read its state from the platform: merge state, draft flag, and
+   file for the routed forge.
+2. For each change, read its state from the forge: merge state, draft flag, and
    approvals (commands: lifecycle reference file).
-3. Merge gates, all required: merge only when the platform reports the change
+3. Merge gates, all required: merge only when the forge reports the change
    mergeable, approved, and not a draft, with at least one approval, and no
    unresolved threads. Never bypass a failing gate.
 4. Gates pass and CI succeeded: merge. Gates pass but CI still running: set
    auto-merge, then re-check next iteration. If an approval is revoked afterwards,
    cancel it (merge, auto-merge, and cancel commands: lifecycle reference file).
-5. The platform reports the change behind its target: update the branch via the forge
+5. The forge reports the change behind its target: update the branch via the forge
    only, never a local rebase, per the git-versus-forge boundary of the
    `ni:git-conventions` skill (update command: lifecycle reference file). Re-check
    next iteration.

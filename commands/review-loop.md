@@ -3,10 +3,10 @@ description: Review MRs assigned to me in a loop, post findings, report the link
 argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that reviews every change (MR/PR) awaiting my review in the project
-given in $ARGUMENTS (default: the current repository's origin). Resolve the platform first,
-per the platform routing rule of the `ni:git-conventions` skill.
+given in $ARGUMENTS (default: the current repository's origin). Resolve the forge first,
+per the forge routing rule of the `ni:git-conventions` skill.
 The `ni:code-review` skill owns the review itself (built-in pass, checklist subagents,
-finding format); this loop owns the mechanics around it. Platform commands are never
+finding format); this loop owns the mechanics around it. Forge commands are never
 named here: review threads and listing live in the gitlab.md or github.md reference
 file of `ni:code-review`; MR/PR lifecycle (approvals, diff) in the gitlab.md or
 github.md reference file of `ni:git-conventions`.
@@ -14,13 +14,13 @@ github.md reference file of `ni:git-conventions`.
 Each iteration:
 
 1. List open changes where I am reviewer: listing commands in the code-review
-   reference file for the routed platform.
+   reference file for the routed forge.
 2. Skip a change I already approved (approval state: lifecycle reference file), or one
    reviewed in an earlier iteration that has no new commits and no reviewer replies.
 3. Re-review: when a revisited change carries new commits since the last pass, run
    the own-thread auto-resolution rule of the `ni:code-review` skill before reviewing
    the new commits: evidence first, reply naming the fixing commit, then resolve — my
-   own threads only, ambiguous stays open. Resolve commands live in the platform
+   own threads only, ambiguous stays open. Resolve commands live in the forge
    reference files, never here.
 4. Review each remaining change with the giving-a-review flow of `ni:code-review`.
 5. Diff via the forge, per the git-versus-forge boundary of the `ni:git-conventions`
@@ -31,7 +31,7 @@ Each iteration:
    severity-prefixed, with `file:line` in the body. Attach the fix as a one-click
    applicable suggestion when the classification ladder of the `ni:code-review`
    skill says so; otherwise post prose that still states the concrete fix. Batch or serialise
-   the posts per the platform reference file — posting commands and payloads live
+   the posts per the forge reference file — posting commands and payloads live
    there, never here. This command's standing instruction is the approval for these
    first-review comments.
 7. Report the posted comment links grouped by change: one section per change, links
