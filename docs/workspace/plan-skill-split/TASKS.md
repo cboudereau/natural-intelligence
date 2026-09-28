@@ -65,8 +65,8 @@ Tasks: 1
 **Commit point**: yes
 
 ## Quality gates (post-session review)
-- [ ] Acceptance criteria green
-- [ ] Diff review: pure move — no rule text changed, only headers/links/copy instruction added
-- [ ] Organization: reference files one level deep; template joins templates/; back-links present
-- [ ] Cross-referencing: link lint green
-- [ ] Security: N/A — no auth content moved
+- [x] Acceptance criteria green
+- [x] Diff review: pure move — no rule text changed, only headers/links/copy instruction added
+- [x] Organization: reference files one level deep; template joins templates/; back-links present
+- [x] Cross-referencing: link lint green
+- [x] Security: N/A — no auth content moved
