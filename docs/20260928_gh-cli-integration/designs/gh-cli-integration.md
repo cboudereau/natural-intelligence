@@ -13,16 +13,16 @@ Goal: add a GitHub integration mirroring the glab one, and write down the git-ve
 ## Functional Requirements
 
 ### <a id="fr1"></a>FR1 — Platform routing rule
-One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md), tells the agent which forge CLI a repository uses: read the origin host (`git remote get-url origin`), map `github.com` (and GHES hosts) to `gh` and `gitlab.*` to `glab`, allow an explicit argument or user statement to override, and ask the user when the host matches neither. Skills and commands reference this rule instead of restating it. See [ADR: platform-detection](./adrs/platform-detection.md).
+One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md), tells the agent which forge CLI a repository uses: read the origin host (`git remote get-url origin`), map `github.com` (and GHES hosts) to `gh` and `gitlab.*` to `glab`, allow an explicit argument or user statement to override, and ask the user when the host matches neither. Skills and commands reference this rule instead of restating it. See [ADR: platform-detection](../adrs/platform-detection.md).
 
 ### <a id="fr2"></a>FR2 — GitHub review reference file
 [`skills/code-review/github.md`](../../../skills/code-review/github.md) mirrors [`gitlab.md`](../../../skills/code-review/gitlab.md) section for section: reading PRs and review threads, diff, suggestion syntax, posting replies, resolving threads, verifying, setup and auth. Where GitHub has no CLI verb, the file gives the `gh api` (REST or GraphQL) call, exactly as [`gitlab.md`](../../../skills/code-review/gitlab.md) does for thread resolution. Known capability gaps are stated, not hidden. [`code-review/SKILL.md`](../../../skills/code-review/SKILL.md) routes to the right reference file via FR1 and its description names GitHub and `gh`.
 
 ### <a id="fr3"></a>FR3 — Platform-agnostic loops
-[`commands/review-loop.md`](../../../commands/review-loop.md) and [`commands/merge-loop.md`](../../../commands/merge-loop.md) name no forge CLI. They describe the flow in platform-neutral terms (list changes awaiting me, check gates, merge, update branch), route via the FR1 rule, and defer every platform command to a per-platform reference file. The argument hints say "project path or URL". Platform specifics live in the owning skill's reference files: review threads in [`code-review/gitlab.md`](../../../skills/code-review/gitlab.md)/[`github.md`](../../../skills/code-review/github.md), MR/PR lifecycle (create, gates, merge, rebase or branch update, CI status) in [`git-conventions/gitlab.md`](../../../skills/git-conventions/gitlab.md)/[`github.md`](../../../skills/git-conventions/github.md). See [ADR: platform-reference-files](./adrs/platform-reference-files.md).
+[`commands/review-loop.md`](../../../commands/review-loop.md) and [`commands/merge-loop.md`](../../../commands/merge-loop.md) name no forge CLI. They describe the flow in platform-neutral terms (list changes awaiting me, check gates, merge, update branch), route via the FR1 rule, and defer every platform command to a per-platform reference file. The argument hints say "project path or URL". Platform specifics live in the owning skill's reference files: review threads in [`code-review/gitlab.md`](../../../skills/code-review/gitlab.md)/[`github.md`](../../../skills/code-review/github.md), MR/PR lifecycle (create, gates, merge, rebase or branch update, CI status) in [`git-conventions/gitlab.md`](../../../skills/git-conventions/gitlab.md)/[`github.md`](../../../skills/git-conventions/github.md). See [ADR: platform-reference-files](../adrs/platform-reference-files.md).
 
 ### <a id="fr4"></a>FR4 — Git-versus-forge boundary
-[`git-conventions`](../../../skills/git-conventions/SKILL.md) states which tool owns which operation. Forge CLI (`gh`/`glab`) owns everything that lives on the server: MR/PR create and description, MR/PR diff, threads, approvals, CI status, merge, server-side rebase or branch update. `git` owns only local state: stage, commit, branch, local diff, log, worktrees, push. The MR/PR description flow becomes `glab mr create/update --description` or `gh pr create/edit --body`, replacing the `clip.exe` clipboard step. The rebase rule says: rebase through the forge, never locally, which resolves the collision with the no-force rule. See [ADR: forge-first-boundary](./adrs/forge-first-boundary.md).
+[`git-conventions`](../../../skills/git-conventions/SKILL.md) states which tool owns which operation. Forge CLI (`gh`/`glab`) owns everything that lives on the server: MR/PR create and description, MR/PR diff, threads, approvals, CI status, merge, server-side rebase or branch update. `git` owns only local state: stage, commit, branch, local diff, log, worktrees, push. The MR/PR description flow becomes `glab mr create/update --description` or `gh pr create/edit --body`, replacing the `clip.exe` clipboard step. The rebase rule says: rebase through the forge, never locally, which resolves the collision with the no-force rule. See [ADR: forge-first-boundary](../adrs/forge-first-boundary.md).
 
 ### <a id="fr5"></a>FR5 — Consistency fixes
 Small documented defects fixed in the same change (user decision, 2026-09-28):
@@ -97,10 +97,10 @@ Ownership after the change (one rule, one owner):
 No trust boundary crosses inside the plugin: the forge CLIs hold the credentials. The auth sections keep the existing rule — check status, never create or read tokens.
 
 Decisions:
-- [Which GitHub CLI](./adrs/github-cli-choice.md)
-- [Platform detection](./adrs/platform-detection.md)
-- [Git-versus-forge boundary](./adrs/forge-first-boundary.md)
-- [Platform reference files](./adrs/platform-reference-files.md) — commands stay agnostic; per-platform `.md` files carry the commands
+- [Which GitHub CLI](../adrs/github-cli-choice.md)
+- [Platform detection](../adrs/platform-detection.md)
+- [Git-versus-forge boundary](../adrs/forge-first-boundary.md)
+- [Platform reference files](../adrs/platform-reference-files.md) — commands stay agnostic; per-platform `.md` files carry the commands
 
 ## Data & migration
 

@@ -1,6 +1,6 @@
 # plan-skill-split — Design Doc (seed)
 
-Status: seed only — Phase 2 starts after [gh-cli-integration](../gh-cli-integration/TASKS.md) integrates. Scope was fixed by the user on 2026-09-28.
+Status: seed only — Phase 2 starts after [gh-cli-integration](../../20260928_gh-cli-integration/README.md) integrated. Scope was fixed by the user on 2026-09-28.
 
 ## Context
 
@@ -9,9 +9,9 @@ Status: seed only — Phase 2 starts after [gh-cli-integration](../gh-cli-integr
 ## Scope (user decision, 2026-09-28)
 
 Externalise:
-- Phase 4c pre-flight gate → `templates/preflight.md`, copied into the workspace as `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c and ticked on disk (disk-is-truth: a resumed session sees whether the gate passed). Includes the link-lint bullet added by gh-cli-integration.
-- Phase 5 autopilot detail (per-task contract, durability invariants, orchestrator loop, severity levels, discovery routing) → `autopilot.md` reference file.
-- Phase 6 integration steps and commit template → same `autopilot.md`.
+- Phase 4c pre-flight gate → a new template (templates/preflight.md), copied into the workspace as PREFLIGHT.md at Phase 4c and ticked on disk (disk-is-truth: a resumed session sees whether the gate passed). Includes the link-lint bullet added by gh-cli-integration.
+- Phase 5 autopilot detail (per-task contract, durability invariants, orchestrator loop, severity levels, discovery routing) → a new reference file (autopilot.md).
+- Phase 6 integration steps and commit template → the same autopilot.md reference file.
 
 Explicitly excluded (stay in SKILL.md, user decision):
 - Goal section's human-time-budget rationale.

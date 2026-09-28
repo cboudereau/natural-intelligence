@@ -1,6 +1,6 @@
 # natural-intelligence
 
 ## Active workspaces
-- [gh-cli-integration](docs/workspace/gh-cli-integration/TASKS.md) — Phase 4c passed, awaiting ADR ratification, task 6/6
-  RESUME: load the `plan` skill, then read TASKS.md (checked = done) + `git log --oneline`;
-  continue at first unchecked task; re-run the session checkpoint before trusting state.
+- [plan-skill-split](docs/workspace/plan-skill-split/DESIGN.md) — Phase 1, seeded (scope fixed by user; Phase 2 not started)
+  RESUME: load the `plan` skill, then read the seed DESIGN.md + `git log --oneline`;
+  start Phase 2 from the fixed scope; re-run `claude plugin validate .` before trusting state.
