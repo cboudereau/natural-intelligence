@@ -12,15 +12,15 @@ The review flow posts findings as prose comments. Suggestion blocks — which gi
 - The platform-agnostic [`code-review/SKILL.md:253-256`](../../../skills/code-review/SKILL.md) template hard-codes GitLab `suggestion:-0+0` syntax; on GitHub that posts dead markdown.
 - Removed-line and multi-line anchoring rules are missing from both reference files.
 
-State of the art (2026, sources in [ADR: suggestion-first-findings](./adrs/suggestion-first-findings.md)): GitLab applies suggestions per note or batch, with a documented apply API; GitHub applies only through the UI (no API, confirmed absent 2026); both need exact diff anchoring (GitLab `position` + `suggestion:-N+M`, cap 201 lines; GitHub `start_line`/`line` + bare fence); suggestions on deleted lines fail on GitHub and are unreliable on GitLab; GitLab caps notes at 60/minute; GitHub wants all inline comments batched in one review call.
+State of the art (2026, sources in [ADR: suggestion-first-findings](../adrs/suggestion-first-findings.md)): GitLab applies suggestions per note or batch, with a documented apply API; GitHub applies only through the UI (no API, confirmed absent 2026); both need exact diff anchoring (GitLab `position` + `suggestion:-N+M`, cap 201 lines; GitHub `start_line`/`line` + bare fence); suggestions on deleted lines fail on GitHub and are unreliable on GitLab; GitLab caps notes at 60/minute; GitHub wants all inline comments batched in one review call.
 
 ## Functional Requirements
 
 ### <a id="fr1"></a>FR1 — Fix classification rule
-[`code-review/SKILL.md`](../../../skills/code-review/SKILL.md) gains one reviewer-side rule deciding suggestion versus prose. A finding posts as a suggestion when the fix is mechanical (replacement text for a contiguous span), the span anchors on kept-or-added lines inside the current diff, and it fits one hunk. Everything else — design findings, `q` questions, multi-file or multi-hunk fixes, deleted-line targets, out-of-diff spans — stays a prose comment stating the fix. See [ADR: suggestion-first-findings](./adrs/suggestion-first-findings.md).
+[`code-review/SKILL.md`](../../../skills/code-review/SKILL.md) gains one reviewer-side rule deciding suggestion versus prose. A finding posts as a suggestion when the fix is mechanical (replacement text for a contiguous span), the span anchors on kept-or-added lines inside the current diff, and it fits one hunk. Everything else — design findings, `q` questions, multi-file or multi-hunk fixes, deleted-line targets, out-of-diff spans — stays a prose comment stating the fix. See [ADR: suggestion-first-findings](../adrs/suggestion-first-findings.md).
 
 ### <a id="fr2"></a>FR2 — Fix payload and assembly
-A suggestion is assembled by the agent that has the target file open: replacement lines verbatim, exact leading whitespace, span = anchored line plus range. The existing answering-flow rule ("read the actual file before proposing a suggestion, never from comment text alone") extends to the reviewer side. The [`ni:reviewer`](../../../agents/reviewer.md) output contract stays one-line prose; the posting step re-reads the file and builds the block. See [ADR: suggestion-assembly](./adrs/suggestion-assembly.md).
+A suggestion is assembled by the agent that has the target file open: replacement lines verbatim, exact leading whitespace, span = anchored line plus range. The existing answering-flow rule ("read the actual file before proposing a suggestion, never from comment text alone") extends to the reviewer side. The [`ni:reviewer`](../../../agents/reviewer.md) output contract stays one-line prose; the posting step re-reads the file and builds the block. See [ADR: suggestion-assembly](../adrs/suggestion-assembly.md).
 
 ### <a id="fr3"></a>FR3 — Platform posting payloads
 Both reference files gain a "Posting a suggestion" section with the exact working payloads:
@@ -35,7 +35,7 @@ Reviewee-side apply facts land where relevant: GitLab `PUT /suggestions/:id/appl
 The `suggestion:-0+0` GitLab syntax leaves [`code-review/SKILL.md`](../../../skills/code-review/SKILL.md) (lines 196-209, 253-256): the Suggestion column and markdown template become platform-neutral ("suggestion with range per the platform file"), and the range syntax pointer already at line 217 becomes the single reference.
 
 ### <a id="fr6"></a>FR6 — Thread auto-resolution on re-review
-On a later loop iteration over a change with new commits, the reviewer checks each of its own unresolved threads against the current code: when the posted fix, or an equivalent removing the defect, is present, it replies naming the fixing commit and resolves the thread. Own threads only; ambiguous stays open; no nag replies. Resolve commands already exist in both reference files. See [ADR: thread-auto-resolution](./adrs/thread-auto-resolution.md) (accepted — user decision, 2026-09-28).
+On a later loop iteration over a change with new commits, the reviewer checks each of its own unresolved threads against the current code: when the posted fix, or an equivalent removing the defect, is present, it replies naming the fixing commit and resolves the thread. Own threads only; ambiguous stays open; no nag replies. Resolve commands already exist in both reference files. See [ADR: thread-auto-resolution](../adrs/thread-auto-resolution.md) (accepted — user decision, 2026-09-28).
 
 ## Non-Functional Requirements
 
@@ -81,9 +81,9 @@ On a later loop iteration over a change with new commits, the reviewer checks ea
 Text-only change to three existing files plus [`review-loop`](../../../commands/review-loop.md). Ownership unchanged from [platform-reference-files](../../20260928_gh-cli-integration/adrs/platform-reference-files.md): the flow and classification in [`code-review/SKILL.md`](../../../skills/code-review/SKILL.md), platform payloads in the two reference files, the loop stays agnostic.
 
 Decisions:
-- [Suggestion-first findings](./adrs/suggestion-first-findings.md) — when a finding becomes a suggestion, and the fallback ladder
-- [Suggestion assembly](./adrs/suggestion-assembly.md) — who builds the block and from what
-- [Thread auto-resolution](./adrs/thread-auto-resolution.md) — own threads close when a new commit fixes the finding (evidence-gated)
+- [Suggestion-first findings](../adrs/suggestion-first-findings.md) — when a finding becomes a suggestion, and the fallback ladder
+- [Suggestion assembly](../adrs/suggestion-assembly.md) — who builds the block and from what
+- [Thread auto-resolution](../adrs/thread-auto-resolution.md) — own threads close when a new commit fixes the finding (evidence-gated)
 
 ## Data & migration
 

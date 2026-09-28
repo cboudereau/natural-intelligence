@@ -3,7 +3,7 @@ status: accepted
 ---
 # Suggestion-first findings
 
-Addresses: [FR1](../DESIGN.md#fr1), [FR4](../DESIGN.md#fr4)
+Addresses: [FR1](../designs/review-suggestions.md#fr1), [FR4](../designs/review-suggestions.md#fr4)
 
 ## Problem
 

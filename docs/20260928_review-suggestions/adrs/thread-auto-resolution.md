@@ -3,7 +3,7 @@ status: accepted
 ---
 # Thread auto-resolution on re-review
 
-Addresses: [FR6](../DESIGN.md#fr6)
+Addresses: [FR6](../designs/review-suggestions.md#fr6)
 
 ## Problem
 
