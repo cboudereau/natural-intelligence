@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any forge, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
+description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness — including local changes before pushing or opening an MR/PR. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any forge, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
 ---
 # Code Review
 
@@ -8,7 +8,7 @@ description: "Use when the user asks for a full review of a change, pull request
 
 ## When to use
 
-- User asks to review code, a pull request, or a merge request
+- User asks to review code, local changes before pushing, a pull request, or a merge request
 - User asks for the review checklist
 - User wants to assess the quality of a change
 - User mentions design, readability, test coverage, security, or correctness concerns
@@ -20,19 +20,24 @@ description: "Use when the user asks for a full review of a change, pull request
 Two sides of a review, both language- and forge-agnostic:
 
 1. **Giving a review** — the built-in review, then the checklist below run by two
-   subagents. Reviews should reduce cognitive load, catch correctness issues, and
-   share knowledge — not just find bugs.
+   subagents. Reviews reduce cognitive load, catch correctness issues, and share
+   knowledge — not just find bugs.
 2. **Answering a review** — the flow in "Answering review feedback". Read, preview,
    get approval, then write. Never write first.
 
-Forge commands (reading threads, posting replies, resolving) live in [gitlab.md](gitlab.md)
-or [github.md](github.md), routed per the [`git-conventions` forge routing rule](../git-conventions/SKILL.md#forge-routing);
-git rules live in the [`git-conventions`](../git-conventions/SKILL.md) skill.
+Forge commands (reading threads, posting, resolving) live in [gitlab.md](gitlab.md) or
+[github.md](github.md) per the [forge routing rule](../git-conventions/SKILL.md#forge-routing);
+git rules in the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Giving a review
 
 Four steps, in this order. Do not start the checklist before step 1 has returned.
 When the diff is under 50 changed lines, run step 2 inline instead of with subagents.
+
+**Local target** (working tree, staged, or an unpushed branch — the common pre-push
+review): diff via local git against the merge-base of the target branch, no forge
+routing. Steps 1–3 unchanged; step 4 does not apply — the findings report is the
+deliverable; fixes go straight to the working tree on request, no suggestion fences.
 
 1. **Built-in review first.** Run Claude Code's built-in `code-review` skill (the diff
    reviewer for correctness bugs and simplification) on the same target, at the effort
@@ -51,8 +56,7 @@ When the diff is under 50 changed lines, run step 2 inline instead of with subag
    as its own diff-anchored discussion: suggestion per the ladder below, prose fallback,
    assembled per the read-first rule; forge commands in the reference files, routed as above.
 
-For a quick bug pass on a diff without the checklist, spawn the `ni:reviewer` agent
-instead. It returns the same one-line format and nothing else.
+Quick bug pass without the checklist: spawn `ni:reviewer` — same one-line format, nothing else.
 
 ## Classification ladder
 
@@ -186,11 +190,9 @@ Adapted from the MIT-licensed caveman-review skill by Julius Brussee.
 Turn reviewer threads into a table preview of replies and code suggestions; write to
 the forge only after the user approves the preview. The flow is always:
 **read -> preview -> approve -> post + resolve**. Never write first. One approval
-covers the whole write: the preview states, per thread, the reply and whether the
-thread gets resolved; posting then does both in the same pass — never come back to
-ask about resolving after the replies are up. For a first review of a change with no
-reviewer threads yet, use the checklist above. For any review, confirm which skills
-were used before.
+covers the whole write: the preview states, per thread, the reply and whether it
+resolves; posting does both in one pass — never come back to ask about resolving.
+First review with no reviewer threads yet: use the checklist above.
 
 ### Rules
 
@@ -209,9 +211,7 @@ were used before.
 
 ### Preview format
 
-For the live preview, be concise: one row per thread, two tables.
-
-**Replies** to existing reviewer threads, which is the main case:
+One row per thread, two tables. **Replies** to existing reviewer threads (main case):
 
 ```markdown
 | # | File:line | Discussion | Reviewer comment (verbatim) | Reply | Suggestion | Resolve? |
