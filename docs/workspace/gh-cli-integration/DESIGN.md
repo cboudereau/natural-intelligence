@@ -24,6 +24,12 @@ One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md)
 ### <a id="fr4"></a>FR4 — Git-versus-forge boundary
 [`git-conventions`](../../../skills/git-conventions/SKILL.md) states which tool owns which operation. Forge CLI (`gh`/`glab`) owns everything that lives on the server: MR/PR create and description, MR/PR diff, threads, approvals, CI status, merge, server-side rebase or branch update. `git` owns only local state: stage, commit, branch, local diff, log, worktrees, push. The MR/PR description flow becomes `glab mr create/update --description` or `gh pr create/edit --body`, replacing the `clip.exe` clipboard step. The rebase rule says: rebase through the forge, never locally, which resolves the collision with the no-force rule. See [ADR: forge-first-boundary](./adrs/forge-first-boundary.md).
 
+### <a id="fr5"></a>FR5 — Consistency fixes
+Small documented defects fixed in the same change (user decision, 2026-09-28):
+- Commit type: `git-conventions/SKILL.md:77` defines `doc:`; the `plan` skill (`skills/plan/SKILL.md:241,334`) and actual history use `docs(...)`. Fix direction: `doc:` becomes `docs:`, matching Conventional Commits and existing usage.
+- Portability: `code-review/gitlab.md:107-108` hard-codes `~/.local/bin/glab` and `--hostname gitlab.com`. Fix direction: drop the binary path; keep the login guidance with the hostname as an example, not a constant.
+- Push rule single owner: after tasks 1–2, restatements remain at `code-review/SKILL.md:30` ("push on request" parenthetical) and `:179` ("Push only on explicit request"). Fix direction: pointers only; the rule text lives once, in `git-conventions/SKILL.md:57`.
+
 ## Non-Functional Requirements
 
 ### <a id="nfr1"></a>NFR1 — Plugin validates
@@ -50,8 +56,7 @@ One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md)
 
 - **Live end-to-end test against a real GitHub PR.** Requires an authenticated `gh` and a disposable repository; deferred to first real use. Command syntax is verified against `gh` help output during implementation instead.
 - **Other forges (Bitbucket, Gitea, Codeberg).** No current need; the FR1 routing rule leaves room (unknown host → ask).
-- **Fixing the `doc:` vs `docs(` commit-type mismatch** (`git-conventions/SKILL.md:48` vs `plan/SKILL.md:241,334`). Real defect, separate concern; filed here so it is not lost, fixable in a one-line follow-up.
-- **Consolidating the push rule's three duplicated statements** into one owner is included in FR4 (the boundary rewrite touches those lines anyway) — not a non-goal, listed here only to note the duplication is known.
+- **Shrinking `skills/plan/SKILL.md` under the 300-line limit** (350 lines today, over the meta-skill's own rule). Needs restructuring into a reference file — a separate change request. The other small defects found during analysis were promoted to [FR5](#fr5) (user decision, 2026-09-28).
 
 ## Rabbit holes
 
@@ -102,4 +107,4 @@ N/A: markdown-only change, no persistence.
 
 ## Cross-cutting Concerns
 
-Rollout: version bump in `.claude-plugin/plugin.json`, `claude plugin validate . --strict`, README tables updated, trigger test with `--model haiku -p` (one prompt that should route to `github.md`, one that should not trigger `code-review`). Rollback: git revert of the release commit.
+Rollout: version bump in `.claude-plugin/plugin.json` and README tables updated — nothing else (user decision, 2026-09-28: no tagging or release mechanics in this change). Validation stays `claude plugin validate .`. Rollback: git revert of the release commit.

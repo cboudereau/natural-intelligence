@@ -153,25 +153,42 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Depends on**: task 1
 **Time-box**: ~45 min
 
-### 5. README, version bump, trigger test ([NFR1](./DESIGN.md#nfr1), [NFR2](./DESIGN.md#nfr2), [NFR3](./DESIGN.md#nfr3))
-**Goal**: release readiness per the `ni:skill` verify-and-install steps.
+### 5. Consistency fixes ([FR5](./DESIGN.md#fr5))
+**Goal**: fix the small documented defects promoted from non-goals by the user.
+**Artifacts**: `skills/git-conventions/SKILL.md`, `README.md`, `skills/code-review/gitlab.md`, `skills/code-review/SKILL.md`
+**Constraints**:
+- Commit type: `doc:` becomes `docs:` at `git-conventions/SKILL.md:77` (Conventional Commits and actual history win); `plan/SKILL.md` stays untouched
+- Portability: `code-review/gitlab.md:107-108` drops the `~/.local/bin/glab` path; login guidance keeps `--hostname gitlab.com` as an example only
+- Push rule one owner: `code-review/SKILL.md:30` parenthetical and `:179` restatement become pure pointers to `git-conventions`; the rule text appears once in the repo (`git-conventions/SKILL.md:57`)
+**Tests** (red before the edit):
+- `grep -q "\`doc:\`" skills/git-conventions/SKILL.md` currently succeeds — must fail after
+- `grep -q "local/bin/glab" skills/code-review/gitlab.md` currently succeeds — must fail after
+**Verify**: `grep -q "docs:" skills/git-conventions/SKILL.md && ! grep -q "\`doc:\`" skills/git-conventions/SKILL.md && ! grep -q "local/bin/glab" skills/code-review/gitlab.md && ! grep -qi "push only on explicit request" skills/code-review/SKILL.md && claude plugin validate .`
+**Acceptance criteria**:
+- [ ] `docs:` type defined; no `doc:` remains
+- [ ] No hard-coded binary path; push rule stated once, pointers elsewhere
+- [ ] Verify command exits 0
+**Depends on**: task 2 (touches the same code-review files)
+**Time-box**: ~30 min
+
+### 6. Version bump and README tables ([NFR1](./DESIGN.md#nfr1), [NFR3](./DESIGN.md#nfr3))
+**Goal**: version increment and documentation tables only — no tagging or release mechanics (user decision).
 **Artifacts**: `README.md`, `.claude-plugin/plugin.json`
 **Constraints**:
-- README skills/commands tables mention GitHub support (`ni:code-review` row at README.md:152, loop rows and examples at :50-62)
-- Version bump `1.3.2` to `1.4.0` (minor: new capability, no break)
-- Trigger test: `claude --plugin-dir . --model haiku -p` with one prompt that should load `code-review` + `github.md` route and one that should not trigger `code-review`; record both outputs in the task notes
+- Version bump `1.3.2` to `1.4.0` (minor: new capability, no break); nothing else in `plugin.json`
+- Every table in README updated where the change touches it: skills table (`ni:code-review` and `ni:git-conventions` rows mention GitHub and platform routing), commands table (loop rows platform-neutral), repo layout table (new reference files), usage examples (`MR !42` wording becomes platform-neutral)
+- No `claude plugin tag`, no tag push, no marketplace step
 **Tests** (red before the edit): `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json` currently fails — must pass after.
 **Verify**: `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json && grep -qi "github" README.md && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -E "(glab|gh) " commands/review-loop.md commands/merge-loop.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] README rows updated; verify command exits 0
-- [ ] Both trigger-test prompts ran with expected routing (`manual: model-dependent, outputs recorded`)
-**Depends on**: tasks 1–4
-**Time-box**: ~40 min
+- [ ] Version is 1.4.0; all listed README tables updated; verify command exits 0
+**Depends on**: tasks 1–5
+**Time-box**: ~30 min
 
 ## Sessions
 
-### Session 1 — GitHub CLI integration (~4H)
-Tasks: 1, 2, 3, 4, 5
+### Session 1 — GitHub CLI integration (~4.5H)
+Tasks: 1, 2, 3, 4, 5, 6
 **Skills**: `skill` (ni conventions for editing skills), `git-conventions` (commits), `evidence-based-analysis` (citations in edited files)
 **Checkpoint**: `claude plugin validate . && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -E "(glab|gh) " commands/review-loop.md commands/merge-loop.md && test -f skills/code-review/github.md && test -f skills/git-conventions/github.md && test -f skills/git-conventions/gitlab.md`
 **Commit point**: yes — one commit per task, per the durability invariants
