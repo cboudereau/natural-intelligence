@@ -18,8 +18,8 @@ One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md)
 ### <a id="fr2"></a>FR2 — GitHub review reference file
 `skills/code-review/github.md` mirrors `gitlab.md` section for section: reading PRs and review threads, diff, suggestion syntax, posting replies, resolving threads, verifying, setup and auth. Where GitHub has no CLI verb, the file gives the `gh api` (REST or GraphQL) call, exactly as `gitlab.md` does for thread resolution. Known capability gaps are stated, not hidden. `code-review/SKILL.md` routes to the right reference file via FR1 and its description names GitHub and `gh`.
 
-### <a id="fr3"></a>FR3 — Platform-neutral loops
-`commands/review-loop.md` and `commands/merge-loop.md` work on both platforms. Each step states the `glab` and the `gh` form (or points to the reference file), the argument hints say "project path or URL", and the merge gates map GitLab's `detailed_merge_status` to GitHub's `mergeStateStatus`/`reviewDecision`/`statusCheckRollup` equivalents. Server-side branch update replaces `glab mr rebase` on GitHub (`gh api .../update-branch`).
+### <a id="fr3"></a>FR3 — Platform-agnostic loops
+`commands/review-loop.md` and `commands/merge-loop.md` name no forge CLI. They describe the flow in platform-neutral terms (list changes awaiting me, check gates, merge, update branch), route via the FR1 rule, and defer every platform command to a per-platform reference file. The argument hints say "project path or URL". Platform specifics live in the owning skill's reference files: review threads in `code-review/gitlab.md`/`github.md`, MR/PR lifecycle (create, gates, merge, rebase or branch update, CI status) in `git-conventions/gitlab.md`/`github.md`. See [ADR: platform-reference-files](./adrs/platform-reference-files.md).
 
 ### <a id="fr4"></a>FR4 — Git-versus-forge boundary
 [`git-conventions`](../../../skills/git-conventions/SKILL.md) states which tool owns which operation. Forge CLI (`gh`/`glab`) owns everything that lives on the server: MR/PR create and description, MR/PR diff, threads, approvals, CI status, merge, server-side rebase or branch update. `git` owns only local state: stage, commit, branch, local diff, log, worktrees, push. The MR/PR description flow becomes `glab mr create/update --description` or `gh pr create/edit --body`, replacing the `clip.exe` clipboard step. The rebase rule says: rebase through the forge, never locally, which resolves the collision with the no-force rule. See [ADR: forge-first-boundary](./adrs/forge-first-boundary.md).
@@ -38,8 +38,8 @@ One rule, owned by [`git-conventions`](../../../skills/git-conventions/SKILL.md)
 
 ### <a id="nfr3"></a>NFR3 — No clipboard, no platform leak
 - **Scenario**: after FR3/FR4 → no Windows-only or single-platform residue in the touched files
-- **Measure**: zero hits for `clip.exe` in skills/ and commands/; zero hits for `gitlab project path` in commands/
-- **Verify**: `! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/`
+- **Measure**: zero hits for `clip.exe` in skills/ and commands/; zero hits for `gitlab project path` in commands/; zero forge CLI invocations (`glab `/`gh `) in the two loop commands
+- **Verify**: `! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -En "(glab|gh) " commands/review-loop.md commands/merge-loop.md`
 
 ### <a id="nfr4"></a>NFR4 — Command parity
 - **Scenario**: every `glab` capability used by the plugin → a `gh` counterpart or a documented gap in `github.md`
@@ -83,9 +83,10 @@ graph LR
 ```
 
 Ownership after the change (one rule, one owner):
-- Routing rule and git/forge boundary: `git-conventions` (FR1, FR4).
-- Review flow: `code-review/SKILL.md`; platform commands: `gitlab.md` / `github.md` (FR2).
-- Loop orchestration: the two command files, platform-neutral, deferring commands to the reference files where possible (FR3).
+- Routing rule and git/forge boundary: `git-conventions/SKILL.md`, tool-name level only (FR1, FR4).
+- MR/PR lifecycle commands per platform: `git-conventions/gitlab.md` and `git-conventions/github.md` (FR4, FR3).
+- Review flow: `code-review/SKILL.md`; review-thread commands per platform: `code-review/gitlab.md` / `code-review/github.md` (FR2).
+- Loop orchestration: the two command files, platform-agnostic, no forge CLI named (FR3).
 
 No trust boundary crosses inside the plugin: the forge CLIs hold the credentials. The auth sections keep the existing rule — check status, never create or read tokens.
 
@@ -93,6 +94,7 @@ Decisions:
 - [Which GitHub CLI](./adrs/github-cli-choice.md)
 - [Platform detection](./adrs/platform-detection.md)
 - [Git-versus-forge boundary](./adrs/forge-first-boundary.md)
+- [Platform reference files](./adrs/platform-reference-files.md) — commands stay agnostic; per-platform `.md` files carry the commands
 
 ## Data & migration
 

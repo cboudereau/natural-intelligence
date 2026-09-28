@@ -46,6 +46,8 @@ graph TD
 | `git-conventions/SKILL.md` routing rule | published | [FR1](./DESIGN.md#fr1) | Other skills link it by anchor; keep the anchor stable |
 | `git-conventions/SKILL.md` boundary table | published | [FR4](./DESIGN.md#fr4) | Single owner of the git/forge split |
 | `code-review/github.md` | published | [FR2](./DESIGN.md#fr2) | File name is a link target from SKILL.md and git-conventions; content internal |
+| `git-conventions/gitlab.md` | published | [FR3](./DESIGN.md#fr3), [FR4](./DESIGN.md#fr4) | MR lifecycle commands; link target for the loop commands ([ADR](./adrs/platform-reference-files.md)) |
+| `git-conventions/github.md` | published | [FR3](./DESIGN.md#fr3), [FR4](./DESIGN.md#fr4) | PR lifecycle commands; same rule |
 | `code-review/SKILL.md` description + routing lines | published | [FR1](./DESIGN.md#fr1), [FR2](./DESIGN.md#fr2) | Description drives skill triggering; compatibility rule: only add triggers, never remove GitLab ones |
 | `commands/review-loop.md` | published | [FR3](./DESIGN.md#fr3) | Invoked as `/ni:review-loop`; argument shape must stay backward compatible |
 | `commands/merge-loop.md` | published | [FR3](./DESIGN.md#fr3) | Invoked as `/ni:merge-loop`; same rule |
@@ -66,7 +68,9 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 | Rebase | `git-conventions` + `merge-loop` | Rebase/update of a pushed branch through the forge only; no local rebase + force |
 | Auth, error path | `github.md` | `gh auth status` fails → tell the user the login command; never create or read tokens |
 | Thread resolve, error path | `github.md` | GraphQL mutation fails → report thread id and error, continue with next thread |
-| Merge gate | `merge-loop` | GitHub merge only when `mergeStateStatus` is `CLEAN` and `reviewDecision` is `APPROVED`; mirror of the GitLab `detailed_merge_status == mergeable` gate |
+| Merge gate, neutral | `merge-loop` | Merge only when the platform reports mergeable, approved, not draft; never bypass a gate; no platform field named |
+| Merge gate, per platform | `git-conventions/<platform>.md` | GitLab: `detailed_merge_status == mergeable`; GitHub: `mergeStateStatus == CLEAN` and `reviewDecision == APPROVED` |
+| Platform agnosticism | `commands/*.md` | Zero `glab`/`gh` invocations in loop commands ([ADR](./adrs/platform-reference-files.md)) |
 | One owner | all touched files | Push/no-force rule stated once in `git-conventions`; elsewhere pointers only |
 
 ## Tasks
@@ -120,14 +124,14 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Goal**: `/ni:review-loop` works on GitHub PRs.
 **Artifacts**: `commands/review-loop.md`
 **Constraints**:
+- [ADR: platform-reference-files](./adrs/platform-reference-files.md) — the command names no forge CLI; every platform command defers to `code-review/gitlab.md`/`github.md` (threads, listing) or `git-conventions/gitlab.md`/`github.md` (lifecycle)
 - Routing via the task 1 rule; argument hint becomes "project path or URL"
-- Each glab step gains its gh twin: `glab mr list --reviewer=@me` ↔ `gh pr list --search "review-requested:@me"`; approvals check ↔ `gh pr view --json reviewDecision,latestReviews`
-- Command stays thin per `ni:skill` conventions: platform commands defer to `gitlab.md`/`github.md` where they exist
+- Steps written platform-neutral: "list changes awaiting my review", "skip already-approved ones", "post findings as discussions" — reference files supply the commands
 - Diff-source ambiguity (review-loop.md:16) resolved by pointing at the boundary rule: forge diff for MR/PR review
-**Tests** (red before the edit): `grep -qi "gitlab project path" commands/review-loop.md` currently succeeds — must fail after.
-**Verify**: `! grep -qi "gitlab project path" commands/review-loop.md && grep -q "gh pr" commands/review-loop.md && claude plugin validate .`
+**Tests** (red before the edit): `grep -qi "gitlab project path" commands/review-loop.md` currently succeeds — must fail after; `grep -E "(glab|gh) " commands/review-loop.md` currently succeeds — must fail after.
+**Verify**: `! grep -qi "gitlab project path" commands/review-loop.md && ! grep -E "(glab|gh) " commands/review-loop.md && grep -q "github.md" commands/review-loop.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Every step executable on both platforms (command pair or reference-file pointer)
+- [ ] No forge CLI named in the command file; every step points to a reference file
 - [ ] Verify command exits 0
 **Depends on**: task 1, task 2
 **Time-box**: ~40 min
@@ -136,14 +140,15 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Goal**: `/ni:merge-loop` works on GitHub PRs.
 **Artifacts**: `commands/merge-loop.md`
 **Constraints**:
-- Gate mapping per the instruction-invariants table: GitLab `detailed_merge_status == mergeable` ↔ GitHub `mergeStateStatus == CLEAN` and `reviewDecision == APPROVED`; draft check stays on both
-- Merge: `glab mr merge` ↔ `gh pr merge`; auto-merge: `--auto-merge` ↔ `gh pr merge --auto`; cancel: GitLab cancel API ↔ `gh pr merge --disable-auto`
-- Branch update: `glab mr rebase` ↔ `gh api repos/{owner}/{repo}/pulls/{number}/update-branch`; no local rebase (task 1 boundary)
-- Never bypass a failing gate on either platform
-**Tests** (red before the edit): `grep -qi "gitlab project path" commands/merge-loop.md` currently succeeds — must fail after.
-**Verify**: `! grep -qi "gitlab project path" commands/merge-loop.md && grep -q "mergeStateStatus" commands/merge-loop.md && grep -q "update-branch" commands/merge-loop.md && claude plugin validate .`
+- [ADR: platform-reference-files](./adrs/platform-reference-files.md) — the command names no forge CLI and no platform-specific field; gates, merge, auto-merge, cancel, and branch update defer to `git-conventions/gitlab.md`/`github.md`
+- Neutral gate rule stated once: merge only when the platform reports the change mergeable and approved and not draft; never bypass a failing gate
+- Branch update through the forge only; no local rebase (task 1 boundary)
+- Platform specifics (`detailed_merge_status`, `mergeStateStatus`, `reviewDecision`, cancel API, `update-branch`) live in the task 1 reference files — verify they are present there
+**Tests** (red before the edit): `grep -qi "gitlab project path" commands/merge-loop.md` currently succeeds — must fail after; `grep -E "(glab|gh) " commands/merge-loop.md` currently succeeds — must fail after.
+**Verify**: `! grep -qi "gitlab project path" commands/merge-loop.md && ! grep -E "(glab|gh) " commands/merge-loop.md && grep -q "github.md" commands/merge-loop.md && grep -q "mergeStateStatus" skills/git-conventions/github.md && grep -q "update-branch" skills/git-conventions/github.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Merge gates stated per platform with the conservative rule intact
+- [ ] No forge CLI or platform-specific field named in the command file
+- [ ] Neutral gate rule intact; platform gates present in the git-conventions reference files
 - [ ] Verify command exits 0
 **Depends on**: task 1
 **Time-box**: ~45 min
@@ -156,7 +161,7 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 - Version bump `1.3.2` to `1.4.0` (minor: new capability, no break)
 - Trigger test: `claude --plugin-dir . --model haiku -p` with one prompt that should load `code-review` + `github.md` route and one that should not trigger `code-review`; record both outputs in the task notes
 **Tests** (red before the edit): `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json` currently fails — must pass after.
-**Verify**: `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json && grep -qi "github" README.md && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && claude plugin validate .`
+**Verify**: `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json && grep -qi "github" README.md && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -E "(glab|gh) " commands/review-loop.md commands/merge-loop.md && claude plugin validate .`
 **Acceptance criteria**:
 - [ ] README rows updated; verify command exits 0
 - [ ] Both trigger-test prompts ran with expected routing (`manual: model-dependent, outputs recorded`)
@@ -168,7 +173,7 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 ### Session 1 — GitHub CLI integration (~4H)
 Tasks: 1, 2, 3, 4, 5
 **Skills**: `skill` (ni conventions for editing skills), `git-conventions` (commits), `evidence-based-analysis` (citations in edited files)
-**Checkpoint**: `claude plugin validate . && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && test -f skills/code-review/github.md`
+**Checkpoint**: `claude plugin validate . && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -E "(glab|gh) " commands/review-loop.md commands/merge-loop.md && test -f skills/code-review/github.md && test -f skills/git-conventions/github.md && test -f skills/git-conventions/gitlab.md`
 **Commit point**: yes — one commit per task, per the durability invariants
 
 ## Quality gates (post-session review)
