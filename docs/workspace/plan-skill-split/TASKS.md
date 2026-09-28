@@ -49,10 +49,10 @@ Section map of [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) (352 line
 - `awk 'END{exit NR>=300}' skills/plan/SKILL.md` fails (352 lines) — must pass after
 **Verify**: `awk 'END{exit NR>=300}' skills/plan/SKILL.md && awk 'END{exit NR>=300}' skills/plan/autopilot.md && awk 'END{exit NR>=300}' skills/plan/templates/preflight.md && grep -c "Per-task contract" skills/plan/autopilot.md | grep -qx 1 && ! grep -q "Per-task contract" skills/plan/SKILL.md && grep -q "severity" skills/plan/autopilot.md && grep -q "Integration commit" skills/plan/autopilot.md && ! grep -qi "integration commit" skills/plan/SKILL.md && grep -q "link lint" skills/plan/templates/preflight.md && grep -q "PREFLIGHT.md" skills/plan/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] SKILL.md under 300 lines; both new files exist and are under 300
-- [ ] Extracted rules present exactly once (verify greps green)
-- [ ] Phase 0 and Phase 6 wired to PREFLIGHT.md
-- [ ] Verify command exits 0
+- [x] SKILL.md under 300 lines; both new files exist and are under 300
+- [x] Extracted rules present exactly once (verify greps green)
+- [x] Phase 0 and Phase 6 wired to PREFLIGHT.md
+- [x] Verify command exits 0
 **Depends on**: (none)
 **Time-box**: ~60 min
 
