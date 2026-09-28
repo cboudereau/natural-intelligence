@@ -17,18 +17,46 @@ description: "Use when the user asks to commit, stage, branch, diff, write a com
 Rules for safe and consistent git usage, from the commit to the change description.
 
 Reviewing code or answering review feedback is the
-[`code-review`](../code-review/SKILL.md) skill. GitLab (`glab`) commands live in its
-[gitlab.md](../code-review/gitlab.md) reference file.
+[`code-review`](../code-review/SKILL.md) skill. Forge commands live in its
+[gitlab.md](../code-review/gitlab.md) (`glab`) and [github.md](../code-review/github.md)
+(`gh`) reference files.
+
+## Forge routing
+
+Pick the forge CLI (`gh` or `glab`) in this order. Never guess.
+
+1. An explicit argument or user statement wins. A project path or URL names the forge.
+2. Otherwise read `git remote get-url origin`. Host `github.com` routes to `gh`;
+   host containing `gitlab` routes to `glab`.
+3. Unknown host: check `gh auth status` and `glab auth status` for a matching
+   configured host. Still ambiguous: ask the user.
+
+Missing origin remote: ask the user.
+
+## Git versus forge
+
+`git` owns local state. The forge CLI owns everything on the server.
+
+| Operation | Tool |
+|---|---|
+| stage, commit, branch, local diff, log, worktree | `git` only |
+| push | `git push` — command rules below unchanged |
+| MR/PR create, description, edit | forge CLI — never a clipboard; assign me, pick the reviewer from the change (rule in the forge file) |
+| MR/PR diff for review | forge CLI — local `git diff` only for uncommitted work |
+| threads, approvals, merge, CI status | forge CLI only |
+| rebase / branch update of a pushed MR/PR branch | forge CLI only — never local rebase plus force-push |
+
+Concrete lifecycle commands per forge: [gitlab.md](gitlab.md) (GitLab, `glab`) and
+[github.md](github.md) (GitHub, `gh`).
 
 ## Rules
-Before committing, the code must compile and tests must be successful without failing / ignored tests.
 
-## Command rules
+Before committing, the code must compile and tests must pass, none failing or ignored.
 
 1. Push only when the user asks for it in the current turn. Never push on your own after a commit. Push the current branch to its upstream, never to `master` or `main` directly.
-2. Never use the option `force` `--force`.
-3. Never amend commit to modify files, prefer adding more commits (fix commit) and explain the error/reason.
-4. Do not hesitate to use git when checking differences with the previous version.
+2. Never use `--force`.
+3. Never amend to modify files: add a fix commit and explain the reason.
+4. Use git freely when checking differences with the previous version.
 5. A task should be committed when tests pass (with assertions) and code coverage is verified.
 
 ## Commit message
@@ -45,7 +73,7 @@ Types:
 - `fix:` when fixing the codebase
 - `refac:` for refactoring, mostly to prepare or finish a feat
 - `chore:` to cleanup the codebase, removing dead code
-- `doc:` when touching to .md files or documentation
+- `docs:` when touching .md files or documentation
 - `test:` when touching test only
 - `perf:` for a measured performance change
 - `build:` or `ci:` for build tooling or pipeline changes
@@ -92,8 +120,17 @@ Adapted from the MIT-licensed caveman-commit skill by Julius Brussee.
 
 ## Change description
 
-When asked to describe a change for review, whatever the platform calls it (merge
+When asked to describe a change for review, whatever the forge calls it (merge
 request, pull request):
 
-1. Prepare a concise markdown description of the work done.
-2. Copy the description content by using clip.exe (windows tool) without introducing complex symbols.
+1. Write a concise markdown description of the work done to a file.
+2. Route per [Forge routing](#forge-routing), then create or update the MR/PR from
+   that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
+   [github.md](github.md).
+
+## Boundaries
+
+This skill owns git usage, commit messages, forge routing, the git-versus-forge
+boundary, and the MR/PR lifecycle files. Review flows, threads, and suggestions
+belong to [`code-review`](../code-review/SKILL.md). Never create, read, or store
+forge tokens.

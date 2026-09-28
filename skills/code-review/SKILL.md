@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, or to prepare a plan from reviewer feedback, on any platform, including GitLab merge requests through glab: MR discussions, unresolved threads, suggestion blocks, glab auth."
+description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness — including local changes before pushing or opening an MR/PR. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any forge, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
 ---
 # Code Review
 
@@ -8,7 +8,7 @@ description: "Use when the user asks for a full review of a change, pull request
 
 ## When to use
 
-- User asks to review code, a pull request, or a merge request
+- User asks to review code, local changes before pushing, a pull request, or a merge request
 - User asks for the review checklist
 - User wants to assess the quality of a change
 - User mentions design, readability, test coverage, security, or correctness concerns
@@ -17,22 +17,27 @@ description: "Use when the user asks for a full review of a change, pull request
 
 ## Overview
 
-Two sides of a review, both language- and platform-agnostic:
+Two sides of a review, both language- and forge-agnostic:
 
 1. **Giving a review** — the built-in review, then the checklist below run by two
-   subagents. Reviews should reduce cognitive load, catch correctness issues, and
-   share knowledge — not just find bugs.
+   subagents. Reviews reduce cognitive load, catch correctness issues, and share
+   knowledge — not just find bugs.
 2. **Answering a review** — the flow in "Answering review feedback". Read, preview,
    get approval, then write. Never write first.
 
-Platform commands (reading threads, posting replies, resolving) live in a reference
-file: for GitLab, read [gitlab.md](gitlab.md). Git rules (push on request only, commit
-messages) are in the [`git-conventions`](../git-conventions/SKILL.md) skill.
+Forge commands (reading threads, posting, resolving) live in [gitlab.md](gitlab.md) or
+[github.md](github.md) per the [forge routing rule](../git-conventions/SKILL.md#forge-routing);
+git rules in the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Giving a review
 
-Three steps, in this order. Do not start the checklist before step 1 has returned.
+Four steps, in this order. Do not start the checklist before step 1 has returned.
 When the diff is under 50 changed lines, run step 2 inline instead of with subagents.
+
+**Local target** (working tree, staged, or an unpushed branch — the common pre-push
+review): diff via local git against the merge-base of the target branch, no forge
+routing. Steps 1–3 unchanged; step 4 does not apply — the findings report is the
+deliverable; fixes go straight to the working tree on request, no suggestion fences.
 
 1. **Built-in review first.** Run Claude Code's built-in `code-review` skill (the diff
    reviewer for correctness bugs and simplification) on the same target, at the effort
@@ -43,14 +48,39 @@ When the diff is under 50 changed lines, run step 2 inline instead of with subag
    - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting (items 17-36)
 
    Each subagent reads the actual code around every finding and returns one line per
-   finding in the format below, prefixed with the checklist item number.
-   No finding without a `file:line`.
+   finding in the format below, prefixed with the item number; none without a `file:line`.
 3. **Merge and report once.** Drop checklist findings the built-in review already
    reported, dedupe across the two subagents, rank by severity, and report in one
    message. Say which step each finding came from.
+4. **Post after approval.** Once the user approves the findings report, post each finding
+   as its own diff-anchored discussion: suggestion per the ladder below, prose fallback,
+   assembled per the read-first rule; forge commands in the reference files, routed as above.
 
-For a quick bug pass on a diff without the checklist, spawn the `ni:reviewer` agent
-instead. It returns the same one-line format and nothing else.
+Quick bug pass without the checklist: spawn `ni:reviewer` — same one-line format, nothing else.
+
+## Classification ladder
+
+A finding posts as an applicable suggestion only when ALL hold: (a) the fix is
+mechanical — replacement text for one contiguous span, no judgement left to the
+reviewee; (b) the span anchors on kept or added lines inside the current diff —
+deleted-line targets never carry a fence; (c) it fits one hunk and the forge's
+range cap. Otherwise it posts as prose that still states the concrete fix. Severity
+is orthogonal: a mechanical `bug` fix still gets a suggestion. Anchoring errors:
+refetch refs once, retry once, then prose. One concern per thread; a suggestion is
+a posting mechanism, never a licence for bigger rewrites.
+
+**Read first, both directions.** No suggestion without the real file open.
+Replacement lines are edited copies of the actual lines, exact indentation kept,
+never regenerated from memory or from comment text alone. The posting step above
+and the answering flow below both follow this rule.
+
+**Own-thread resolution.** On re-review of a change with new commits, check each
+thread you yourself opened: re-read the anchored span at the new head and the diff
+since the finding was posted. When the posted fix, or an equivalent that removes the
+defect, is present, reply with one line naming the fixing commit, then resolve the
+thread. Own threads only — never resolve another reviewer's thread. Ambiguous: leave
+open, no nag replies. An applied suggestion resolves the thread natively on GitLab;
+this rule covers the manual-fix path and GitHub.
 
 ## Finding format
 
@@ -157,28 +187,22 @@ Adapted from the MIT-licensed caveman-review skill by Julius Brussee.
 
 ## Answering review feedback
 
-Turn reviewer threads into a table preview of proposed replies and code suggestions,
-and only write to the platform after the user approves the preview.
-
-The flow is always: **read -> preview -> approve -> post + resolve**. Never write first.
-
-One approval covers the whole write. The preview states, per thread, both the reply
-and whether that thread gets resolved; the user approves once; posting then does both
-in the same pass. Never come back to ask about resolving after posting the replies.
-
-For a first review of a change with no reviewer threads yet, use the checklist above.
-For any review, confirm which skills were used before.
+Turn reviewer threads into a table preview of replies and code suggestions; write to
+the forge only after the user approves the preview. The flow is always:
+**read -> preview -> approve -> post + resolve**. Never write first. One approval
+covers the whole write: the preview states, per thread, the reply and whether it
+resolves; posting does both in one pass — never come back to ask about resolving.
+First review with no reviewer threads yet: use the checklist above.
 
 ### Rules
 
-1. Always preview and wait for explicit approval before any write to the platform.
+1. Always preview and wait for explicit approval before any write to the forge.
 2. Resolve every approved thread whose preview **Disposition** said `reply + resolve`.
    This is required, not optional, and happens in the same pass as the reply.
    Never unresolve, approve, merge, close, or delete anything: those stay the user's calls.
-3. Push only on explicit request. See the [`git-conventions`](../git-conventions/SKILL.md) skill.
+3. Follow the git rules in [`git-conventions`](../git-conventions/SKILL.md).
 4. Quote the reviewer's comment verbatim in the preview. Do not paraphrase feedback.
-5. Read the actual file around the referenced line before proposing a suggestion.
-   Never suggest code from the comment text alone.
+5. Follow the read-first rule in the classification ladder before proposing any suggestion.
 6. If a comment is unclear or technically questionable, say so in the preview instead of complying.
 7. Write the preview to the session scratchpad by default. Write it into the repository only when the user asks.
 8. One suggestion per discussion thread. Do not bundle unrelated changes into one note.
@@ -187,15 +211,13 @@ For any review, confirm which skills were used before.
 
 ### Preview format
 
-For the live preview, be concise: one row per thread, two tables.
-
-**Replies** to existing reviewer threads, which is the main case:
+One row per thread, two tables. **Replies** to existing reviewer threads (main case):
 
 ```markdown
 | # | File:line | Discussion | Reviewer comment (verbatim) | Reply | Suggestion | Resolve? |
 |---|---|---|---|---|---|---|
-| 1 | src/Domain/Booking.cs:42 | abc12345 | "Verbatim reviewer comment." | Agreed, null check added | `-0+0` `if (booking is null) return NotFound();` | yes |
-| 2 | src/Api/Handler.cs:17 | def67890 | "Verbatim reviewer comment." | Fixed, test still to add | `-1+2` one-line summary | no - test missing |
+| 1 | src/Domain/Booking.cs:42 | abc12345 | "Verbatim reviewer comment." | Agreed, null check added | line: `if (booking is null) return NotFound();` | yes |
+| 2 | src/Api/Handler.cs:17 | def67890 | "Verbatim reviewer comment." | Fixed, test still to add | range: one-line summary | no - test missing |
 | 3 | general | 0123abcd | "Verbatim reviewer comment." | Question back to reviewer | none | no - needs @user |
 ```
 
@@ -204,7 +226,7 @@ For the live preview, be concise: one row per thread, two tables.
 ```markdown
 | # | File:line | Comment | Suggestion |
 |---|---|---|---|
-| 4 | src/Domain/Booking.cs:58 | Same null check as thread 1 applies here | `-0+0` one-line summary |
+| 4 | src/Domain/Booking.cs:58 | Same null check as thread 1 applies here | line: one-line summary |
 ```
 
 End with **Not addressed:** item, reason.
@@ -213,9 +235,9 @@ Column rules:
 - **File:line** is the path and line on the new side of the diff, or `general` for a non-diff thread.
 - **Discussion** is a short id prefix; keep the full id for the write.
 - **Reviewer comment** is quoted verbatim, trimmed with `...` only when long.
-- **Suggestion** is the range plus the replacement when it fits one line, otherwise a
-  summary; the full fenced block goes in the markdown file or the note body. The range
-  syntax is platform-specific (see [gitlab.md](gitlab.md)).
+- **Suggestion** is `line`, `range`, or `none`, plus the replacement when it fits one
+  line, otherwise a summary; the full fenced block goes in the markdown file or the
+  note body. The range syntax is forge-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
 - **Resolve?** is `yes` for `reply + resolve`, or `no - reason` for `reply only` and
   `leave open`. It maps to the Disposition below.
 
@@ -228,12 +250,11 @@ It is a required field with exactly one of three values:
 | `reply only` | Answered, but something real is still outstanding — say what | reply, leave open |
 | `leave open` | Needs the user, another person, or a decision — say who or what | nothing |
 
-`reply + resolve` is the normal case for a comment whose ask has landed. Reaching for
-`reply only` to stay safe leaves the user to close threads by hand, which is the work
-this flow exists to remove.
+`reply + resolve` is the normal case for a comment whose ask has landed; defaulting to
+`reply only` to stay safe leaves the user closing threads by hand — the work this flow removes.
 
 When a markdown output is asked, create one section per unresolved thread in
-`<scratchpad>/mr-<iid>-suggestions.md`:
+`<scratchpad>/<change-id>-suggestions.md`, where change-id is the MR iid or PR number:
 
 ````markdown
 ## 1. src/Domain/Booking.cs:42 - @reviewer  [discussion: abc12345]
@@ -249,8 +270,8 @@ When a markdown output is asked, create one section per unresolved thread in
 <actual lines read from the file>
 ```
 
-**Proposed reply:**
-```suggestion:-0+0
+**Proposed reply** (the fence's range syntax is forge-specific):
+```suggestion
 <replacement for line 42>
 ```
 ````
@@ -264,8 +285,8 @@ If the user narrows or overrides a disposition in their answer, theirs wins.
 ### After approval
 
 Post the replies, resolve the approved threads, then verify and report in one message:
-the posted note ids, which threads are now resolved, and which stay open with the
-reason from their disposition. The commands are in [gitlab.md](gitlab.md).
+posted note ids, threads now resolved, and threads left open with their disposition's
+reason. Commands: [gitlab.md](gitlab.md) or [github.md](github.md), per the [forge routing rule](../git-conventions/SKILL.md#forge-routing).
 
 ### Red flags - the write is not finished
 
