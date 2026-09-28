@@ -198,11 +198,11 @@ The last clause is the link lint: it fails on any backticked `.md` reference not
 **Commit point**: yes — one commit per task, per the durability invariants
 
 ## Quality gates (post-session review)
-- [ ] Acceptance criteria: all green above
-- [ ] Code review: edits match [DESIGN.md](./DESIGN.md) intent; one rule, one owner preserved
-- [ ] Organization: reference files one level deep; links relative; agents referenced by spawn name
-- [ ] Cross-referencing: link lint green — every file reference in workspace docs is a clickable link
-- [ ] Quality: no duplicated rules across skills; descriptions trigger-first
-- [ ] Security: auth sections instruct status-check only; never create or read tokens; no secrets in examples
-- [ ] Observability: N/A — markdown plugin
-- [ ] Performance: N/A — markdown plugin
+- [x] Acceptance criteria: all green above
+- [x] Code review: edits match [DESIGN.md](./DESIGN.md) intent; one rule, one owner preserved
+- [x] Organization: reference files one level deep; links relative; agents referenced by spawn name
+- [x] Cross-referencing: link lint green — every file reference in workspace docs is a clickable link
+- [x] Quality: no duplicated rules across skills; descriptions trigger-first
+- [x] Security: auth sections instruct status-check only; never create or read tokens; no secrets in examples
+- [x] Observability: N/A — markdown plugin
+- [x] Performance: N/A — markdown plugin

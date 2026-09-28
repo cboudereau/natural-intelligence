@@ -5,7 +5,7 @@ operation targets GitHub: create, describe, diff, gate, merge, rebase, CI status
 
 **REQUIRED BACKGROUND:** the [`git-conventions`](SKILL.md) skill owns the platform
 routing rule and the git-versus-forge boundary. Load it first. Review threads and
-suggestions live in [code-review/github.md](../code-review/github.md).
+suggestions belong to the [`code-review`](../code-review/SKILL.md) skill.
 
 `gh` syntax below is from documented behaviour (`manual: no gh binary in this
 environment`).

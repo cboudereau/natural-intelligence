@@ -8,7 +8,7 @@ threads, or troubleshooting `gh`.
 
 GitHub-specific tooling for the review flow. It provides the `gh` commands and API
 calls; the flow itself is not here. Scope: review threads only. PR lifecycle (create,
-merge, CI) is in [git-conventions/github.md](../git-conventions/github.md).
+merge, CI) belongs to the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 **REQUIRED BACKGROUND:** the [`code-review`](SKILL.md) skill defines the flow (read ->
 preview -> approve -> post + resolve), the preview format, the Disposition rules, and
