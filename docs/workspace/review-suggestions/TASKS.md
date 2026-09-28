@@ -92,6 +92,7 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Constraints**:
 - Step 5 rewritten: anchor every finding on the diff; attach the fix as a suggestion when the classification ladder says so; prose fallback otherwise; batch per the platform reference file
 - Platform-agnostic: still zero `glab`/`gh` invocations and zero platform fields; ladder and payloads referenced, not restated
+- Keep-it-simple note (user decision, 2026-09-28): the loop orchestrates only — the review itself follows the [`code-review`](../../../skills/code-review/SKILL.md) principles (finding format, disposition rules, red flags, no scope creep); one concern per thread; a suggestion is a posting mechanism, never a licence for bigger rewrites
 **Tests** (red before the edit): `grep -qi "suggestion" commands/review-loop.md` currently fails — must pass after.
 **Verify**: `grep -qi "suggestion" commands/review-loop.md && ! grep -E "(glab|gh) " commands/review-loop.md && ! grep -q "suggestion:-" commands/review-loop.md && claude plugin validate .`
 **Acceptance criteria**:
