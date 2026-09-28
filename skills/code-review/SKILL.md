@@ -25,10 +25,9 @@ Two sides of a review, both language- and platform-agnostic:
 2. **Answering a review** — the flow in "Answering review feedback". Read, preview,
    get approval, then write. Never write first.
 
-Platform commands (reading threads, posting replies, resolving) live in a reference
-file: route per the [`git-conventions` platform routing rule](../git-conventions/SKILL.md#platform-routing),
-then read [gitlab.md](gitlab.md) or [github.md](github.md). Git rules live in the
-[`git-conventions`](../git-conventions/SKILL.md) skill.
+Platform commands (reading threads, posting replies, resolving) live in [gitlab.md](gitlab.md)
+or [github.md](github.md), routed per the [`git-conventions` platform routing rule](../git-conventions/SKILL.md#platform-routing);
+git rules live in the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Giving a review
 
@@ -44,15 +43,13 @@ When the diff is under 50 changed lines, run step 2 inline instead of with subag
    - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting (items 17-36)
 
    Each subagent reads the actual code around every finding and returns one line per
-   finding in the format below, prefixed with the checklist item number.
-   No finding without a `file:line`.
+   finding in the format below, prefixed with the item number; none without a `file:line`.
 3. **Merge and report once.** Drop checklist findings the built-in review already
    reported, dedupe across the two subagents, rank by severity, and report in one
    message. Say which step each finding came from.
-4. **Post after approval.** Once the user approves the findings report, post each
-   finding as its own diff-anchored discussion: suggestion per the ladder below,
-   prose fallback. Assemble per the read-first rule. Platform commands live in the
-   reference files, routed as above.
+4. **Post after approval.** Once the user approves the findings report, post each finding
+   as its own diff-anchored discussion: suggestion per the ladder below, prose fallback,
+   assembled per the read-first rule; platform commands in the reference files, routed as above.
 
 For a quick bug pass on a diff without the checklist, spawn the `ni:reviewer` agent
 instead. It returns the same one-line format and nothing else.
@@ -72,6 +69,14 @@ a posting mechanism, never a licence for bigger rewrites.
 Replacement lines are edited copies of the actual lines, exact indentation kept,
 never regenerated from memory or from comment text alone. The posting step above
 and the answering flow below both follow this rule.
+
+**Own-thread resolution.** On re-review of a change with new commits, check each
+thread you yourself opened: re-read the anchored span at the new head and the diff
+since the finding was posted. When the posted fix, or an equivalent that removes the
+defect, is present, reply with one line naming the fixing commit, then resolve the
+thread. Own threads only — never resolve another reviewer's thread. Ambiguous: leave
+open, no nag replies. An applied suggestion resolves the thread natively on GitLab;
+this rule covers the manual-fix path and GitHub.
 
 ## Finding format
 
@@ -178,17 +183,14 @@ Adapted from the MIT-licensed caveman-review skill by Julius Brussee.
 
 ## Answering review feedback
 
-Turn reviewer threads into a table preview of proposed replies and code suggestions,
-and only write to the platform after the user approves the preview.
-
-The flow is always: **read -> preview -> approve -> post + resolve**. Never write first.
-
-One approval covers the whole write. The preview states, per thread, both the reply
-and whether that thread gets resolved; the user approves once; posting then does both
-in the same pass. Never come back to ask about resolving after posting the replies.
-
-For a first review of a change with no reviewer threads yet, use the checklist above.
-For any review, confirm which skills were used before.
+Turn reviewer threads into a table preview of replies and code suggestions; write to
+the platform only after the user approves the preview. The flow is always:
+**read -> preview -> approve -> post + resolve**. Never write first. One approval
+covers the whole write: the preview states, per thread, the reply and whether the
+thread gets resolved; posting then does both in the same pass — never come back to
+ask about resolving after the replies are up. For a first review of a change with no
+reviewer threads yet, use the checklist above. For any review, confirm which skills
+were used before.
 
 ### Rules
 
@@ -248,9 +250,8 @@ It is a required field with exactly one of three values:
 | `reply only` | Answered, but something real is still outstanding — say what | reply, leave open |
 | `leave open` | Needs the user, another person, or a decision — say who or what | nothing |
 
-`reply + resolve` is the normal case for a comment whose ask has landed. Reaching for
-`reply only` to stay safe leaves the user to close threads by hand, which is the work
-this flow exists to remove.
+`reply + resolve` is the normal case for a comment whose ask has landed; defaulting to
+`reply only` to stay safe leaves the user closing threads by hand — the work this flow removes.
 
 When a markdown output is asked, create one section per unresolved thread in
 `<scratchpad>/<change-id>-suggestions.md`, where change-id is the MR iid or PR number:
@@ -284,9 +285,8 @@ If the user narrows or overrides a disposition in their answer, theirs wins.
 ### After approval
 
 Post the replies, resolve the approved threads, then verify and report in one message:
-the posted note ids, which threads are now resolved, and which stay open with the
-reason from their disposition. The commands are in [gitlab.md](gitlab.md) or
-[github.md](github.md), per the [platform routing rule](../git-conventions/SKILL.md#platform-routing).
+posted note ids, threads now resolved, and threads left open with their disposition's
+reason. Commands: [gitlab.md](gitlab.md) or [github.md](github.md), per the [platform routing rule](../git-conventions/SKILL.md#platform-routing).
 
 ### Red flags - the write is not finished
 

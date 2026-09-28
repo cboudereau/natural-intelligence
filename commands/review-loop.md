@@ -18,12 +18,18 @@ Each iteration:
    reference file for the routed platform.
 2. Skip a change I already approved (approval state: lifecycle reference file), or one
    reviewed in an earlier iteration that has no new commits and no reviewer replies.
-3. Review each remaining change with the giving-a-review flow of `ni:code-review`.
-4. Diff via the forge, per the git-versus-forge boundary in
+3. Re-review: when a revisited change carries new commits since the last pass, run
+   the own-thread auto-resolution rule in
+   `${CLAUDE_PLUGIN_ROOT}/skills/code-review/SKILL.md` before reviewing the new
+   commits: evidence first, reply naming the fixing commit, then resolve — my own
+   threads only, ambiguous stays open. Resolve commands live in the platform
+   reference files, never here.
+4. Review each remaining change with the giving-a-review flow of `ni:code-review`.
+5. Diff via the forge, per the git-versus-forge boundary in
    `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md`: the forge diff is against
    the merge-base of the source branch and its target, never two-dot against the
    target head — a branch forked before later merges shows those merges as deletions.
-5. Post each finding as its own diff-anchored discussion on the change,
+6. Post each finding as its own diff-anchored discussion on the change,
    severity-prefixed, with `file:line` in the body. Attach the fix as a one-click
    applicable suggestion when the classification ladder in
    `${CLAUDE_PLUGIN_ROOT}/skills/code-review/SKILL.md#classification-ladder` says
@@ -31,12 +37,12 @@ Each iteration:
    the posts per the platform reference file — posting commands and payloads live
    there, never here. This command's standing instruction is the approval for these
    first-review comments.
-6. Report the posted comment links grouped by change: one section per change, links
+7. Report the posted comment links grouped by change: one section per change, links
    listed under it.
-7. When a loop finding conflicts with an existing comment or thread, do not publish
+8. When a loop finding conflicts with an existing comment or thread, do not publish
    that finding: hold it, ask me for help with both positions summarised, and post
    only what I decide. The standing approval never covers a conflicting comment.
-8. Carry state forward in the loop prompt: append the reviewed change ids with
+9. Carry state forward in the loop prompt: append the reviewed change ids with
    "skip unless new commits or reviewer replies".
 
 Keep it simple: the loop orchestrates only — the review itself follows the
@@ -49,7 +55,8 @@ Loop mechanics: run the check now, then ScheduleWakeup with the amended prompt. 
 prompt amendment (skip rules, output grouping) rewrites the ScheduleWakeup prompt, never a
 separate note.
 
-Boundaries: never approve, merge, close, or resolve anything: those stay my calls. Replies
-to existing reviewer threads keep the preview-then-approval flow of `ni:code-review`; only
-first-review comments ride the standing approval. The loop dies with the session; a durable
+Boundaries: never approve, merge, or close anything: those stay my calls; resolving is
+limited to my own threads per step 3. Replies to existing reviewer threads keep the
+preview-then-approval flow of `ni:code-review`; only first-review comments and own-thread
+resolution ride the standing approval. The loop dies with the session; a durable
 schedule is /schedule, not /loop.

@@ -110,8 +110,8 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -qi "auto-resol\|resolve its own" commands/review-loop.md` currently fails — must pass after.
 **Verify**: `grep -qi "resolv" commands/review-loop.md && grep -qi "own thread" skills/code-review/SKILL.md && ! grep -E "(glab|gh) " commands/review-loop.md && awk 'END{exit NR>=300}' skills/code-review/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Rule present with scope, evidence gate, reply-then-resolve order
-- [ ] Loop re-review step present; loop still agnostic; verify exits 0
+- [x] Rule present with scope, evidence gate, reply-then-resolve order
+- [x] Loop re-review step present; loop still agnostic; verify exits 0
 **Depends on**: task 1
 **Time-box**: ~40 min
 
