@@ -137,9 +137,9 @@ Tasks: 1, 2, 3, 4, 5, 6
 **Commit point**: yes — one commit per task
 
 ## Quality gates (post-session review)
-- [ ] Acceptance criteria green
-- [ ] Code review: edits match [DESIGN.md](./DESIGN.md) intent; ladder and read-first rule have one owner
-- [ ] Organization: no reference-to-reference links; links relative and resolving
-- [ ] Cross-referencing: link lint green
-- [ ] Security: no tokens in payload examples; auth rules untouched
-- [ ] Command correctness: payloads match the researched docs; `manual` flags where unverifiable
+- [x] Acceptance criteria green
+- [x] Code review: edits match [DESIGN.md](./DESIGN.md) intent; ladder and read-first rule have one owner
+- [x] Organization: no reference-to-reference links; links relative and resolving
+- [x] Cross-referencing: link lint green
+- [x] Security: no tokens in payload examples; auth rules untouched
+- [x] Command correctness: payloads match the researched docs; `manual` flags where unverifiable

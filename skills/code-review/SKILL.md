@@ -31,7 +31,7 @@ git rules live in the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Giving a review
 
-Three steps, in this order. Do not start the checklist before step 1 has returned.
+Four steps, in this order. Do not start the checklist before step 1 has returned.
 When the diff is under 50 changed lines, run step 2 inline instead of with subagents.
 
 1. **Built-in review first.** Run Claude Code's built-in `code-review` skill (the diff
