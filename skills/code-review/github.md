@@ -35,7 +35,7 @@ gh api graphql -f query='
       pullRequest(number: $pr) {
         reviewThreads(first: 100) {
           nodes {
-            id isResolved path line
+            id isResolved path line startLine diffSide
             comments(first: 50) {
               nodes { databaseId author { login } body }
             }
@@ -50,7 +50,9 @@ Get `<owner>` and `<repo>` once with `gh repo view --json owner,name`. Filter to
 open threads with `--jq '... | select(.isResolved | not)'` on the nodes.
 
 Keep two ids per thread: the GraphQL thread `id` (what resolve takes) and the first
-comment's `databaseId` (what the REST reply endpoint takes).
+comment's `databaseId` (what the REST reply endpoint takes). `startLine` and
+`diffSide` give the anchored span (`startLine`..`line` on `diffSide`), so a reply
+carrying a suggestion knows exactly which lines it replaces.
 
 For diff context:
 
@@ -74,6 +76,71 @@ Rules:
 - The block content is the final code, with the file's real indentation, and no diff markers.
 - Suggestions work on diff comments only. A general PR comment cannot carry an applicable suggestion.
 - A reply inside a diff thread can carry a suggestion; it applies to that thread's anchored span.
+- Only kept or added lines qualify — the anchoring constraints are under
+  [Posting a suggestion](#posting-a-suggestion).
+
+## Posting a suggestion
+
+The classification ladder in the [`code-review`](SKILL.md) skill decides *when*; this
+is *how*. Constraints, stated plainly:
+
+- Anchor on `line` with `side=RIGHT` (kept or added lines) only. Deleted lines
+  (`side=LEFT`) never carry a fence — applying fails, a long-standing GitHub
+  limitation. This is the mechanical restatement of the ladder's ban on deleted-line
+  targets.
+- File-level comments cannot carry an applicable suggestion.
+- Commenting on unchanged lines is a 2025 preview with limited API support — do not
+  rely on it.
+- The legacy `position` parameter is deprecated; use `line`.
+
+Post **all inline comments in one review call**: the reviewee gets one notification,
+and batching avoids the secondary rate limits that serial comment creation trips.
+`commit_id` is the PR's current head SHA, fetched immediately before posting — a stale
+SHA makes the comment outdated and its suggestion unapplyable:
+
+```bash
+gh pr view <number> --json headRefOid --jq .headRefOid   # fresh head SHA
+```
+
+Build the payload as a JSON file (fenced blocks do not survive inline shell quoting)
+and post the review:
+
+```bash
+cat > review.json <<'EOF'
+{
+  "commit_id": "<headRefOid>",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "src/Domain/Booking.cs",
+      "line": 42,
+      "side": "RIGHT",
+      "start_line": 40,
+      "start_side": "RIGHT",
+      "body": "Off-by-one in the range check.\n\n```suggestion\n<replacement lines 40-42>\n```"
+    }
+  ]
+}
+EOF
+gh api repos/{owner}/{repo}/pulls/{number}/reviews -X POST --input review.json
+```
+
+Each element anchors one comment: `path`, `line`, `side=RIGHT`, and for a multi-line
+range also `start_line` + `start_side=RIGHT` — the four fields go together; omit the
+`start_*` pair for a single line. The body carries the bare ` ```suggestion ` fence:
+the replaced span is the anchored range, since no `:-N+M` modifier exists on GitHub.
+
+Error path — outdated or stale anchor (422 on post, or the comment lands outdated):
+refetch the head SHA once, retry once, then post the finding as prose stating the
+concrete fix.
+
+### Applying (reviewee side)
+
+- UI only: **Commit suggestion** per comment, or add several to a batch — one commit
+  for the batch. No REST endpoint and no GraphQL mutation exists to apply a
+  suggestion (2026).
+- The applier is the committer; each suggester becomes a co-author.
+- Suggestions cannot be applied on closed or merged PRs, nor from pending reviews.
 
 ## Posting after approval
 

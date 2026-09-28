@@ -82,7 +82,7 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -q "startLine" skills/code-review/github.md` currently fails — must pass after.
 **Verify**: `grep -q "start_line" skills/code-review/github.md && grep -q "startLine" skills/code-review/github.md && grep -qi "deleted lines" skills/code-review/github.md && awk 'END{exit NR>=300}' skills/code-review/github.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Payload, batch call, constraints, apply facts present; verify exits 0
+- [x] Payload, batch call, constraints, apply facts present; verify exits 0
 **Depends on**: task 1
 **Time-box**: ~40 min
 
