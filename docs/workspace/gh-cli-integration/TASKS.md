@@ -166,10 +166,10 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 - `grep -q "local/bin/glab" skills/code-review/gitlab.md` currently succeeds — must fail after
 **Verify**: `grep -q "docs:" skills/git-conventions/SKILL.md && ! grep -q "\`doc:\`" skills/git-conventions/SKILL.md && ! grep -q "local/bin/glab" skills/code-review/gitlab.md && ! grep -qi "push only on explicit request" skills/code-review/SKILL.md && grep -q "link lint" skills/plan/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] `docs:` type defined; no `doc:` remains
-- [ ] No hard-coded binary path; push rule stated once, pointers elsewhere
-- [ ] Plan skill Phase 4c carries the link lint bullet
-- [ ] Verify command exits 0
+- [x] `docs:` type defined; no `doc:` remains
+- [x] No hard-coded binary path; push rule stated once, pointers elsewhere
+- [x] Plan skill Phase 4c carries the link lint bullet
+- [x] Verify command exits 0
 **Depends on**: task 2 (touches the same code-review files)
 **Time-box**: ~30 min
 

@@ -74,7 +74,7 @@ Types:
 - `fix:` when fixing the codebase
 - `refac:` for refactoring, mostly to prepare or finish a feat
 - `chore:` to cleanup the codebase, removing dead code
-- `doc:` when touching to .md files or documentation
+- `docs:` when touching .md files or documentation
 - `test:` when touching test only
 - `perf:` for a measured performance change
 - `build:` or `ci:` for build tooling or pipeline changes

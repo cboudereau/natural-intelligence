@@ -225,6 +225,8 @@ Before moving to Phase 5, the entire TASKS.md must pass this gate. This is the l
 - [ ] Every failure-modes row that yields a rule appears as an error-path invariant in the transformations table
 - [ ] Every DESIGN.md section is filled or marked `N/A: <reason>` — no blank sections
 - [ ] No constraint is ambiguous enough that two reasonable agents would interpret it differently
+- [ ] Link lint green — every file reference in workspace docs is a clickable link:
+  `! grep -rPn '(?<!\[)\x60(?:[\w.-]+/)*[\w.-]+\.md(?::\d+(?:[-,:]\d+)?)?\x60' docs/workspace/<NAME> --include='*.md'`
 
 **Autopilot readiness**:
 - [ ] Build, test, and lint commands pass (green baseline) — run them now and confirm

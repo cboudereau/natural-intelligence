@@ -104,6 +104,6 @@ glab mr note list <iid> -F json --jq '[.[] | {id, resolved: ([.notes[] | select(
 
 ## Setup
 
-`glab` lives at `~/.local/bin/glab`. Check auth with `glab auth status`. On failure,
-tell the user to run `glab auth login --hostname gitlab.com --stdin` with a personal
-access token scoped `api`; do not attempt to create or read tokens.
+Check auth with `glab auth status`. On failure, tell the user to run
+`glab auth login --stdin` with your GitLab host, for example `--hostname gitlab.com`,
+and a personal access token scoped `api`; do not attempt to create or read tokens.
