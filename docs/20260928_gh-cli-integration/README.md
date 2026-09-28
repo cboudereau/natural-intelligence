@@ -21,4 +21,4 @@ GitHub CLI (`gh`) support mirroring the glab integration, plus the git-versus-fo
 - [`commands/review-loop.md`](../../commands/review-loop.md) and [`commands/merge-loop.md`](../../commands/merge-loop.md): platform-agnostic, no forge CLI named
 - [`skills/plan/SKILL.md`](../../skills/plan/SKILL.md): Phase 4c pre-flight gains the link lint
 
-Follow-up: [plan-skill-split](../workspace/plan-skill-split/DESIGN.md) (seeded, scope fixed).
+Follow-up: [20260928_plan-skill-split](../20260928_plan-skill-split/README.md) (integrated).

@@ -3,7 +3,7 @@ status: accepted
 ---
 # Pre-flight as a workspace-copied template
 
-Addresses: [FR1](../DESIGN.md#fr1)
+Addresses: [FR1](../designs/plan-skill-split.md#fr1)
 
 ## Problem
 

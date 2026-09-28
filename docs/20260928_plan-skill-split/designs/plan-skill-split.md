@@ -48,7 +48,7 @@ Every extracted rule appears in exactly one place. SKILL.md keeps: triggers, Goa
 
 ## Design
 
-One decision, ratified by the user: [Pre-flight as a workspace-copied template](./adrs/preflight-as-template.md).
+One decision, ratified by the user: [Pre-flight as a workspace-copied template](../adrs/preflight-as-template.md).
 
 Resulting layout:
 - [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) (~230 lines): phases 0–4b full, 4c/5/6 as summary plus link.

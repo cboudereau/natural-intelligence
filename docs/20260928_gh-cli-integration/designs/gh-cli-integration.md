@@ -35,7 +35,7 @@ Small documented defects fixed in the same change (user decision, 2026-09-28):
 
 ### <a id="nfr1"></a>NFR1 — Plugin validates
 - **Scenario**: repository state after every task → plugin manifest and skills remain valid
-- **Measure**: `claude plugin validate .` exits 0 per task. `--strict` fails today only because the workspace resume anchor (root [`CLAUDE.md`](../../../CLAUDE.md)) triggers a root-context warning; the file is deleted at Phase 6, so the release gate is `claude plugin validate . --strict` after workspace teardown.
+- **Measure**: `claude plugin validate .` exits 0 per task. `--strict` fails today only because the workspace resume anchor (the root CLAUDE.md file, since deleted at teardown) triggers a root-context warning; the file is deleted at Phase 6, so the release gate is `claude plugin validate . --strict` after workspace teardown.
 - **Verify**: `claude plugin validate .` (per task); `claude plugin validate . --strict` (release gate)
 
 ### <a id="nfr2"></a>NFR2 — Size and description limits
