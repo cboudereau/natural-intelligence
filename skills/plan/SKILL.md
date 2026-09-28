@@ -226,3 +226,10 @@ To amend or extend work that was already integrated:
 2. Reference the existing design by its path: `Amends: [YYYYMMDD_<NAME>/designs/<name>.md](../../YYYYMMDD_<NAME>/designs/<name>.md)`
 3. Follow the same workflow (DESIGN.md -> ADRs -> TASKS.md -> quality gates -> integrate)
 4. Superseded ADRs get status `superseded-by docs/YYYYMMDD_<NAME>/adrs/<new-slug>.md`
+
+## Boundaries
+
+This skill owns multi-session planning and its workspace artifacts. Small
+single-session plans stay in Claude Code's built-in plan mode. Implementation
+methodology belongs to [`software-engineer`](../software-engineer/SKILL.md) and
+[`tdd`](../tdd/SKILL.md); commits to [`git-conventions`](../git-conventions/SKILL.md).

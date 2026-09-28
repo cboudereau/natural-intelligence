@@ -1,5 +1,5 @@
 ---
-description: Review MRs assigned to me in a loop, post findings, report the links
+description: Review MRs or PRs assigned to me in a loop, post findings, report the links
 argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that reviews every change (MR/PR) awaiting my review in the project

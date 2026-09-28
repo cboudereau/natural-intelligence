@@ -1,5 +1,5 @@
 ---
-description: Merge my approved MRs in a loop, report what merged and what is blocked
+description: Merge my approved MRs or PRs in a loop, report what merged and what is blocked
 argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that merges every approved change (MR/PR) authored by me in the

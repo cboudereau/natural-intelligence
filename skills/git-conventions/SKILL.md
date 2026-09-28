@@ -50,14 +50,13 @@ Concrete lifecycle commands per forge: [gitlab.md](gitlab.md) (GitLab, `glab`) a
 [github.md](github.md) (GitHub, `gh`).
 
 ## Rules
-Before committing, the code must compile and tests must be successful without failing / ignored tests.
 
-## Command rules
+Before committing, the code must compile and tests must pass, none failing or ignored.
 
 1. Push only when the user asks for it in the current turn. Never push on your own after a commit. Push the current branch to its upstream, never to `master` or `main` directly.
-2. Never use the option `force` `--force`.
-3. Never amend commit to modify files, prefer adding more commits (fix commit) and explain the error/reason.
-4. Do not hesitate to use git when checking differences with the previous version.
+2. Never use `--force`.
+3. Never amend to modify files: add a fix commit and explain the reason.
+4. Use git freely when checking differences with the previous version.
 5. A task should be committed when tests pass (with assertions) and code coverage is verified.
 
 ## Commit message
@@ -128,3 +127,10 @@ request, pull request):
 2. Route per [Forge routing](#forge-routing), then create or update the MR/PR from
    that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
    [github.md](github.md).
+
+## Boundaries
+
+This skill owns git usage, commit messages, forge routing, the git-versus-forge
+boundary, and the MR/PR lifecycle files. Review flows, threads, and suggestions
+belong to [`code-review`](../code-review/SKILL.md). Never create, read, or store
+forge tokens.
