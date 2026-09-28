@@ -41,10 +41,13 @@ Missing origin remote: ask the user.
 |---|---|
 | stage, commit, branch, local diff, log, worktree | `git` only |
 | push | `git push` — command rules below unchanged |
-| MR/PR create, description, edit | `glab mr create/update` / `gh pr create/edit` — never a clipboard |
-| MR/PR diff for review | `glab mr diff` / `gh pr diff` — local `git diff` only for uncommitted work |
+| MR/PR create, description, edit | forge CLI — never a clipboard |
+| MR/PR diff for review | forge CLI — local `git diff` only for uncommitted work |
 | threads, approvals, merge, CI status | forge CLI only |
-| rebase / branch update of a pushed MR/PR branch | forge only: `glab mr rebase`, `gh api repos/{owner}/{repo}/pulls/{number}/update-branch` — never local rebase plus force-push |
+| rebase / branch update of a pushed MR/PR branch | forge CLI only — never local rebase plus force-push |
+
+Concrete lifecycle commands per platform: [gitlab.md](gitlab.md) (GitLab, `glab`) and
+[github.md](github.md) (GitHub, `gh`).
 
 ## Rules
 Before committing, the code must compile and tests must be successful without failing / ignored tests.
@@ -122,6 +125,6 @@ When asked to describe a change for review, whatever the platform calls it (merg
 request, pull request):
 
 1. Write a concise markdown description of the work done to a file.
-2. Route per [Platform routing](#platform-routing), then create or update through the forge CLI:
-   - GitLab: `glab mr create --description-file <file>` or `glab mr update <iid> --description "$(cat <file>)"`
-   - GitHub: `gh pr create --body-file <file>` or `gh pr edit <number> --body-file <file>`
+2. Route per [Platform routing](#platform-routing), then create or update the MR/PR from
+   that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
+   [github.md](github.md).
