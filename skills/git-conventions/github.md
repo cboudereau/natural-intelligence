@@ -41,7 +41,9 @@ gh pr view <number> --json mergeStateStatus,reviewDecision,isDraft
 ```
 
 Gate: `mergeStateStatus == "CLEAN"`, `reviewDecision == "APPROVED"`, and
-`isDraft == false`. Never bypass a failing gate.
+`isDraft == false`. On a repository with no required-review rule `reviewDecision`
+comes back empty: then require at least one `APPROVED` entry in `latestReviews`
+(add it to the `--json` list). Never bypass a failing gate.
 
 ## Merge, auto-merge, cancel
 

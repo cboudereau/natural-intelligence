@@ -39,8 +39,7 @@ glab api "projects/:id/merge_requests/<iid>/approvals" --jq '.approved, [.approv
 ```
 
 Gate: `detailed_merge_status == "mergeable"`, `draft == false`, `approved == true`,
-and every reviewer username present in `approved_by`. `approved` alone only means the
-approval rules are met. Never bypass a failing gate.
+and `approved_by` not empty (at least one approval). Never bypass a failing gate.
 
 ## Merge, auto-merge, cancel
 

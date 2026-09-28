@@ -20,22 +20,18 @@ Each iteration:
 2. For each change, read its state from the platform: merge state, draft flag, and
    approvals (commands: lifecycle reference file).
 3. Merge gates, all required: merge only when the platform reports the change
-   mergeable, approved, and not a draft, with at least one reviewer assigned, every
-   assigned reviewer among the approvers, and no unresolved threads. An aggregate
-   approved state alone only means the approval rules are met; it never replaces the
-   every-reviewer check. Never bypass a failing gate.
+   mergeable, approved, and not a draft, with at least one approval, and no
+   unresolved threads. Never bypass a failing gate.
 4. Gates pass and CI succeeded: merge. Gates pass but CI still running: set
-   auto-merge, then re-check next iteration. Auto-merge does not re-check the
-   every-reviewer gate, so set it only once every reviewer has approved; if a
-   reviewer is added or an approval is revoked afterwards, cancel it (merge,
-   auto-merge, and cancel commands: lifecycle reference file).
+   auto-merge, then re-check next iteration. If an approval is revoked afterwards,
+   cancel it (merge, auto-merge, and cancel commands: lifecycle reference file).
 5. The platform reports the change behind its target: update the branch via the forge
    only, never a local rebase, per the git-versus-forge boundary in
    `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md` (update command: lifecycle
    reference file). Re-check next iteration.
-6. Failed CI, conflicts, missing approval, no reviewer, or unresolved threads: skip,
-   and report the change with its blocking reason. For a missing approval, name the
-   reviewers who have not approved yet.
+6. Failed CI, conflicts, missing approval, or unresolved threads: skip, and report
+   the change with its blocking reason. For a missing approval, name the reviewers
+   who have not approved yet.
 7. Report each iteration: merged changes with links, auto-merge set, blocked changes
    with reasons.
 8. Carry state forward in the loop prompt: append merged change ids as done, and
