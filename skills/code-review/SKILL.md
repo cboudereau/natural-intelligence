@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, or to prepare a plan from reviewer feedback, on any platform, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, gh auth)."
+description: "Use when the user asks for a full review of a change, pull request, or merge request against the personal checklist, covering design, tests, performance, security, and correctness. Also use when the user asks to read, address, answer, or reply to reviewer comments or threads, to post findings as applicable suggestions on GitLab or GitHub, or to prepare a plan from reviewer feedback, on any platform, including GitLab merge requests through glab (MR discussions, unresolved threads, suggestion blocks, glab auth) and GitHub pull requests through gh (PR discussions, review threads, suggestion blocks, gh auth)."
 ---
 # Code Review
 
@@ -49,9 +49,29 @@ When the diff is under 50 changed lines, run step 2 inline instead of with subag
 3. **Merge and report once.** Drop checklist findings the built-in review already
    reported, dedupe across the two subagents, rank by severity, and report in one
    message. Say which step each finding came from.
+4. **Post after approval.** Once the user approves the findings report, post each
+   finding as its own diff-anchored discussion: suggestion per the ladder below,
+   prose fallback. Assemble per the read-first rule. Platform commands live in the
+   reference files, routed as above.
 
 For a quick bug pass on a diff without the checklist, spawn the `ni:reviewer` agent
 instead. It returns the same one-line format and nothing else.
+
+## Classification ladder
+
+A finding posts as an applicable suggestion only when ALL hold: (a) the fix is
+mechanical — replacement text for one contiguous span, no judgement left to the
+reviewee; (b) the span anchors on kept or added lines inside the current diff —
+deleted-line targets never carry a fence; (c) it fits one hunk and the platform's
+range cap. Otherwise it posts as prose that still states the concrete fix. Severity
+is orthogonal: a mechanical `bug` fix still gets a suggestion. Anchoring errors:
+refetch refs once, retry once, then prose. One concern per thread; a suggestion is
+a posting mechanism, never a licence for bigger rewrites.
+
+**Read first, both directions.** No suggestion without the real file open.
+Replacement lines are edited copies of the actual lines, exact indentation kept,
+never regenerated from memory or from comment text alone. The posting step above
+and the answering flow below both follow this rule.
 
 ## Finding format
 
@@ -178,8 +198,7 @@ For any review, confirm which skills were used before.
    Never unresolve, approve, merge, close, or delete anything: those stay the user's calls.
 3. Follow the git rules in [`git-conventions`](../git-conventions/SKILL.md).
 4. Quote the reviewer's comment verbatim in the preview. Do not paraphrase feedback.
-5. Read the actual file around the referenced line before proposing a suggestion.
-   Never suggest code from the comment text alone.
+5. Follow the read-first rule in the classification ladder before proposing any suggestion.
 6. If a comment is unclear or technically questionable, say so in the preview instead of complying.
 7. Write the preview to the session scratchpad by default. Write it into the repository only when the user asks.
 8. One suggestion per discussion thread. Do not bundle unrelated changes into one note.
@@ -195,8 +214,8 @@ For the live preview, be concise: one row per thread, two tables.
 ```markdown
 | # | File:line | Discussion | Reviewer comment (verbatim) | Reply | Suggestion | Resolve? |
 |---|---|---|---|---|---|---|
-| 1 | src/Domain/Booking.cs:42 | abc12345 | "Verbatim reviewer comment." | Agreed, null check added | `-0+0` `if (booking is null) return NotFound();` | yes |
-| 2 | src/Api/Handler.cs:17 | def67890 | "Verbatim reviewer comment." | Fixed, test still to add | `-1+2` one-line summary | no - test missing |
+| 1 | src/Domain/Booking.cs:42 | abc12345 | "Verbatim reviewer comment." | Agreed, null check added | line: `if (booking is null) return NotFound();` | yes |
+| 2 | src/Api/Handler.cs:17 | def67890 | "Verbatim reviewer comment." | Fixed, test still to add | range: one-line summary | no - test missing |
 | 3 | general | 0123abcd | "Verbatim reviewer comment." | Question back to reviewer | none | no - needs @user |
 ```
 
@@ -205,7 +224,7 @@ For the live preview, be concise: one row per thread, two tables.
 ```markdown
 | # | File:line | Comment | Suggestion |
 |---|---|---|---|
-| 4 | src/Domain/Booking.cs:58 | Same null check as thread 1 applies here | `-0+0` one-line summary |
+| 4 | src/Domain/Booking.cs:58 | Same null check as thread 1 applies here | line: one-line summary |
 ```
 
 End with **Not addressed:** item, reason.
@@ -214,9 +233,9 @@ Column rules:
 - **File:line** is the path and line on the new side of the diff, or `general` for a non-diff thread.
 - **Discussion** is a short id prefix; keep the full id for the write.
 - **Reviewer comment** is quoted verbatim, trimmed with `...` only when long.
-- **Suggestion** is the range plus the replacement when it fits one line, otherwise a
-  summary; the full fenced block goes in the markdown file or the note body. The range
-  syntax is platform-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
+- **Suggestion** is `line`, `range`, or `none`, plus the replacement when it fits one
+  line, otherwise a summary; the full fenced block goes in the markdown file or the
+  note body. The range syntax is platform-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
 - **Resolve?** is `yes` for `reply + resolve`, or `no - reason` for `reply only` and
   `leave open`. It maps to the Disposition below.
 
@@ -250,8 +269,8 @@ When a markdown output is asked, create one section per unresolved thread in
 <actual lines read from the file>
 ```
 
-**Proposed reply:**
-```suggestion:-0+0
+**Proposed reply** (the fence's range syntax is platform-specific):
+```suggestion
 <replacement for line 42>
 ```
 ````

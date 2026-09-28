@@ -51,8 +51,8 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -q "suggestion:-0+0" skills/code-review/SKILL.md` currently succeeds — must fail after.
 **Verify**: `! grep -rn "suggestion:-" skills/ commands/ --include='*.md' | grep -v "code-review/gitlab.md" && grep -qi "ladder\|applicable suggestion" skills/code-review/SKILL.md && awk 'END{exit NR>=300}' skills/code-review/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Ladder present with all three conditions and the fallback; read-first rule generalised, stated once
-- [ ] No `suggestion:-` outside gitlab.md; verify exits 0
+- [x] Ladder present with all three conditions and the fallback; read-first rule generalised, stated once
+- [x] No `suggestion:-` outside gitlab.md; verify exits 0
 **Depends on**: (none)
 **Time-box**: ~50 min
 
