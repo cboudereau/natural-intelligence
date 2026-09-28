@@ -19,8 +19,8 @@ Section map of [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) (352 line
 
 | Artifact | Stability | Addresses | Notes |
 |---|---|---|---|
-| `skills/plan/templates/preflight.md` | published | [FR1](./DESIGN.md#fr1) | Copied per workspace as PREFLIGHT.md |
-| `skills/plan/autopilot.md` | published | [FR2](./DESIGN.md#fr2) | Reference file, linked from Phases 5–6 |
+| skills/plan/templates/preflight.md (new) | published | [FR1](./DESIGN.md#fr1) | Copied per workspace as PREFLIGHT.md |
+| skills/plan/autopilot.md (new) | published | [FR2](./DESIGN.md#fr2) | Reference file, linked from Phases 5–6 |
 | [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) | published | [FR1](./DESIGN.md#fr1), [FR2](./DESIGN.md#fr2), [FR3](./DESIGN.md#fr3) | Anchors and phase names stay |
 
 ### Instruction invariants
@@ -36,7 +36,7 @@ Section map of [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) (352 line
 
 ### 1. Extract pre-flight template and autopilot reference ([FR1](./DESIGN.md#fr1), [FR2](./DESIGN.md#fr2), [FR3](./DESIGN.md#fr3), [NFR1](./DESIGN.md#nfr1))
 **Goal**: [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) under 300 lines with no rule lost.
-**Artifacts**: `skills/plan/SKILL.md`, `skills/plan/templates/preflight.md` (new), `skills/plan/autopilot.md` (new)
+**Artifacts**: [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md), a new file skills/plan/templates/preflight.md, a new file skills/plan/autopilot.md
 **Constraints**:
 - [ADR: preflight-as-template](./adrs/preflight-as-template.md) — template copied to the workspace, ticked on disk, deleted at Phase 6
 - Cut-and-paste move; only section headers, back-links, and the copy instruction are new text (DESIGN rabbit hole cap)

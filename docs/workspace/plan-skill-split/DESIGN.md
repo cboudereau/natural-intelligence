@@ -21,7 +21,7 @@ Every extracted rule appears in exactly one place. SKILL.md keeps: triggers, Goa
 
 ### <a id="nfr1"></a>NFR1 — Size limit met
 - **Scenario**: after the split → SKILL.md within the meta-skill's limit
-- **Measure**: `skills/plan/SKILL.md` under 300 lines; both new files under 300 lines
+- **Measure**: [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) under 300 lines; both new files under 300 lines
 - **Verify**: `awk 'END{exit NR>=300}' skills/plan/SKILL.md && awk 'END{exit NR>=300}' skills/plan/autopilot.md && awk 'END{exit NR>=300}' skills/plan/templates/preflight.md`
 
 ### <a id="nfr2"></a>NFR2 — Plugin validates
@@ -51,9 +51,9 @@ Every extracted rule appears in exactly one place. SKILL.md keeps: triggers, Goa
 One decision, ratified by the user: [Pre-flight as a workspace-copied template](./adrs/preflight-as-template.md).
 
 Resulting layout:
-- `skills/plan/SKILL.md` (~230 lines): phases 0–4b full, 4c/5/6 as summary plus link.
-- `skills/plan/templates/preflight.md`: tickable gate checklist, copied to the workspace as PREFLIGHT.md.
-- `skills/plan/autopilot.md`: Phase 5 contract, invariants, loop, severities, discovery; Phase 6 steps and commit template.
+- [`skills/plan/SKILL.md`](../../../skills/plan/SKILL.md) (~230 lines): phases 0–4b full, 4c/5/6 as summary plus link.
+- skills/plan/templates/preflight.md (new): tickable gate checklist, copied to the workspace as PREFLIGHT.md.
+- skills/plan/autopilot.md (new): Phase 5 contract, invariants, loop, severities, discovery; Phase 6 steps and commit template.
 
 ## Data & migration
 
