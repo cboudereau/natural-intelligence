@@ -113,10 +113,10 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 - `grep -q "github.md" skills/code-review/SKILL.md` currently fails — must pass after
 **Verify**: `test -f skills/code-review/github.md && grep -q "github.md" skills/code-review/SKILL.md && grep -q "resolveReviewThread" skills/code-review/github.md && grep -q "gh auth status" skills/code-review/github.md && awk 'END{exit NR>=300}' skills/code-review/github.md && awk 'END{exit NR>=300}' skills/code-review/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] All 10 parity rows present in `github.md`, each with a command or a stated gap
-- [ ] `gh` syntax flagged `manual: no gh binary in this environment` where only a live call could prove it
-- [ ] Description under 1024 characters with GitHub triggers added and GitLab triggers intact
-- [ ] Verify command exits 0
+- [x] All 10 parity rows present in `github.md`, each with a command or a stated gap
+- [x] `gh` syntax flagged `manual: no gh binary in this environment` where only a live call could prove it
+- [x] Description under 1024 characters with GitHub triggers added and GitLab triggers intact
+- [x] Verify command exits 0
 **Depends on**: task 1
 **Time-box**: ~75 min
 
