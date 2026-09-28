@@ -147,9 +147,9 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Tests** (red before the edit): `grep -qi "gitlab project path" commands/merge-loop.md` currently succeeds — must fail after; `grep -E "(glab|gh) " commands/merge-loop.md` currently succeeds — must fail after.
 **Verify**: `! grep -qi "gitlab project path" commands/merge-loop.md && ! grep -E "(glab|gh) " commands/merge-loop.md && grep -q "github.md" commands/merge-loop.md && grep -q "mergeStateStatus" skills/git-conventions/github.md && grep -q "update-branch" skills/git-conventions/github.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] No forge CLI or platform-specific field named in the command file
-- [ ] Neutral gate rule intact; platform gates present in the git-conventions reference files
-- [ ] Verify command exits 0
+- [x] No forge CLI or platform-specific field named in the command file
+- [x] Neutral gate rule intact; platform gates present in the git-conventions reference files
+- [x] Verify command exits 0
 **Depends on**: task 1
 **Time-box**: ~45 min
 

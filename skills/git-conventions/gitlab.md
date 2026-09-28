@@ -34,11 +34,13 @@ Local `git diff` covers uncommitted work only.
 Merge only when GitLab reports the MR mergeable and not a draft:
 
 ```bash
-glab api "projects/:id/merge_requests/<iid>" --jq '.detailed_merge_status, .draft'
+glab api "projects/:id/merge_requests/<iid>" --jq '.detailed_merge_status, .draft, [.reviewers[].username]'
+glab api "projects/:id/merge_requests/<iid>/approvals" --jq '.approved, [.approved_by[].user.username]'
 ```
 
-Gate: `detailed_merge_status == "mergeable"` and `draft == false`. Never bypass a
-failing gate.
+Gate: `detailed_merge_status == "mergeable"`, `draft == false`, `approved == true`,
+and every reviewer username present in `approved_by`. `approved` alone only means the
+approval rules are met. Never bypass a failing gate.
 
 ## Merge, auto-merge, cancel
 
