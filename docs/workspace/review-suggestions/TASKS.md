@@ -67,7 +67,7 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -q "batch_apply" skills/code-review/gitlab.md` currently fails — must pass after.
 **Verify**: `grep -q "position\[base_sha\]" skills/code-review/gitlab.md && grep -q "batch_apply" skills/code-review/gitlab.md && grep -q "201" skills/code-review/gitlab.md && awk 'END{exit NR>=300}' skills/code-review/gitlab.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Payload, caps, error paths, apply facts present; verify exits 0
+- [x] Payload, caps, error paths, apply facts present; verify exits 0
 **Depends on**: task 1
 **Time-box**: ~40 min
 
