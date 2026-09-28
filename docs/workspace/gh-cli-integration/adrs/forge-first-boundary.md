@@ -7,7 +7,7 @@ Addresses: [FR4](../DESIGN.md#fr4), [FR3](../DESIGN.md#fr3)
 
 ## Problem
 
-Agents mix `git` and forge commands because no rule assigns operations to tools. Found in the codebase: the MR/PR description flow ends at a clipboard (`git-conventions/SKILL.md:99`, `clip.exe`, Windows-only) with no create step; rebase is reachable server-side (`merge-loop.md:27-28`) and locally, where it collides with the no-force rule (`git-conventions/SKILL.md:29`); review diffs have two competing sources (`review-loop.md:16` vs `gitlab.md:45`). The user's requirement: prefer the forge CLI (`gh`/`glab`) over raw `git` wherever the operation touches the forge.
+Agents mix `git` and forge commands because no rule assigns operations to tools. Found in the codebase: the MR/PR description flow ends at a clipboard ([`git-conventions/SKILL.md:99`](../../../../skills/git-conventions/SKILL.md), `clip.exe`, Windows-only) with no create step; rebase is reachable server-side ([`merge-loop.md:27-28`](../../../../commands/merge-loop.md)) and locally, where it collides with the no-force rule ([`git-conventions/SKILL.md:29`](../../../../skills/git-conventions/SKILL.md)); review diffs have two competing sources ([`review-loop.md:16`](../../../../commands/review-loop.md) vs [`gitlab.md:45`](../../../../skills/code-review/gitlab.md)). The user's requirement: prefer the forge CLI (`gh`/`glab`) over raw `git` wherever the operation touches the forge.
 
 ## Options
 
@@ -19,7 +19,7 @@ Agents mix `git` and forge commands because no rule assigns operations to tools.
 
 ## Decision
 
-Forge-first. The rule, owned by `git-conventions`:
+Forge-first. The rule, owned by [`git-conventions`](../../../../skills/git-conventions/SKILL.md):
 
 | Operation | Tool |
 |---|---|
@@ -34,5 +34,5 @@ Forge-first. The rule, owned by `git-conventions`:
 
 - The no-force rule stops colliding with rebase: local rebase of a pushed branch is now explicitly out.
 - `clip.exe` disappears; the description flow works on Linux.
-- The push rule keeps one owner (`git-conventions`); `code-review/SKILL.md:178` and `gitlab.md:13-14` become pointers.
-- Agents whose tool list allows only `git` (e.g. `ni:reviewer` at `agents/reviewer.md:44`) need their diff instruction pointed at a fetched local ref or a forge diff passed in by the orchestrator — noted in the FR3/FR2 tasks.
+- The push rule keeps one owner ([`git-conventions`](../../../../skills/git-conventions/SKILL.md)); [`code-review/SKILL.md:178`](../../../../skills/code-review/SKILL.md) and [`gitlab.md:13-14`](../../../../skills/code-review/gitlab.md) become pointers.
+- Agents whose tool list allows only `git` (e.g. `ni:reviewer` at [`agents/reviewer.md:44`](../../../../agents/reviewer.md)) need their diff instruction pointed at a fetched local ref or a forge diff passed in by the orchestrator — noted in the FR3/FR2 tasks.

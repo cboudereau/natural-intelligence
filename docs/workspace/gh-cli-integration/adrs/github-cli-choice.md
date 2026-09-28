@@ -36,6 +36,6 @@ Real advantages, not biases: `gh` alone offers `--json` on porcelain verbs and a
 
 ## Consequences
 
-- `github.md` can mirror `gitlab.md` almost verb-for-verb; review threads go through `gh api graphql`, matching how `gitlab.md` already drops to `glab api` for resolve.
+- [`github.md`](../../../../skills/code-review/github.md) can mirror [`gitlab.md`](../../../../skills/code-review/gitlab.md) almost verb-for-verb; review threads go through `gh api graphql`, matching how [`gitlab.md`](../../../../skills/code-review/gitlab.md) already drops to `glab api` for resolve.
 - Auth guidance mirrors glab: `gh auth status`, and on failure tell the user to run `gh auth login`; never create or read tokens.
 - `hub` is rejected and should not reappear: it is a git proxy, which contradicts [forge-first-boundary](./forge-first-boundary.md).
