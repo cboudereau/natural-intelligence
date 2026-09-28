@@ -96,7 +96,7 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -qi "suggestion" commands/review-loop.md` currently fails — must pass after.
 **Verify**: `grep -qi "suggestion" commands/review-loop.md && ! grep -E "(glab|gh) " commands/review-loop.md && ! grep -q "suggestion:-" commands/review-loop.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Step 5 carries the anchor + suggestion + fallback + batch instruction; loop still agnostic; verify exits 0
+- [x] Step 5 carries the anchor + suggestion + fallback + batch instruction; loop still agnostic; verify exits 0
 **Depends on**: task 1, task 2, task 3
 **Time-box**: ~30 min
 

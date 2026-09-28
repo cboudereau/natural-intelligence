@@ -23,9 +23,14 @@ Each iteration:
    `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md`: the forge diff is against
    the merge-base of the source branch and its target, never two-dot against the
    target head — a branch forked before later merges shows those merges as deletions.
-5. Post each finding as its own discussion on the change, severity-prefixed, with
-   `file:line` in the body: posting commands in the code-review reference file. This
-   command's standing instruction is the approval for these first-review comments.
+5. Post each finding as its own diff-anchored discussion on the change,
+   severity-prefixed, with `file:line` in the body. Attach the fix as a one-click
+   applicable suggestion when the classification ladder in
+   `${CLAUDE_PLUGIN_ROOT}/skills/code-review/SKILL.md#classification-ladder` says
+   so; otherwise post prose that still states the concrete fix. Batch or serialise
+   the posts per the platform reference file — posting commands and payloads live
+   there, never here. This command's standing instruction is the approval for these
+   first-review comments.
 6. Report the posted comment links grouped by change: one section per change, links
    listed under it.
 7. When a loop finding conflicts with an existing comment or thread, do not publish
@@ -33,6 +38,11 @@ Each iteration:
    only what I decide. The standing approval never covers a conflicting comment.
 8. Carry state forward in the loop prompt: append the reviewed change ids with
    "skip unless new commits or reviewer replies".
+
+Keep it simple: the loop orchestrates only — the review itself follows the
+`ni:code-review` principles (finding format, disposition rules, red flags, no scope
+creep); one concern per thread, and a suggestion is a posting mechanism, never a
+licence for bigger rewrites.
 
 Loop mechanics: run the check now, then ScheduleWakeup with the amended prompt. Idle tick
 1200-1800 s; review subagents notify on completion, so the wakeup is only a fallback. Any
