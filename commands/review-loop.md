@@ -4,13 +4,12 @@ argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that reviews every change (MR/PR) awaiting my review in the project
 given in $ARGUMENTS (default: the current repository's origin). Resolve the platform first,
-per the routing rule in `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md#platform-routing`.
+per the platform routing rule of the `ni:git-conventions` skill.
 The `ni:code-review` skill owns the review itself (built-in pass, checklist subagents,
 finding format); this loop owns the mechanics around it. Platform commands are never
-named here: review threads and listing live in
-`${CLAUDE_PLUGIN_ROOT}/skills/code-review/gitlab.md` or `github.md`; MR/PR lifecycle
-(approvals, diff) in `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/gitlab.md` or
-`github.md`.
+named here: review threads and listing live in the gitlab.md or github.md reference
+file of `ni:code-review`; MR/PR lifecycle (approvals, diff) in the gitlab.md or
+github.md reference file of `ni:git-conventions`.
 
 Each iteration:
 
@@ -19,21 +18,19 @@ Each iteration:
 2. Skip a change I already approved (approval state: lifecycle reference file), or one
    reviewed in an earlier iteration that has no new commits and no reviewer replies.
 3. Re-review: when a revisited change carries new commits since the last pass, run
-   the own-thread auto-resolution rule in
-   `${CLAUDE_PLUGIN_ROOT}/skills/code-review/SKILL.md` before reviewing the new
-   commits: evidence first, reply naming the fixing commit, then resolve — my own
-   threads only, ambiguous stays open. Resolve commands live in the platform
+   the own-thread auto-resolution rule of the `ni:code-review` skill before reviewing
+   the new commits: evidence first, reply naming the fixing commit, then resolve — my
+   own threads only, ambiguous stays open. Resolve commands live in the platform
    reference files, never here.
 4. Review each remaining change with the giving-a-review flow of `ni:code-review`.
-5. Diff via the forge, per the git-versus-forge boundary in
-   `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md`: the forge diff is against
+5. Diff via the forge, per the git-versus-forge boundary of the `ni:git-conventions`
+   skill: the forge diff is against
    the merge-base of the source branch and its target, never two-dot against the
    target head — a branch forked before later merges shows those merges as deletions.
 6. Post each finding as its own diff-anchored discussion on the change,
    severity-prefixed, with `file:line` in the body. Attach the fix as a one-click
-   applicable suggestion when the classification ladder in
-   `${CLAUDE_PLUGIN_ROOT}/skills/code-review/SKILL.md#classification-ladder` says
-   so; otherwise post prose that still states the concrete fix. Batch or serialise
+   applicable suggestion when the classification ladder of the `ni:code-review`
+   skill says so; otherwise post prose that still states the concrete fix. Batch or serialise
    the posts per the platform reference file — posting commands and payloads live
    there, never here. This command's standing instruction is the approval for these
    first-review comments.

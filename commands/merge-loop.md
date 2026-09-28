@@ -4,12 +4,11 @@ argument-hint: "[project path or URL]"
 ---
 Start a dynamic /loop that merges every approved change (MR/PR) authored by me in the
 project given in $ARGUMENTS (default: the current repository's origin). Resolve the
-platform first, per the routing rule in
-`${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md#platform-routing`. Platform
-commands are never named here: MR/PR lifecycle (state, gates, merge, auto-merge,
-cancel, branch update, CI status) lives in
-`${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/gitlab.md` or `github.md`; listing lives
-in `${CLAUDE_PLUGIN_ROOT}/skills/code-review/gitlab.md` or `github.md`. This command's
+platform first, per the platform routing rule of the `ni:git-conventions` skill.
+Platform commands are never named here: MR/PR lifecycle (state, gates, merge,
+auto-merge, cancel, branch update, CI status) lives in the gitlab.md or github.md
+reference file of `ni:git-conventions`; listing lives in the gitlab.md or github.md
+reference file of `ni:code-review`. This command's
 standing instruction is the approval for each merge that passes every gate below;
 anything short of all gates is reported, never merged.
 
@@ -26,9 +25,9 @@ Each iteration:
    auto-merge, then re-check next iteration. If an approval is revoked afterwards,
    cancel it (merge, auto-merge, and cancel commands: lifecycle reference file).
 5. The platform reports the change behind its target: update the branch via the forge
-   only, never a local rebase, per the git-versus-forge boundary in
-   `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md` (update command: lifecycle
-   reference file). Re-check next iteration.
+   only, never a local rebase, per the git-versus-forge boundary of the
+   `ni:git-conventions` skill (update command: lifecycle reference file). Re-check
+   next iteration.
 6. Failed CI, conflicts, missing approval, or unresolved threads: skip, and report
    the change with its blocking reason. For a missing approval, name the reviewers
    who have not approved yet.
