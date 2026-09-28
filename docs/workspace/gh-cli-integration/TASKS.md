@@ -131,8 +131,8 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Tests** (red before the edit): `grep -qi "gitlab project path" commands/review-loop.md` currently succeeds — must fail after; `grep -E "(glab|gh) " commands/review-loop.md` currently succeeds — must fail after.
 **Verify**: `! grep -qi "gitlab project path" commands/review-loop.md && ! grep -E "(glab|gh) " commands/review-loop.md && grep -q "github.md" commands/review-loop.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] No forge CLI named in the command file; every step points to a reference file
-- [ ] Verify command exits 0
+- [x] No forge CLI named in the command file; every step points to a reference file
+- [x] Verify command exits 0
 **Depends on**: task 1, task 2
 **Time-box**: ~40 min
 
