@@ -17,8 +17,34 @@ description: "Use when the user asks to commit, stage, branch, diff, write a com
 Rules for safe and consistent git usage, from the commit to the change description.
 
 Reviewing code or answering review feedback is the
-[`code-review`](../code-review/SKILL.md) skill. GitLab (`glab`) commands live in its
-[gitlab.md](../code-review/gitlab.md) reference file.
+[`code-review`](../code-review/SKILL.md) skill. Platform commands live in its
+[gitlab.md](../code-review/gitlab.md) (`glab`) and [github.md](../code-review/github.md)
+(`gh`) reference files.
+
+## Platform routing
+
+Pick the forge CLI (`gh` or `glab`) in this order. Never guess.
+
+1. An explicit argument or user statement wins. A project path or URL names the platform.
+2. Otherwise read `git remote get-url origin`. Host `github.com` routes to `gh`;
+   host containing `gitlab` routes to `glab`.
+3. Unknown host: check `gh auth status` and `glab auth status` for a matching
+   configured host. Still ambiguous: ask the user.
+
+Missing origin remote: ask the user.
+
+## Git versus forge
+
+`git` owns local state. The forge CLI owns everything on the server.
+
+| Operation | Tool |
+|---|---|
+| stage, commit, branch, local diff, log, worktree | `git` only |
+| push | `git push` — command rules below unchanged |
+| MR/PR create, description, edit | `glab mr create/update` / `gh pr create/edit` — never a clipboard |
+| MR/PR diff for review | `glab mr diff` / `gh pr diff` — local `git diff` only for uncommitted work |
+| threads, approvals, merge, CI status | forge CLI only |
+| rebase / branch update of a pushed MR/PR branch | forge only: `glab mr rebase`, `gh api repos/{owner}/{repo}/pulls/{number}/update-branch` — never local rebase plus force-push |
 
 ## Rules
 Before committing, the code must compile and tests must be successful without failing / ignored tests.
@@ -95,5 +121,7 @@ Adapted from the MIT-licensed caveman-commit skill by Julius Brussee.
 When asked to describe a change for review, whatever the platform calls it (merge
 request, pull request):
 
-1. Prepare a concise markdown description of the work done.
-2. Copy the description content by using clip.exe (windows tool) without introducing complex symbols.
+1. Write a concise markdown description of the work done to a file.
+2. Route per [Platform routing](#platform-routing), then create or update through the forge CLI:
+   - GitLab: `glab mr create --description-file <file>` or `glab mr update <iid> --description "$(cat <file>)"`
+   - GitHub: `gh pr create --body-file <file>` or `gh pr edit <number> --body-file <file>`

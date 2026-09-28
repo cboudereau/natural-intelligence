@@ -85,10 +85,10 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 - `grep -qi "github" skills/git-conventions/SKILL.md` currently fails — must succeed after
 **Verify**: `! grep -q "clip.exe" skills/git-conventions/SKILL.md && grep -qi "github" skills/git-conventions/SKILL.md && grep -q "remote get-url origin" skills/git-conventions/SKILL.md && awk 'END{exit NR>=300}' skills/git-conventions/SKILL.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Routing rule present with the three-step order and an anchor other files can link
-- [ ] Boundary table present: local operations `git` only, server operations forge only, rebase forge-only stated
-- [ ] MR/PR description flow uses `glab mr create/update` and `gh pr create/edit`; `clip.exe` gone
-- [ ] Verify command exits 0
+- [x] Routing rule present with the three-step order and an anchor other files can link
+- [x] Boundary table present: local operations `git` only, server operations forge only, rebase forge-only stated
+- [x] MR/PR description flow uses `glab mr create/update` and `gh pr create/edit`; `clip.exe` gone
+- [x] Verify command exits 0
 **Depends on**: (none)
 **Time-box**: ~45 min
 
