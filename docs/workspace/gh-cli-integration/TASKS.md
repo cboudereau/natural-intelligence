@@ -183,7 +183,7 @@ The "functions" here are rules the edited files must encode. Each row becomes a 
 **Tests** (red before the edit): `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json` currently fails — must pass after.
 **Verify**: `grep -q '"version": "1.4.0"' .claude-plugin/plugin.json && grep -qi "github" README.md && ! grep -rn "clip.exe" skills/ commands/ && ! grep -rin "gitlab project path" commands/ && ! grep -E "(glab|gh) " commands/review-loop.md commands/merge-loop.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Version is 1.4.0; all listed README tables updated; verify command exits 0
+- [x] Version is 1.4.0; all listed README tables updated; verify command exits 0
 **Depends on**: tasks 1–5
 **Time-box**: ~30 min
 

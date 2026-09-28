@@ -35,7 +35,7 @@ For a small change, Claude Code's built-in plan mode is enough.
 ### 4. Claude builds, and I steer
 > Fix the rounding bug in the VAT total.
 
-`ni:software-engineer`, `ni:tdd`, and `ni:debug` enforce plan, failing test, fix, and commit, with the root cause found before any fix. `ni:git-conventions` writes the commit and the MR description. Nothing is pushed without your go.
+`ni:software-engineer`, `ni:tdd`, and `ni:debug` enforce plan, failing test, fix, and commit, with the root cause found before any fix. `ni:git-conventions` writes the commit and the MR or PR description, routing to the right platform from the origin remote. Nothing is pushed without your go.
 
 ### 5. Claude reviews, and I judge
 > /ni:code-review my branch before I open the MR.
@@ -50,16 +50,16 @@ or simply
 ```
 /ni:review-loop group/project
 ```
-Reviews every MR assigned to you in a loop, posts each finding as its own discussion, and reports the links. It never approves, merges, or resolves: those stay yours.
+Works on GitLab and GitHub: pass a project path or URL, or let it read the origin remote. Reviews every MR or PR assigned to you in a loop, posts each finding as its own discussion, and reports the links. It never approves, merges, or resolves: those stay yours.
 
 ### 7. Claude merges mine once approved
 ```
 /ni:merge-loop group/project
 ```
-Watches your own MRs in a loop and merges each one once every reviewer has approved, threads are resolved, and the pipeline is green. Anything blocked is reported with its reason, never forced.
+Watches your own MRs or PRs in a loop and merges each one once every reviewer has approved, threads are resolved, and CI is green. Anything blocked is reported with its reason, never forced.
 
 ### 8. Claude answers reviewers, and I approve
-> Address the unresolved threads on MR !42.
+> Address the unresolved threads on MR !42 (or PR #42).
 
 `ni:code-review` reads the threads, drafts the fixes and replies, and shows you a preview. Nothing is posted or resolved until you approve it.
 
@@ -148,8 +148,8 @@ Switch with `/ni:terse lite|full|off`. The level persists in `~/.claude/ni/terse
 | `ni:tdd` | Writing tests first, red-green-refactor |
 | `ni:debug` | Any failure or bug, before proposing a fix |
 | `ni:plan` | Multi-session work with a durable workspace, design doc, and ADRs |
-| `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions |
-| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab threads via glab included |
+| `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions; routes to the platform from the origin remote and keeps the git-versus-forge boundary |
+| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included |
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |
@@ -163,8 +163,8 @@ User-invoked only; none loads on its own.
 |---|---|
 | `/ni:help` | List the ni skills |
 | `/ni:terse` | Set the terse reply level |
-| `/ni:review-loop` | Review MRs assigned to me in a /loop, post findings, report the links |
-| `/ni:merge-loop` | Merge my MRs approved by every reviewer in a /loop, report merged and blocked ones |
+| `/ni:review-loop` | Review MRs or PRs assigned to me in a /loop on GitLab or GitHub, post findings, report the links |
+| `/ni:merge-loop` | Merge my MRs or PRs approved by every reviewer in a /loop, report merged and blocked ones |
 
 ## Agents
 Subagent results land in the main context verbatim, so these three return structured one-liners instead of prose. Adapted from caveman's cavecrew (MIT).
