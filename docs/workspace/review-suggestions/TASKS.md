@@ -124,7 +124,7 @@ Environment: neither `gh` nor `glab` installed here; payloads are written from t
 **Tests** (red before the edit): `grep -q '"version": "1.5.0"' .claude-plugin/plugin.json` currently fails — must pass after.
 **Verify**: `grep -q '"version": "1.5.0"' .claude-plugin/plugin.json && grep -qi "suggestion" README.md && claude plugin validate .`
 **Acceptance criteria**:
-- [ ] Version 1.5.0; README rows updated; verify exits 0
+- [x] Version 1.5.0; README rows updated; verify exits 0
 **Depends on**: tasks 1–5
 **Time-box**: ~20 min
 

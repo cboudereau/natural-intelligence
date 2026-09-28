@@ -149,7 +149,7 @@ Switch with `/ni:terse lite|full|off`. The level persists in `~/.claude/ni/terse
 | `ni:debug` | Any failure or bug, before proposing a fix |
 | `ni:plan` | Multi-session work with a durable workspace, design doc, and ADRs |
 | `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions; routes to the platform from the origin remote and keeps the git-versus-forge boundary |
-| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included |
+| `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included; posts findings as one-click applicable suggestions on both platforms and resolves its own threads once a new commit fixes the finding |
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |
@@ -163,7 +163,7 @@ User-invoked only; none loads on its own.
 |---|---|
 | `/ni:help` | List the ni skills |
 | `/ni:terse` | Set the terse reply level |
-| `/ni:review-loop` | Review MRs or PRs assigned to me in a /loop on GitLab or GitHub, post findings, report the links |
+| `/ni:review-loop` | Review MRs or PRs assigned to me in a /loop on GitLab or GitHub, post findings as one-click applicable suggestions where possible, resolve its own threads once a new commit fixes the finding, report the links |
 | `/ni:merge-loop` | Merge my MRs or PRs approved by every reviewer in a /loop, report merged and blocked ones |
 
 ## Agents
