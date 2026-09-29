@@ -42,6 +42,12 @@ on CI: match the delay to its usual duration (300-600 s). Otherwise idle tick
 1200-1800 s. Any prompt amendment rewrites the ScheduleWakeup prompt, never a separate
 note.
 
+Task panel: the one-line loop status below the input box comes from the ScheduleWakeup
+`reason`. Make it the iteration status, not a generic wait: counts plus the change
+waited on, for example "1 merged, auto-merge on !18; !21 blocked (reviewer approval)".
+Set `noop: false` on a tick that merged, set auto-merge, or found a new blocker,
+`noop: true` on a no-change tick so quiet ticks collapse in the panel.
+
 Boundaries: never approve my own changes, never merge with a failed or absent CI run,
 never force merge, never resolve someone else's thread, never touch changes I did not
 author. Fixing a failed CI run or answering threads is separate work: notify me instead.
