@@ -60,9 +60,21 @@ The range is relative to the commented line:
 Rules:
 - The block content is the final code, with the file's real indentation, and no diff markers.
 - Suggestions work on diff notes only. A general MR comment cannot carry an applicable suggestion.
+- A suggestion edits only the anchored file. A fix in another file needs its own note
+  anchored on a kept or added line of that file; no such line in the diff means prose.
 - A reply inside a diff thread can carry a suggestion; it applies to that thread's line.
 - Range cap: 201 changed lines per suggestion (100 above + 100 below the commented
   line). A wider span falls back to prose per the ladder.
+
+### Insertion
+
+A suggestion adds lines as well as replacing them. Anchor on the kept or added line
+adjacent to the insertion point, use `suggestion:-0+0`, and make the block that line
+verbatim (read from the file, exact indentation) followed by the new lines. Applying
+keeps the anchored line and inserts the rest. A missing test posts this way: anchor on
+the closing brace of the last test (or another kept line in the test file's diff),
+never as a plain ```` ```csharp ```` block on the production file — that has no Apply
+button.
 
 ## Posting a suggestion
 

@@ -61,13 +61,22 @@ Quick bug pass without the checklist: spawn `ni:reviewer` — same one-line form
 ## Classification ladder
 
 A finding posts as an applicable suggestion only when ALL hold: (a) the fix is
-mechanical — replacement text for one contiguous span, no judgement left to the
+mechanical — final code for one contiguous span, no judgement left to the
 reviewee; (b) the span anchors on kept or added lines inside the current diff —
-deleted-line targets never carry a fence; (c) it fits one hunk and the forge's
-range cap. Otherwise it posts as prose that still states the concrete fix. Severity
-is orthogonal: a mechanical `bug` fix still gets a suggestion. Anchoring errors:
-refetch refs once, retry once, then prose. One concern per thread; a suggestion is
-a posting mechanism, never a licence for bigger rewrites.
+deleted-line targets never carry a fence; (c) the note anchors **in the file the fix
+changes** — a fence never rides a note anchored in another file; (d) it fits one hunk
+and the forge's range cap. An **insertion** (new code, such as a missing test) is
+still mechanical: anchor on a kept or added line of the target file adjacent to the
+insertion point and include that line verbatim in the block — mechanics in the forge
+reference file. Paste-ready code in a plain code fence is a failed suggestion, not
+prose: when the body carries final code and the target file has a kept or added line
+in the diff, post it as a suggestion there. Prose fallback is for genuine judgement
+calls, or a target file with no kept or added line in the diff — and it still states
+the concrete fix. Severity is orthogonal: a mechanical `bug` fix still gets a
+suggestion. Anchoring errors: refetch refs once, retry once, then prose. One concern
+per thread; a suggestion is a posting mechanism, never a licence for bigger rewrites.
+When the defect shows in one file but the fix lands in another, the suggestion goes
+on the fix's file; a one-line pointer on the defect's line may reference it.
 
 **Read first, both directions.** No suggestion without the real file open.
 Replacement lines are edited copies of the actual lines, exact indentation kept,
