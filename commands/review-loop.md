@@ -52,6 +52,12 @@ Loop mechanics: run the check now, then ScheduleWakeup with the amended prompt. 
 prompt amendment (skip rules, output grouping) rewrites the ScheduleWakeup prompt, never a
 separate note.
 
+Task panel: the one-line loop status below the input box comes from the ScheduleWakeup
+`reason`. Make it the iteration status, not a generic wait: counts plus the change
+waited on, for example "2 reviewed, 5 findings posted; !42 held (conflicting thread)".
+Set `noop: false` on a tick that posted or held a finding, `noop: true` on a no-change
+tick so quiet ticks collapse in the panel.
+
 Boundaries: never approve, merge, or close anything: those stay my calls; resolving is
 limited to my own threads per step 3. Replies to existing reviewer threads keep the
 preview-then-approval flow of `ni:code-review`; only first-review comments and own-thread
