@@ -75,9 +75,16 @@ A wider replacement needs a new comment anchored on the wider range.
 Rules:
 - The block content is the final code, with the file's real indentation, and no diff markers.
 - Suggestions work on diff comments only. A general PR comment cannot carry an applicable suggestion.
+- A suggestion edits only the anchored file. A fix in another file needs its own
+  comment anchored on a kept or added line of that file; no such line in the diff
+  means prose.
 - A reply inside a diff thread can carry a suggestion; it applies to that thread's anchored span.
 - Only kept or added lines qualify — the anchoring constraints are under
   [Posting a suggestion](#posting-a-suggestion).
+- **Insertion**: anchor a single-line comment on the kept or added line adjacent to
+  the insertion point; the block is that line verbatim (read from the file) followed
+  by the new lines. Applying keeps the anchored line and inserts the rest. A missing
+  test posts this way, never as a plain code fence on the production file.
 
 ## Posting a suggestion
 
