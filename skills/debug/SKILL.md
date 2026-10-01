@@ -62,6 +62,21 @@ Four phases, in order. No phase is skipped because the bug looks simple.
 4. Fix failed: count attempts. Under 3, return to phase 1 with the new information. At 3, stop and question the design (below).
 5. Commit with the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
+## Evidence block
+
+The final summary closes with three lines, whatever the terse level — they carry the
+proof that the process happened, for a reviewer who sees only the summary:
+
+```
+reproduced: <command → one line of failing output>
+root cause before fix: <file:line — mechanism in one clause>
+tests: red <N failed: test names> → green <N passed>
+```
+
+A correct fix with an absent process trace reads as a guess to any reviewer or judge.
+The three lines cost ~30 tokens and are the difference between verified and claimed
+(benchmark evidence: the plugin repo's docs/benchmark-feedback-20261001.md).
+
 ## Three strikes
 
 Three failed fixes is not a fourth hypothesis. It is a design problem. Signs: each fix

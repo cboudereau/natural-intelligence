@@ -42,8 +42,17 @@ Load the matching file for language specifics and the build, test, lint, and cov
 3. Test ([`tdd`](../tdd/SKILL.md) skill, or "Test after" below for existing code)
 4. Implement (code quality rules below, stack file commands)
 5. Commit ([`git-conventions`](../git-conventions/SKILL.md) skill)
+6. Final report (below)
 
 Files already tracked in git can be deleted freely: git undoes it.
+
+## Final report
+
+The closing summary names every requirement from the brief with its disposition — one
+line each, lite terse: what was done, where (`file:line` or artifact), and how it was
+verified (test name or command). Include the `tdd` red→green line and, for a bug, the
+`debug` evidence block. Any skipped or deviated step is stated with its reason — never
+silently. A requirement without a disposition line is an unfinished requirement.
 
 ## Code quality
 
