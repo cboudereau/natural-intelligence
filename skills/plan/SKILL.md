@@ -15,6 +15,21 @@ description: "Use when the user asks to create a workspace, write a design doc o
 
 Planning must always take less time than implementation. The effort scales with complexity, never the other way around.
 
+## Effort scaling
+
+The workspace ceremony (DESIGN.md, adrs/, TASKS.md, PREFLIGHT.md, diagrams) is for
+multi-session work. When this skill is invoked directly on a small task — one
+functional requirement, one session, no hard-to-reverse decision — produce **one plan
+document** instead: goal, the decisions as inline bullets with their reason, tasks with
+named tests, and a verify command. No PREFLIGHT.md, no adrs/ folder, no Mermaid diagram
+unless a decision is genuinely hard to reverse. Scale triggers:
+
+- Hard-to-reverse decision present (persistence, protocol, public contract) → that
+  decision gets an ADR; the rest stays in the single document.
+- More than one session of work, or more than ~5 tasks → full workspace.
+- Neither → single document. Heavy scaffolding on a small task reads as noise to the
+  human and costs tokens without adding decisions.
+
 **Who does what**:
 - The **agent** does the heavy lifting: explores the codebase, drafts DESIGN.md, builds the domain model, writes tasks, runs pre-flight
 - The **human** reviews, makes decisions (ADRs), and says "go"

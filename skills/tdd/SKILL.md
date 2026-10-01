@@ -35,6 +35,14 @@ kept as reference, not adapted while the test is written. Deleted.
 A test that passes on first run proves nothing. Make it fail first, or find out why it
 cannot fail and fix the test.
 
+**Record the red run.** Keep the failing run's command and its decisive output line;
+the final report quotes it (`tests: red <N failed: names> → green <N passed>`). A red
+run that was never recorded cannot be told apart from a red run that never happened.
+
+**Skipping is stated, never silent.** When red-first genuinely cannot apply (generated
+code, pure config), the final report says so and why, in one line. A silent skip reads
+as a broken promise when discovered later.
+
 ## Run tests and get feedback
 
 Before committing, always run **all** tests in the solution or workspace. If the repo
