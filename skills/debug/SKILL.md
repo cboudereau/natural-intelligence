@@ -73,9 +73,7 @@ root cause before fix: <file:line — mechanism in one clause>
 tests: red <N failed: test names> → green <N passed>
 ```
 
-A correct fix with an absent process trace reads as a guess to any reviewer or judge.
-The three lines cost ~30 tokens and are the difference between verified and claimed
-(benchmark evidence: the plugin repo's docs/benchmark-feedback-20261001.md).
+A correct fix with an absent process trace reads as a guess to any reviewer.
 
 ## Three strikes
 

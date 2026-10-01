@@ -28,8 +28,7 @@ unless a decision is genuinely hard to reverse. Scale triggers:
   decision gets an ADR; the rest stays in the single document.
 - More than one session of work, or more than ~5 tasks → full workspace.
 - Neither → single document. Heavy scaffolding on a small task reads as noise to the
-  human and costs tokens without adding decisions (benchmark evidence:
-  docs/benchmark-feedback-20261001.md).
+  human and costs tokens without adding decisions.
 
 **Who does what**:
 - The **agent** does the heavy lifting: explores the codebase, drafts DESIGN.md, builds the domain model, writes tasks, runs pre-flight
