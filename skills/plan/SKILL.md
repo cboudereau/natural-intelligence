@@ -28,7 +28,33 @@ unless a decision is genuinely hard to reverse. Scale triggers:
   decision gets an ADR; the rest stays in the single document.
 - More than one session of work, or more than ~5 tasks → full workspace.
 - Neither → single document. Heavy scaffolding on a small task reads as noise to the
-  human and costs tokens without adding decisions.
+  human and costs tokens without adding decisions. The ADR threshold applies to
+  builds too: a small implementation task records its choices as inline bullets,
+  not ADR files.
+
+The single document always keeps a **minimal machine section** — the resumability
+layer never disappears, it shrinks:
+
+```
+## Tasks
+- [ ] <task> — verify: `<command>`
+Resume: continue at the first unchecked task; re-run the last verify before trusting state.
+```
+
+A few dozen words protect the crash, rate-limit, and compaction cases that the full
+TASKS.md protects on multi-session work. A plan an agent cannot resume from is a
+chat message, not a plan.
+
+**Delegated and one-shot contexts: decide, do not ask.** When the requester has
+delegated ("your call", "decide and continue") or cannot answer (headless run, batch
+job), make the decision, record it with its reason per the triggers above, and
+continue. Ask only when blocked by a genuine externality the codebase and brief
+cannot resolve (a credential, an unstated business rule). Ratification questions in
+a delegated context burn turns without adding information.
+
+**Driving an implementation** (a build task executed from this skill): the
+[`tdd`](../tdd/SKILL.md) red run is a gate, not a suggestion — implementation starts
+after the failing run is captured, and the final report quotes it.
 
 **Who does what**:
 - The **agent** does the heavy lifting: explores the codebase, drafts DESIGN.md, builds the domain model, writes tasks, runs pre-flight
