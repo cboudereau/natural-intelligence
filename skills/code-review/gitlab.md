@@ -90,18 +90,26 @@ glab mr view <iid> -F json --jq '.diff_refs'   # base_sha, head_sha, start_sha
 ```
 
 Write the body to a file (heredoc, as above) with the `suggestion:-N+M` fence, then
-create the diff discussion:
+create the diff discussion from a JSON payload with a **nested** `position` object.
+Never pass `-f "position[...]"` fields: `glab api -f` sends a JSON body whose keys are
+the literal bracket strings, GitLab silently drops the anchor, the note lands as a
+general discussion and the suggestion loses its Apply button.
 
 ```bash
-glab api --method POST "projects/<project-id>/merge_requests/<iid>/discussions" \
-  -f "position[position_type]=text" \
-  -f "position[base_sha]=<base_sha>" \
-  -f "position[head_sha]=<head_sha>" \
-  -f "position[start_sha]=<start_sha>" \
-  -f "position[new_path]=src/Domain/Booking.cs" \
-  -f "position[new_line]=42" \
-  -f "body=$(cat body.md)"
+python3 - "$(cat body.md)" > payload.json << 'EOF'
+import json, sys
+print(json.dumps({"body": sys.argv[1], "position": {
+    "position_type": "text",
+    "base_sha": "<base_sha>", "head_sha": "<head_sha>", "start_sha": "<start_sha>",
+    "new_path": "src/Domain/Booking.cs", "new_line": 42}}))
+EOF
+glab api --method POST -H "Content-Type: application/json" \
+  "projects/<project-id>/merge_requests/<iid>/discussions" --input payload.json
 ```
+
+Verify the response: the note's `type` must be `DiffNote`. A `DiscussionNote` means the
+anchor was dropped — delete the note and repost. Parse `glab` output tolerantly: it can
+prepend an update notice to stdout before the JSON.
 
 Error paths:
 - **400 on stale refs**: refetch `diff_refs` once, retry once, then post the finding
