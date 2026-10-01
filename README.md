@@ -153,6 +153,7 @@ Switch with `/ni:terse lite|full|off`. The level persists in `~/.claude/ni/terse
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |
+| `ni:c4-graph` | C4 architecture diagrams as crossing-minimised mermaid flowcharts for GitLab and VS Code; converts text, DOT, and draw.io sources |
 
 Run `/ni:help` inside Claude for the same list.
 
