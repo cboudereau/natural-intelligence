@@ -50,9 +50,12 @@ Files already tracked in git can be deleted freely: git undoes it.
 
 The closing summary names every requirement from the brief with its disposition — one
 line each, lite terse: what was done, where (`file:line` or artifact), and how it was
-verified (test name or command). Include the `tdd` red→green line and, for a bug, the
-`debug` evidence block. Any skipped or deviated step is stated with its reason — never
-silently. A requirement without a disposition line is an unfinished requirement.
+verified (test name or command). Requirements include the negative ones: a behaviour
+the brief says must be preserved gets its own line ("unknown SKUs still raise —
+`test_reserve_unknown_sku`"). Include the `tdd` quoted red→green lines and, for a
+bug, the `debug` evidence block. Any skipped or deviated step is stated with its
+reason — never silently. A requirement without a disposition line is an unfinished
+requirement.
 
 ## Code quality
 
