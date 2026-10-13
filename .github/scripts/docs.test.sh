@@ -37,7 +37,7 @@ SECRET_PATTERN='-----BEGIN|ghp_[A-Za-z0-9]{20}|glpat-|AKIA[0-9A-Z]{16}'
 SECRET_EXEMPT=':!.github/scripts/docs.test.sh :!docs'
 SHIPPED_MAX_BYTES=1048576
 
-# Release 2.0.0 (FR8, FR9, NFR4): README sections, manifest version, CI matrix.
+# Release 2.1.0 (FR8, FR9, NFR4): README sections, manifest version, CI matrix.
 README='README.md'
 MANIFEST='.claude-plugin/plugin.json'
 WORKFLOW='.github/workflows/test.yml'
@@ -271,8 +271,8 @@ test_readme_names_no_language() {
   if [ -z "$hits" ]; then ok test_readme_names_no_language; else fail test_readme_names_no_language "$hits"; fi
 }
 
-test_plugin_version_is_2_0_0() {
-  if grep -q -F '"version": "2.0.0"' "$MANIFEST"; then ok test_plugin_version_is_2_0_0; else fail test_plugin_version_is_2_0_0 "$MANIFEST version is not 2.0.0"; fi
+test_plugin_version_is_2_1_0() {
+  if grep -q -F '"version": "2.1.0"' "$MANIFEST"; then ok test_plugin_version_is_2_1_0; else fail test_plugin_version_is_2_1_0 "$MANIFEST version is not 2.1.0"; fi
 }
 
 test_ci_workflow_matrix() {
@@ -301,7 +301,7 @@ test_readme_has_requirements_section
 test_readme_reply_styles_section
 test_readme_release_notes_migration
 test_readme_names_no_language
-test_plugin_version_is_2_0_0
+test_plugin_version_is_2_1_0
 test_ci_workflow_matrix
 
 [ "$FAILED" -eq 0 ] || { printf '%s test(s) failed\n' "$FAILED"; exit 1; }

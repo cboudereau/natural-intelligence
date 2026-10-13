@@ -106,7 +106,7 @@ Watches your own MRs or PRs in a loop and merges each one once every reviewer ha
 - Claude Code with its own [system requirements](https://code.claude.com/docs/en/setup) per OS: macOS, Linux, or Windows (native or WSL).
 - Claude Code 2.1.251 or later for live output-style switching with `/output-style`.
 - `glab` for GitLab or `gh` for GitHub, depending on the forge the project uses.
-- Chrome, only for the c4-graph PNG export.
+- VS Code with the draw.io extension, or draw.io, only to render and export c4-graph output.
 
 ni ships no scripts and assumes no shell: the commands in the skills are shell-neutral and run in bash, PowerShell, and cmd.
 
@@ -196,7 +196,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |
-| `ni:c4-graph` | C4 architecture diagrams as crossing-minimised mermaid flowcharts for GitLab and VS Code; converts text, DOT, and draw.io sources |
+| `ni:c4-graph` | C4 architecture diagrams as draw.io files on the C4 palette with line jumps on crossings, rendered in VS Code or draw.io and embedded as `.drawio.svg`; converts text, DOT, and draw.io sources |
 
 Run `/ni:help` inside Claude for the same list.
 
