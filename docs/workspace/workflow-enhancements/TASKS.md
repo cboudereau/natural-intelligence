@@ -187,9 +187,9 @@ classDiagram
 **Tests**: `test_onboarding_checklist` in the lint must stay green
 **Verify**: `bash .github/scripts/docs.test.sh`
 **Acceptance criteria**:
-- [ ] Phase 6 has the glossary step with the format line
-- [ ] Phase 4a reads the glossary first
-- [ ] onboarding reads it when present and never creates it
+- [x] Phase 6 has the glossary step with the format line
+- [x] Phase 4a reads the glossary first
+- [x] onboarding reads it when present and never creates it
 **Depends on**: task 1
 **Time-box**: ~40 min
 
@@ -204,9 +204,9 @@ classDiagram
 **Tests**: none automated
 **Verify**: `bash .github/scripts/docs.test.sh` and `wc -l skills/plan/complex-plan.md`
 **Acceptance criteria**:
-- [ ] Phase 3 opens with the round, then the admission test, then the lifecycle
-- [ ] an item example shows decision, options, recommended answer
-- [ ] `complex-plan.md` under 300 lines
+- [x] Phase 3 opens with the round, then the admission test, then the lifecycle
+- [x] an item example shows decision, options, recommended answer
+- [x] `complex-plan.md` under 300 lines
 **Depends on**: task 1
 **Time-box**: ~40 min
 
@@ -223,9 +223,9 @@ classDiagram
 **Tests**: NFR5 trigger test, manual
 **Verify**: `claude plugin validate . --strict` and `bash .github/scripts/docs.test.sh`
 **Acceptance criteria**:
-- [ ] `skills/retro/SKILL.md` exists, validates, under 150 lines
-- [ ] README row and help line added
-- [ ] trigger test: loads on the retro prompt, not on "fix the failing test"
+- [x] `skills/retro/SKILL.md` exists, validates, under 150 lines
+- [x] README row and help line added
+- [x] trigger test: loads on the retro prompt, not on "fix the failing test"
 **Depends on**: task 6 (glossary entry as a judgement outcome)
 **Time-box**: ~60 min
 
@@ -239,9 +239,9 @@ classDiagram
 **Tests**: `test_plugin_version_is_2_2_0` (renamed)
 **Verify**: `claude plugin validate . --strict` and `bash .github/scripts/docs.test.sh` and the NFR4 search
 **Acceptance criteria**:
-- [ ] both verify commands exit 0
-- [ ] NFR4 search empty
-- [ ] README release notes list the seven changes
+- [x] both verify commands exit 0
+- [x] NFR4 search empty
+- [x] README release notes list the seven changes
 **Depends on**: tasks 1-8
 **Time-box**: ~20 min
 
@@ -260,10 +260,10 @@ Tasks: 6, 7, 8, 9
 **Commit point**: yes — `feat(retro): ...`, `docs(plan): ...`, `chore: bump plugin to 2.2.0`
 
 ## Quality gates (post-session review)
-- [ ] Acceptance criteria: all green above
-- [ ] Code review: text matches [DESIGN.md](./DESIGN.md) intent; one owner per rule, links not repeats
-- [ ] Code organization: sections in the order `skills/skill/SKILL.md` prescribes; reference files one level deep
-- [ ] Code quality: lite voice, sentences under 20 words, no filler
-- [ ] Security review: no shell, no credential, no network in any new text
-- [ ] Observability: next ni-bench matrix measures plan-complex cost and verbosity
-- [ ] Performance: N/A, markdown only
+- [x] Acceptance criteria: all green above
+- [x] Code review: text matches [DESIGN.md](./DESIGN.md) intent; one owner per rule, links not repeats
+- [x] Code organization: sections in the order `skills/skill/SKILL.md` prescribes; reference files one level deep
+- [x] Code quality: lite voice, sentences under 20 words, no filler
+- [x] Security review: no shell, no credential, no network in any new text
+- [x] Observability: next ni-bench matrix measures plan-complex cost and verbosity
+- [x] Performance: N/A, markdown only
