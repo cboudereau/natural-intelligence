@@ -101,9 +101,9 @@ classDiagram
 **Tests**: none automated; NFR2 lint and NFR3 size after the edit
 **Verify**: `bash .github/scripts/docs.test.sh`
 **Acceptance criteria**:
-- [ ] Phase 3 names the three criteria before any list of examples
-- [ ] every former list item appears as an example or is routed to DESIGN.md or the glossary
-- [ ] `wc -l skills/plan/complex-plan.md` under 300
+- [x] Phase 3 names the three criteria before any list of examples
+- [x] every former list item appears as an example or is routed to DESIGN.md or the glossary
+- [x] `wc -l skills/plan/complex-plan.md` under 300
 **Depends on**: (none)
 **Time-box**: ~30 min
 
@@ -117,8 +117,8 @@ classDiagram
 **Tests**: none automated
 **Verify**: `bash .github/scripts/docs.test.sh`
 **Acceptance criteria**:
-- [ ] each of the three artifacts has its condition stated in one sentence
-- [ ] a one-container design can fill the section with prose and three `N/A` lines without violating the template
+- [x] each of the three artifacts has its condition stated in one sentence
+- [x] a one-container design can fill the section with prose and three `N/A` lines without violating the template
 **Depends on**: (none)
 **Time-box**: ~20 min
 
@@ -134,8 +134,8 @@ classDiagram
 **Tests**: none automated
 **Verify**: `bash .github/scripts/docs.test.sh` and `wc -l skills/git-conventions/SKILL.md`
 **Acceptance criteria**:
-- [ ] the section lists the four parts in order with one Not/Yes example
-- [ ] `git-conventions/SKILL.md` under 150 lines
+- [x] the section lists the four parts in order with one Not/Yes example
+- [x] `git-conventions/SKILL.md` under 150 lines
 **Depends on**: (none)
 **Time-box**: ~30 min
 
@@ -151,10 +151,10 @@ classDiagram
 **Tests**: none automated
 **Verify**: `bash .github/scripts/docs.test.sh` and `wc -l skills/debug/SKILL.md`
 **Acceptance criteria**:
-- [ ] Phase 1 ends with the five-check criterion and the sentence that no hypothesis precedes it
-- [ ] a Minimise step exists between reproduction and hypothesis
-- [ ] Phase 4 lists probe removal; Instrumentation names the prefix rule
-- [ ] `debug/SKILL.md` under 150 lines
+- [x] Phase 1 ends with the five-check criterion and the sentence that no hypothesis precedes it
+- [x] a Minimise step exists between reproduction and hypothesis
+- [x] Phase 4 lists probe removal; Instrumentation names the prefix rule
+- [x] `debug/SKILL.md` under 150 lines
 **Depends on**: (none)
 **Time-box**: ~45 min
 
@@ -169,9 +169,9 @@ classDiagram
 **Tests**: none automated
 **Verify**: `bash .github/scripts/docs.test.sh`
 **Acceptance criteria**:
-- [ ] items 37-39 exist with the three questions
-- [ ] step 2 assigns 17-39 to subagent 2
-- [ ] the skip rule is stated next to the category
+- [x] items 37-39 exist with the three questions
+- [x] step 2 assigns 17-39 to subagent 2
+- [x] the skip rule is stated next to the category
 **Depends on**: (none)
 **Time-box**: ~20 min
 
