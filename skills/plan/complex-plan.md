@@ -135,16 +135,16 @@ Template: [templates/DESIGN.md](templates/DESIGN.md). Read it before drafting.
 
 ### Phase 3 — Write ADRs
 
-An ADR records any decision worth explaining. ADRs emerge during design and continue to emerge during implementation as new knowledge surfaces.
+ADRs emerge during design and keep emerging during implementation as new knowledge surfaces.
 
-**What warrants an ADR:**
-- Hard-to-reverse decisions (database choice, API style, protocol)
-- Trade-offs where both options have merit (consistency vs availability, simplicity vs performance)
-- Constraints inherited from external systems or business rules
-- Rejected alternatives that someone might propose again later
-- Conventions chosen among valid options (naming, error handling strategy, logging format)
-- Versioning and compatibility strategy for `published` contracts (wire format, breaking-change policy)
-- Security constraints from a STRIDE pass on a crossed trust boundary
+**Admission test.** Write an ADR only when all three hold:
+1. The decision is hard to reverse.
+2. A later reader would not guess the reason without the record.
+3. Real alternatives were weighed.
+
+Examples that usually pass: persistence, protocol or API style, public-contract versioning, a constraint inherited from an external system, a security constraint on a crossed boundary.
+
+Not an ADR: conventions go to the DESIGN.md Design section, inherited facts to Context, naming choices to the glossary.
 
 When options are weighed with external evidence (benchmarks, adoption, reviews, vendor claims), apply the [`bias-analysis`](../bias-analysis/SKILL.md) skill to that evidence before moving the ADR to `proposed`. In a judge panel, each panellist sweeps its own evidence.
 
