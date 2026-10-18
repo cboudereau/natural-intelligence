@@ -184,6 +184,17 @@ Users only get an update when `version` in `.claude-plugin/plugin.json` changes.
 
 The marketplace entry tracks the default branch, so the marketplace repository needs no change for a release.
 
+### 2.2.0
+
+- `plan`: an ADR is written only when the decision is hard to reverse, surprising later, and weighed against alternatives.
+- `plan`: C4, STRIDE, and sequence diagrams only when the system calls for them.
+- `plan`: Phase 3 opens with a decision round when a human is present; delegated runs still decide alone.
+- `plan`: a root `GLOSSARY.md`, written at integration, read at onboarding.
+- `git-conventions`: a change description carries a visual summary, before and after evidence, a reversibility call, and the checklist.
+- `debug`: a tight reproduction loop before any hypothesis, a minimise phase, tagged probes.
+- `code-review`: an Intent category, items 37 to 39, checks the diff against the request.
+- `retro`: new skill; turns a session's friction into checks, conventions, or pointers.
+
 ## Skills
 | Skill | Use when |
 |---|---|
