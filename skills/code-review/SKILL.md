@@ -45,7 +45,7 @@ deliverable; fixes go straight to the working tree on request, no suggestion fen
 2. **Checklist with two subagents in parallel.** Dispatch two subagents in the same
    message, each with the diff target and its half of the checklist below:
    - Subagent 1: Design, Readability & Maintainability, Tests (items 1-16)
-   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting (items 17-36)
+   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting, Intent (items 17-39)
 
    Each subagent reads the actual code around every finding and returns one line per
    finding in the format below, prefixed with the item number; none without a `file:line`.
@@ -184,6 +184,14 @@ needs the why. Write the paragraph, then resume the one-line format.
 34. **Documentation impact** — Does the change require updating docs, ADRs, or READMEs?
 35. **UI / error messages** — Are user-visible messages clear, actionable, and tested?
 36. **Automated vs human review split** — Delegate formatting/style to linters; focus human review on design and logic
+
+### Intent
+
+Needs the originating request, ticket, or plan. When none is available, skip this category and say so in the report.
+
+37. **Request coverage** — Does every requirement of the originating request, ticket, or plan have a change in the diff?
+38. **Scope** — Does anything in the diff go beyond that request (scope creep, drive-by refactors, unrequested features)?
+39. **Preserved behaviours** — Is every behaviour the request says to preserve still exercised by a test?
 
 ## Culture
 
