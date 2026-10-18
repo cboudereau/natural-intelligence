@@ -12,7 +12,7 @@ here; the Phase 5 execution contract is in [autopilot.md](autopilot.md).
 
 **Human time budget** (for a 2–4H implementation session):
 - Phase 2 — DESIGN.md: ~10 min — review requirements, confirm scope
-- Phase 3 — ADRs: ~10 min — make the hard decisions the agent cannot
+- Phase 3 — decision rounds, then ADR ratification: ~10 min — make the hard decisions the agent cannot
 - Phase 4b — Tasks: ~10 min — review task goals and constraints
 - Phase 4c — Pre-flight: ~5 min — final approval before autopilot
 - **Total: ~30–40 min of human attention buys 2–4H of uninterrupted autopilot**
@@ -134,6 +134,18 @@ Each FR and NFR gets an anchor for cross-referencing:
 Template: [templates/DESIGN.md](templates/DESIGN.md). Read it before drafting.
 
 ### Phase 3 — Write ADRs
+
+**Decision round.** In delegated or one-shot contexts the round is skipped and the route decides, per the rule in [SKILL.md](SKILL.md#rules-for-both-routes). With a human present, Phase 3 opens with a round:
+
+1. List every decision whose prerequisites are settled, numbered.
+2. Each item names the decision, the options in one line, and the recommended answer with its reason. Phrase it so that "yes" accepts the recommendation.
+3. The human replies with numbers and "yes", or an alternative.
+4. A decision that depends on an open item waits for the next round.
+5. Repeat until nothing is open.
+6. Accepted answers go to DESIGN.md, or to an ADR at `proposed` when they pass the admission test below.
+
+Not: `3. Cache store: which one do you want?`
+Yes: `3. Cache store: SQLite or JSON file. Recommend SQLite: survives restarts, one dependency already present. Yes?`
 
 ADRs emerge during design and keep emerging during implementation as new knowledge surfaces.
 
