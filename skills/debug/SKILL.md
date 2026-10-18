@@ -29,16 +29,24 @@ Adapted from the MIT-licensed superpowers systematic-debugging skill by Jesse Vi
 
 ## Workflow
 
-Four phases, in order. No phase is skipped because the bug looks simple.
+Five phases, in order. No phase is skipped because the bug looks simple.
 
 ### 1. Evidence
 
 1. Read the whole error: message, stack trace, line numbers, exit code. It often names the fix.
 2. Reproduce on demand. Not reproducible: gather more data, do not guess.
-3. Check what changed: `git diff`, recent commits, new dependencies, config, environment.
-4. Locate the code. Delegate to `ni:investigator` for "where is X", "what calls Y". It returns `path:line` rows only.
-5. Multi-component systems (CI, build, service, database): log what enters and leaves each boundary, run once, read where it breaks. Then investigate that component only.
-6. Bad value deep in the stack: trace it back to its origin with [root-cause-tracing.md](root-cause-tracing.md).
+3. Build the loop: one command that passes five checks.
+   - Already run once, in this session, with its output read.
+   - Fails on this bug and passes on a neighbouring input or revision.
+   - Gives the same verdict every run.
+   - Finishes in seconds.
+   - Needs no human in the middle.
+   Intermittent: raise the reproduction rate first. Loop the trigger, add load, narrow the timing window. Stop when the loop is reliable.
+   No hypothesis before this command exists.
+4. Check what changed: `git diff`, recent commits, new dependencies, config, environment.
+5. Locate the code. Delegate to `ni:investigator` for "where is X", "what calls Y". It returns `path:line` rows only.
+6. Multi-component systems (CI, build, service, database): log what enters and leaves each boundary, run once, read where it breaks. Then investigate that component only.
+7. Bad value deep in the stack: trace it back to its origin with [root-cause-tracing.md](root-cause-tracing.md).
 
 ### 2. Pattern
 
@@ -47,20 +55,28 @@ Four phases, in order. No phase is skipped because the bug looks simple.
 3. List every difference between working and broken. None is too small to matter.
 4. List the dependencies, settings, and assumptions the broken path relies on.
 
-### 3. Hypothesis
+### 3. Minimise
+
+1. Cut one element per run: an input, a caller, a configuration key, a data row.
+2. Re-run the loop after each cut. Still red: keep the cut. Green: put the element back.
+3. Stop when every remaining element is load-bearing.
+4. The minimal case is the regression test of the Fix phase.
+
+### 4. Hypothesis
 
 1. State one hypothesis: "X is the root cause because Y", with the evidence cited.
 2. Test it with the smallest change that can confirm or refute it. One variable at a time.
 3. Refuted: form a new hypothesis. Never stack a second change on top of the first.
 4. Not understood: say so. Ask, or gather more evidence. Never pretend.
 
-### 4. Fix
+### 5. Fix
 
 1. Write the failing test that reproduces the bug ([`tdd`](../tdd/SKILL.md)). No test framework: a one-off script. The test exists before the fix.
 2. One fix, at the source found in phase 1, not at the symptom. No "while I'm here" changes.
 3. Run the whole test suite. Confirm the original symptom is gone, not only the new test.
 4. Fix failed: count attempts. Under 3, return to phase 1 with the new information. At 3, stop and question the design (below).
-5. Commit with the [`git-conventions`](../git-conventions/SKILL.md) skill.
+5. Remove every probe: search the prefix chosen in [Instrumentation](root-cause-tracing.md#instrumentation). None reaches the commit.
+6. Commit with the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Evidence block
 
