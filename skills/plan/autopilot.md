@@ -19,7 +19,7 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 4. Refactor if needed
 5. Run the verify command
 6. Check off the acceptance criteria in TASKS.md — **only when green**
-7. Update the root `CLAUDE.md` `task N/M` pointer, then commit — **only on success**
+7. Update the root `CLAUDE.md` `task N/M` pointer, then commit — **only on success**; the commit subject names the behaviour the slice makes work, never the layer
 
 **Durability invariants** (these make execution compaction- and crash-proof):
 - **Check off a box only when its criterion is green; commit only on success.** A half-done task leaves no checkmark and no commit, so a re-run re-attempts it from clean state (idempotent).

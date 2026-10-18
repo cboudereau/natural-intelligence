@@ -45,7 +45,7 @@ deliverable; fixes go straight to the working tree on request, no suggestion fen
 2. **Checklist with two subagents in parallel.** Dispatch two subagents in the same
    message, each with the diff target and its half of the checklist below:
    - Subagent 1: Design, Readability & Maintainability, Tests (items 1-16)
-   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting, Intent (items 17-39)
+   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting, Intent (items 17-40)
 
    Each subagent reads the actual code around every finding and returns one line per
    finding in the format below, prefixed with the item number; none without a `file:line`.
@@ -192,6 +192,7 @@ Needs the originating request, ticket, or plan. When none is available, skip thi
 37. **Request coverage** — Does every requirement of the originating request, ticket, or plan have a change in the diff?
 38. **Scope** — Does anything in the diff go beyond that request (scope creep, drive-by refactors, unrequested features)?
 39. **Preserved behaviours** — Is every behaviour the request says to preserve still exercised by a test?
+40. **Slice** — Does each commit land one behaviour that works end to end through the public surface, or state why it cannot ([`plan`](../plan/SKILL.md#rules-for-both-routes))?
 
 ## Culture
 

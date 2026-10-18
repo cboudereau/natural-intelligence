@@ -82,6 +82,8 @@ Types:
 Rules: imperative mood ("add", "fix", "remove", never "added" or "adds"), 50 characters
 when possible and 72 at most, no trailing period, no restating the file name when the
 scope already says it. Match the project convention for capitalisation after the colon.
+One commit per slice: the subject names the behaviour that now works, never the layer
+touched ([`plan`](../plan/SKILL.md#rules-for-both-routes)).
 
 ### Body
 

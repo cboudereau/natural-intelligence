@@ -210,8 +210,11 @@ Template: [templates/TASKS.md](templates/TASKS.md). Read it before drafting.
 - A task stuck `uphill` is a signal: the task is not ready for autopilot. Go back to Phase 4a — either the analysis is incomplete or the task needs splitting.
 - **All tasks must be `downhill` before exiting Phase 4.** No `uphill` task may enter implementation.
 
-**Vertical slices.** Every task is one behaviour, end to end. It crosses every layer that behaviour touches (storage, domain, interface, test) and its verify command proves the behaviour alone, with no later task done. A task that covers one layer for several behaviours is not a task: split it by behaviour.
+**Vertical slices.** Every task is one behaviour, end to end. It crosses every layer that behaviour touches (storage, domain, interface, test) and its verify command proves the behaviour alone, with no later task done. A task that covers one layer for several behaviours is not a task: split it by behaviour. The first task is the walking skeleton: the thinnest path that builds, runs, and is tested through the public surface.
 
+The test a task names enters through the public surface: the CLI, the endpoint, the exported function. A test that only exercises an internal module marks a layer task, whatever the title says.
+
+- `Slice: whole — <reason>` is the only way out: nothing can run before the whole exists (a protocol wrong until complete, a cutover with no dual path, no partial delivery, a hardware bring-up). The reason is reviewable.
 - Prefactoring comes first: a task that only makes the next slice easy is allowed, named as such, and the slice depends on it.
 - `Depends on` carries the edges. A task whose dependencies are all done is ready; readiness, not numbering, decides the order.
 - Sized to one fresh context: the task text plus its links is all the agent needs (INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable).
