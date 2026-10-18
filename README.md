@@ -193,6 +193,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 | `ni:plan` | Multi-session work with a durable workspace, design doc, and ADRs |
 | `ni:git-conventions` | Any git operation, commit messages, MR or PR descriptions; routes to the forge from the origin remote and keeps the git-versus-forge boundary |
 | `ni:code-review` | Reviewing a change or answering reviewer comments, GitLab and GitHub threads via glab and gh included; posts findings as one-click applicable suggestions on both forges and resolves its own threads once a new commit fixes the finding |
+| `ni:retro` | After a session or a plan: turns friction into checks, conventions, or pointers; never touches product code |
 | `ni:evidence-based-analysis` | Any claim about the codebase, cited by file and line |
 | `ni:bias-analysis` | Comparative studies from field reports, reviews, or statistics: bias checklist sweep with verdicts |
 | `ni:skill` | Creating or editing a ni skill, agent, or command |
