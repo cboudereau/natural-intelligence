@@ -121,10 +121,23 @@ Examples:
 When asked to describe a change for review, whatever the forge calls it (merge
 request, pull request):
 
-1. Write a concise markdown description of the work done to a file.
+1. Write the description to a file. The body carries four parts, in this order:
+   1. Summary, led by the smallest visual that shows the change: a diff hunk, a
+      file tree, a call list, or a Mermaid diagram. One sentence when nothing
+      visual exists.
+   2. Evidence that it works, before and after: test output, a command and its
+      result, a screenshot.
+   3. Reversibility: one-way door (hard to undo: schema change, public contract,
+      data deletion, a release users pin) or two-way door. Then the blast radius
+      in one line: what breaks if it is wrong, who sees it.
+   4. The review checklist from [`code-review`](../code-review/SKILL.md).
 2. Route per [Forge routing](#forge-routing), then create or update the MR/PR from
    that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
    [github.md](github.md).
+
+- Not: "Refactored the export module and fixed some tests."
+- Yes: the three-line hunk of the changed signature, the test command red before
+  and green after, "two-way door: one caller, Finance sees nothing", the checklist link.
 
 ## Boundaries
 
