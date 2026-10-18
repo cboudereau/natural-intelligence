@@ -43,6 +43,9 @@ Resume: continue at the first unchecked task; re-run the last verify before trus
   unchanged default are separate tasks. The five-bullet cap applies to Decisions,
   never to Tasks.
 - Each named test states its assertion with a concrete expected value.
+- Each task ends with its own commit once its test is green; the subject names the
+  behaviour, per the [`git-conventions`](../git-conventions/SKILL.md) skill. The
+  commit log is the record of the slices.
 - Never name a skill or plugin inside the document.
 - No documentation or help-text task unless the brief asks. Help text belongs to the
   task that adds the flag.
