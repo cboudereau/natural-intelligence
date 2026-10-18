@@ -10,6 +10,7 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 - [ ] Acceptance criteria are pass/fail with no subjective language
 - [ ] Time-box is set (split if > 90 min)
 - [ ] Dependencies on other tasks are declared
+- [ ] Task is a vertical slice: one behaviour, every layer it touches, verifiable alone; a layer-only task is marked prefactoring, expand, migrate, or contract
 - [ ] Every planned domain type appears in the requirement traceability table
 - [ ] Task is `downhill` — no uncertainty remains
 

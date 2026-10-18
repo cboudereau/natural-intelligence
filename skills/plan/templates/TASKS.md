@@ -70,6 +70,7 @@ the happy path. Published functions state their compatibility rule.
 
 ### 1. Task title ([FR1](./DESIGN.md#fr1), [NFR2](./DESIGN.md#nfr2))
 **Goal**: Why this task exists (one sentence).
+**Slice**: the behaviour this task makes work end to end and the layers it crosses, or `prefactoring` / `expand` / `migrate` / `contract`
 **Types**: `Order`, `LineItem` — see domain model
 **Constraints**: rules the implementation must respect
 - [ADR: decision-name](./adrs/decision-name.md) — the constraint from this decision

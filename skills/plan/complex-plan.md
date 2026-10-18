@@ -210,7 +210,15 @@ Template: [templates/TASKS.md](templates/TASKS.md). Read it before drafting.
 - A task stuck `uphill` is a signal: the task is not ready for autopilot. Go back to Phase 4a — either the analysis is incomplete or the task needs splitting.
 - **All tasks must be `downhill` before exiting Phase 4.** No `uphill` task may enter implementation.
 
-Task granularity: each task should be independently completable and testable (INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable). Prefer vertical slicing — cut through all layers for a thin but complete feature.
+**Vertical slices.** Every task is one behaviour, end to end. It crosses every layer that behaviour touches (storage, domain, interface, test) and its verify command proves the behaviour alone, with no later task done. A task that covers one layer for several behaviours is not a task: split it by behaviour.
+
+- Prefactoring comes first: a task that only makes the next slice easy is allowed, named as such, and the slice depends on it.
+- `Depends on` carries the edges. A task whose dependencies are all done is ready; readiness, not numbering, decides the order.
+- Sized to one fresh context: the task text plus its links is all the agent needs (INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable).
+- Exception, the wide mechanical change: a rename or a retype whose one edit breaks many callers cannot land green as a slice. Sequence it expand, migrate, contract: add the new form beside the old; migrate callers in batches sized by blast radius, one task each, depending on the expand task; remove the old form in a task depending on every batch.
+
+Not: `1. Schema  2. API  3. UI  4. Tests`
+Yes: `1. Create an order with one line (schema, API, UI, test)  2. Reject an empty order (API, UI, test)`
 
 #### Phase 4c — Pre-flight gate
 
