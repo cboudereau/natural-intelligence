@@ -36,6 +36,8 @@ This route is **explicitly orchestrated** — do not run every phase inline on t
 the root is `./docs`
 
 ```
+GLOSSARY.md                     <- durable vocabulary, one line per term, written at Phase 6
+
 docs/workspace/<NAME>/          <- temporary focus space while planning + implementing
   adrs/                         <- draft ADRs (slug-named: <decision-slug>.md)
   DESIGN.md                     <- draft Design Doc
@@ -184,7 +186,7 @@ Before writing any task, explore the codebase to ground the plan in reality.
 **Delegate this — do not explore inline.** Fan out read-only `Explore` or `ni:investigator` subagents **in parallel**, one per axis below. Findings follow the [`evidence-based-analysis`](../evidence-based-analysis/SKILL.md) skill: every claim cites `file:line`. Each returns structured findings; the orchestrator synthesizes them into the `## Analysis` section of TASKS.md (see template below for format). Parallel exploration keeps the orchestrator's context small and shortens wall-clock time. Axes (one subagent each):
 
 - **Build & test commands**: exact commands to build, test, lint, format
-- **Domain model**: types/structs with attributes, relationships, and requirement traceability
+- **Domain model**: read GLOSSARY.md first when it exists; its terms are the names the model uses. Then types/structs with attributes, relationships, and requirement traceability
 - **Interfaces / traits / contracts**: behavioral contracts new code must satisfy
 - **Transformations**: functions that convert between types — input → output, with invariants
 - **Dependencies**: external crates/packages/services, their versions and API surfaces
@@ -222,7 +224,7 @@ Work through TASKS.md session by session: the orchestrator runs a per-task subag
 
 ### Phase 6 — Integrate
 
-Promote the validated artifacts to their durable home `docs/YYYYMMDD_<NAME>/`, delete `docs/workspace/<NAME>/` (PREFLIGHT.md dies with TASKS.md), and remove the workspace entry from `CLAUDE.md` `## Active workspaces`. The 7 steps and the commit template are in [autopilot.md](autopilot.md).
+Promote the validated artifacts to their durable home `docs/YYYYMMDD_<NAME>/`, delete `docs/workspace/<NAME>/` (PREFLIGHT.md dies with TASKS.md), and remove the workspace entry from `CLAUDE.md` `## Active workspaces`. The 8 steps and the commit template are in [autopilot.md](autopilot.md).
 
 ## Cross-referencing
 

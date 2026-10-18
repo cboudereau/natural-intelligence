@@ -82,10 +82,11 @@ Promote the validated artifacts from the workspace to its durable home `docs/YYY
 1. Create `docs/YYYYMMDD_<NAME>/` with a `README.md` index if it does not exist (an existing dated folder for this work means you are amending — append to it).
 2. Move ADRs to `docs/YYYYMMDD_<NAME>/adrs/` — rename each to `<slug>.md`, set status to `accepted`. No numbering.
 3. Move DESIGN.md to `docs/YYYYMMDD_<NAME>/designs/<name>.md`
-4. Update `docs/YYYYMMDD_<NAME>/README.md` — add links to the new design and ADRs
-5. Rewrite any cross-reference links so they resolve from the new locations (a superseded ADR references its replacement by path, not number)
-6. Delete `docs/workspace/<NAME>/` — TASKS.md and PREFLIGHT.md die with it, git history preserves them
-7. Remove the workspace entry from `CLAUDE.md` `## Active workspaces`
+4. Add or update the terms the workspace resolved in GLOSSARY.md at the repo root. One entry per term, alphabetical: `**Term**: definition in one or two sentences. Replaces: <words not to use>.` No types, functions, or file paths. This step creates the file when it is missing; nothing else does.
+5. Update `docs/YYYYMMDD_<NAME>/README.md` — add links to the new design and ADRs
+6. Rewrite any cross-reference links so they resolve from the new locations (a superseded ADR references its replacement by path, not number)
+7. Delete `docs/workspace/<NAME>/` — TASKS.md and PREFLIGHT.md die with it, git history preserves them
+8. Remove the workspace entry from `CLAUDE.md` `## Active workspaces`
 
 **Integration commit**: after all integration steps are complete, commit with message:
 
