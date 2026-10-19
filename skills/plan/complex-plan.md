@@ -210,6 +210,8 @@ Template: [templates/TASKS.md](templates/TASKS.md). Read it before drafting.
 - A task stuck `uphill` is a signal: the task is not ready for autopilot. Go back to Phase 4a — either the analysis is incomplete or the task needs splitting.
 - **All tasks must be `downhill` before exiting Phase 4.** No `uphill` task may enter implementation.
 
+**Fit.** The `Fit` field records whether the task text alone carries the work. `closed`: the task is `downhill` and self-contained; every decision is made, the test is named with its expected value, the verify command, the files, the Slice, and the commit are stated, so a fresh subagent on a cheaper model finishes it without asking. `open`: judgement is left to the executor; a decision is pending, a test has no expected value, or two agents would read a constraint differently. An `open` task goes back to the Phase 3 decision round or is split in Phase 4a. Autopilot starts only when every task of the session is `closed`; the executor then has nothing to negotiate, whatever its model ([autopilot.md](autopilot.md#phase-5--implement-autopilot)).
+
 **Slices.** Every task is one slice, per the rule in [SKILL.md](SKILL.md#rules-for-both-routes). The named test enters through the public surface ([`tdd`](../tdd/SKILL.md)). The `Slice` field holds one value:
 
 - `<behaviour and layers>`: the behaviour and the layers it crosses, verified alone.

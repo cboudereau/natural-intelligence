@@ -195,6 +195,8 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 - `tdd`: the acceptance test enters through the public surface.
 - `plan`: one task at a time, each closed by its own commit, headless included; no batch of tests first, no boxes ticked at the end.
 - `git-conventions`: stage by path, never `git add -A`; generated files are never committed.
+- `plan`: a `Fit` field per task, `closed` or `open`; autopilot starts only when every task is closed, and a closed task runs on a cheaper subagent model.
+- `plan`: a task subagent returns `done`, `blocked: <question>`, or `gap: <adr>`; it never pauses or asks the user.
 - `code-review`: an Intent category, items 37 to 40, checks the diff against the request.
 - `code-review`: item 40 checks that each commit lands one behaviour end to end.
 - `retro`: new skill; turns a session's friction into checks, conventions, or pointers.

@@ -20,6 +20,7 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 5. Run the verify command
 6. Check off the acceptance criteria in TASKS.md — **only when green**
 7. Update the root `CLAUDE.md` `task N/M` pointer, then commit — **only on success**, per the [`git-conventions`](../git-conventions/SKILL.md) skill
+8. Return to the orchestrator with one first line, then the evidence (red line, green line, commit hash): `done`, `blocked: <question>`, or `gap: <adr slug>`. A subagent never pauses and never asks the user; it returns.
 
 **Durability invariants** (these make execution compaction- and crash-proof):
 - **Check off a box only when its criterion is green; commit only on success.** A half-done task leaves no checkmark and no commit, so a re-run re-attempts it from clean state (idempotent).
@@ -29,16 +30,16 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 **The orchestrator loop** (documented subagents; the user's "go" at pre-flight is the trigger):
 
 1. From TASKS.md, take the first unchecked task whose `Depends on` tasks are all done.
-2. Spawn a subagent for it (the Agent/Task tool), passing the task spec and instructing it to follow the per-task contract above. The subagent loads the session's `Skills` first.
+2. Spawn a subagent for it (the Agent/Task tool), passing the task spec and instructing it to follow the per-task contract above. The subagent loads the session's `Skills` first. Pick its model by `Fit`: a `closed` task runs on a cheaper model (`haiku`; `sonnet` when the toolchain is heavy), because the checkpoint re-run in step 3 is the safety net, not the subagent's model. An `open` task never reaches this loop (pre-flight gate).
 3. When it returns, re-run the verify/checkpoint command yourself. If green and the box is checked, advance the `CLAUDE.md` pointer and move on; otherwise re-open the task.
-4. On a `gap` result, draft/collect the `proposed` ADR, park that task and its dependents, and pick the next independent task (see severity 3 below).
+4. On a `blocked` result, decide in a delegated context, record the decision and its reason in the task, and re-spawn; otherwise park the task and batch the question for the session checkpoint (see severity 2 below). On a `gap` result, draft/collect the `proposed` ADR, park that task and its dependents, and pick the next independent task (see severity 3 below).
 5. Repeat until the session's tasks are done, then run the session checkpoint and commit.
 
 The loop is driven by the **on-disk checklist**, not conversational memory — so a restart (new session, `/clear`, compaction) resumes by re-reading TASKS.md (Phase 0), not by remembering where it was. Long runs can be paced with [`/loop`](https://code.claude.com/docs/en/scheduled-tasks.md) so the orchestrator wakes, advances one task, and checkpoints. Sessions that must run concurrently can use [worktrees](https://code.claude.com/docs/en/worktrees.md) for isolation.
 
 **Optional accelerator (research preview)**: where [Dynamic Workflows](https://code.claude.com/docs/en/workflows.md) is available, the same loop can run as one deterministic script — a `for` over tasks, one `agent()` call each, with `resumeFromRunId` replaying completed tasks instantly. This is a portability-optional speed-up; the orchestrator loop above is the baseline and works anywhere subagents do.
 
-**Autonomy model**: tasks define goals and constraints, not step-by-step scripts — the agent decides *how* to achieve them. The constitution (defined in [complex-plan.md](complex-plan.md#constitution)) is the boundary. See the constitution section for what the agent can and cannot do autonomously.
+**Autonomy model**: tasks define goals and constraints, not step-by-step scripts — the agent decides *how* to achieve them. The constitution (defined in [complex-plan.md](complex-plan.md#constitution)) is the boundary. See the constitution section for what the agent can and cannot do autonomously. The freedom is in the *how*, never in the *what*: every task that reaches this loop is `Fit: closed` ([complex-plan.md](complex-plan.md#phase-4b--task-specification)), so the executor has nothing to negotiate and nobody to ask.
 
 **How the agent validates its own changes**: before moving to the next task, the agent checks:
 1. Does the change have a corresponding test that was red before the implementation?
@@ -57,7 +58,7 @@ Discovery during implementation means the planning phase missed something. If Ph
 
 1. **Within constitution** (agent continues) — the agent needs to adjust types, add fields, or rework an approach, but the change respects all ADRs, invariants, and requirements. This is normal autonomous adaptation, not discovery. Continue without stopping.
 
-2. **Ambiguous** (agent pauses at session boundary) — the agent is unsure whether a change respects the constitution. Complete the current task if possible, document the ambiguity in the task, and surface it at the next session checkpoint for review before continuing.
+2. **Ambiguous** (subagent returns `blocked: <question>`) — the subagent is unsure whether a change respects the constitution. It leaves no checkmark and no commit, writes the question into the task, and returns. The orchestrator decides in a delegated context, records the decision and its reason in the task, and re-spawns; otherwise it parks the task and surfaces the batch of `blocked` questions at the session checkpoint. Nobody pauses mid-task to ask.
 
 3. **Outside constitution** (agent analyzes, proposes, and keeps independent work moving) — an ADR decision is wrong, a requirement is missing or contradictory, an invariant cannot be satisfied, or a new external dependency is needed. The agent does **not** halt blankly and dump the raw problem on the human. It does the legwork autonomously and hands the human a *decision, not a problem*:
    - **Analyze the option space.** For a genuinely contested decision, fan out a judge panel (parallel subagents, one arguing each viable option); for a simple one, analyze inline.

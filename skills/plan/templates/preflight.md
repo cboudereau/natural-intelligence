@@ -13,6 +13,7 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 - [ ] Each task's named test enters through the public surface ([`tdd`](../../tdd/SKILL.md)), or its Slice is `prefactoring`, `expand`, `migrate`, `contract`, or `whole — <reason>`
 - [ ] Every planned domain type appears in the requirement traceability table
 - [ ] Task is `downhill` — no uncertainty remains
+- [ ] `Fit: closed` — a fresh subagent on a cheaper model finishes the task from its text alone; an `open` task goes back to Phase 3 or 4a before autopilot starts
 
 **Constitution completeness**:
 - [ ] Domain model covers every planned domain type in diagram and traceability table

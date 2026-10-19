@@ -71,6 +71,7 @@ the happy path. Published functions state their compatibility rule.
 ### 1. Walking skeleton: POST /orders creates an order with one line ([FR1](./DESIGN.md#fr1), [NFR2](./DESIGN.md#nfr2))
 **Goal**: The thinnest path through every layer runs and is tested before any other behaviour.
 **Slice**: create an order with one line, end to end (HTTP, domain, storage, test)
+**Fit**: closed
 **Types**: `Order`, `LineItem` — see domain model
 **Constraints**: rules the implementation must respect
 - [ADR: decision-name](./adrs/decision-name.md) — the constraint from this decision
@@ -89,6 +90,7 @@ the happy path. Published functions state their compatibility rule.
 ### 2. POST /orders rejects an empty order ([FR1](./DESIGN.md#fr1))
 **Goal**: An order with no line is refused at the endpoint, with a message naming the invariant.
 **Slice**: reject an empty order, end to end (HTTP, domain, test)
+**Fit**: closed
 **Types**: `Order` — see domain model
 **Constraints**:
 - Invariant: `Order` must always have at least one `LineItem`
