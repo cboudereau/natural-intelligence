@@ -10,7 +10,7 @@ description: "Use when the user asks to commit, stage, branch, diff, write a com
 - User asks to check differences with a previous version
 - User asks to describe or summarise a change for review (merge request, pull request)
 - User mentions "git", "commit", "branch", "diff", "MR", "PR", or "version control"
-- User is ready to commit after completing a task
+- A task is green and ready to commit, in any context, headless included
 
 ## Overview
 
@@ -57,7 +57,8 @@ Before committing, the code must compile and tests must pass, none failing or ig
 2. Never use `--force`.
 3. Never amend to modify files: add a fix commit and explain the reason.
 4. Use git freely when checking differences with the previous version.
-5. A task should be committed when tests pass (with assertions) and code coverage is verified.
+5. Commit each task as soon as its tests pass with assertions and coverage is checked. A headless or delegated run commits on its own: the commit is the user's ask, not a question for them ([`plan`](../plan/SKILL.md#rules-for-both-routes)).
+6. Stage by path: `git add <file> <file>`, never `git add -A` or `git add .`. Run `git status` first. Generated files (`__pycache__`, build output, caches) are never staged; add a `.gitignore` entry when the project lacks one.
 
 ## Commit message
 

@@ -65,6 +65,13 @@ not a plan.
 suggestion — implementation starts after the failing run is captured, and the final
 report quotes it.
 
+**One task at a time, closed by its commit.** Take the first unchecked task. Write its
+test, capture the red run, make it green, tick its box, commit it. Only then open the
+next task. Never write every test first, never tick boxes in a batch at the end. The
+commit is part of the task, in every context: a headless or delegated run commits
+without asking, and the final report lists one commit per task. Message and staging
+rules live in [`git-conventions`](../git-conventions/SKILL.md#rules).
+
 ## Boundaries
 
 Claude Code's built-in plan mode covers interactive approval of an immediate change;

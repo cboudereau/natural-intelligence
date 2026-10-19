@@ -193,7 +193,8 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 - `git-conventions`: a change description carries a visual summary, before and after evidence, a reversibility call, and the checklist.
 - `debug`: a tight reproduction loop before any hypothesis, a minimise phase, tagged probes.
 - `tdd`: the acceptance test enters through the public surface.
-- `software-engineer`, `plan`: one commit per task in every context, headless included.
+- `plan`: one task at a time, each closed by its own commit, headless included; no batch of tests first, no boxes ticked at the end.
+- `git-conventions`: stage by path, never `git add -A`; generated files are never committed.
 - `code-review`: an Intent category, items 37 to 40, checks the diff against the request.
 - `code-review`: item 40 checks that each commit lands one behaviour end to end.
 - `retro`: new skill; turns a session's friction into checks, conventions, or pointers.

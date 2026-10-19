@@ -44,7 +44,6 @@ Resume: continue at the first unchecked task; re-run the last verify before trus
   output shape, each option interaction, the error path, and the unchanged default
   are separate tasks. The five-bullet cap applies to Decisions, never to Tasks.
 - Each named test states its assertion with a concrete expected value.
-- Commit each task per the [`git-conventions`](../git-conventions/SKILL.md) skill.
 - Never name a skill or plugin inside the document.
 - No documentation or help-text task unless the brief asks. Help text belongs to the
   task that adds the flag.
@@ -53,7 +52,9 @@ Resume: continue at the first unchecked task; re-run the last verify before trus
 - Plan exactly what the brief asks.
 - The small route reads code and runs nothing. Commands run when the tasks do.
 - Code snippets stay illustrative — shapes and signatures, not implementations.
-- Tick boxes as tasks complete; the document is the progress tracker.
+- The document is the progress tracker: one task at a time, ticked and committed
+  before the next starts (rule in [`plan`](SKILL.md#rules-for-both-routes)). A
+  plan handed over with every box ticked at once was not driven, it was reported.
 
 ## Escalation
 
