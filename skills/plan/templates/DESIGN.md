@@ -58,8 +58,8 @@ Architecture, data model, interfaces. Diagrams scale with the system, not with t
   the diagram. Record the resulting constraints here or in an ADR.
 - Add one Mermaid `sequenceDiagram` per flow the design names critical, and none for the rest.
 
-A one-container design fills this section with prose and marks all three `N/A: <reason>`,
-as the top rule says.
+A one-container design marks the C4 diagram N/A; the STRIDE pass and the sequence
+diagrams follow their own conditions above.
 
 Decisions:
 - [Decision title](./adrs/decision-name.md)

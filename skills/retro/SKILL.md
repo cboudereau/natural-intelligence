@@ -22,7 +22,7 @@ A finding without a line to point at is an opinion, not a finding.
 
 1. Gather the friction. Read the transcript, the diff, the test runs, and the user's corrections.
 2. Write one finding per friction. Cite a file:line or quote the line that shows it.
-3. Class each finding: mechanical, judgement, or navigation.
+3. Classify each finding: mechanical, judgement, or navigation.
 4. Propose one check per finding. Name the file it lands in.
 5. Present the table, severity first. Stop and wait for the user.
 6. Apply after approval only. One commit per check, with the [`git-conventions`](../git-conventions/SKILL.md) skill.
@@ -34,7 +34,7 @@ Three classes. Each has one outcome.
 | Class | The friction | Becomes |
 |---|---|---|
 | Mechanical | A mistake a machine can catch | A deterministic check: a lint rule, a test, a hook, a CI job |
-| Judgement | A call a human made differently | A written convention: the project CLAUDE.md, a coding standard, a glossary entry |
+| Judgement | A call a human made differently | A written convention: the project CLAUDE.md, a coding standard, a glossary entry when GLOSSARY.md exists |
 | Navigation | Time lost finding something | A pointer: a line in the docs or the README |
 
 When two classes fit, pick mechanical. A check runs on its own; a convention needs a reader.
@@ -49,6 +49,7 @@ A session with nothing to fix gets one line, not a table.
 
 | Column | Holds |
 |---|---|
+| Severity | Wrong result, lost time, or repeated question; the sort key |
 | Finding | What went wrong, in one clause |
 | Evidence | A file:line, or a quoted line from the transcript |
 | Class | Mechanical, judgement, or navigation |

@@ -39,7 +39,7 @@ report names the source of each command.
 2. Bug only: find the root cause first ([`debug`](../debug/SKILL.md) skill)
 3. Test ([`tdd`](../tdd/SKILL.md) skill, or "Test after" below for existing code)
 4. Implement (code quality rules below, commands found during onboarding)
-5. Commit ([`git-conventions`](../git-conventions/SKILL.md) skill): one commit per task, as soon as its test is green, in any context, headless included; the subject names the behaviour
+5. Commit after each task, headless included, per the [`git-conventions`](../git-conventions/SKILL.md) skill
 6. Final report (below)
 
 Files already tracked in git can be deleted freely: git undoes it.

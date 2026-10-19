@@ -12,7 +12,7 @@ here; the Phase 5 execution contract is in [autopilot.md](autopilot.md).
 
 **Human time budget** (for a 2–4H implementation session):
 - Phase 2 — DESIGN.md: ~10 min — review requirements, confirm scope
-- Phase 3 — decision rounds, then ADR ratification: ~10 min — make the hard decisions the agent cannot
+- Phase 3 — decision rounds, then any remaining ADR ratification: ~10 min — make the hard decisions the agent cannot
 - Phase 4b — Tasks: ~10 min — review task goals and constraints
 - Phase 4c — Pre-flight: ~5 min — final approval before autopilot
 - **Total: ~30–40 min of human attention buys 2–4H of uninterrupted autopilot**
@@ -36,7 +36,7 @@ This route is **explicitly orchestrated** — do not run every phase inline on t
 the root is `./docs`
 
 ```
-GLOSSARY.md                     <- durable vocabulary, one line per term, written at Phase 6
+GLOSSARY.md                     <- at the repo root, not under docs/: one entry per term, written at Phase 6
 
 docs/workspace/<NAME>/          <- temporary focus space while planning + implementing
   adrs/                         <- draft ADRs (slug-named: <decision-slug>.md)
@@ -137,14 +137,14 @@ Template: [templates/DESIGN.md](templates/DESIGN.md). Read it before drafting.
 
 ### Phase 3 — Write ADRs
 
-**Decision round.** In delegated or one-shot contexts the round is skipped and the route decides, per the rule in [SKILL.md](SKILL.md#rules-for-both-routes). With a human present, Phase 3 opens with a round:
+**Decision round.** Skip the round in delegated or one-shot contexts; the agent decides per [SKILL.md](SKILL.md#rules-for-both-routes). With a human present, Phase 3 opens with a round:
 
 1. List every decision whose prerequisites are settled, numbered.
 2. Each item names the decision, the options in one line, and the recommended answer with its reason. Phrase it so that "yes" accepts the recommendation.
 3. The human replies with numbers and "yes", or an alternative.
 4. A decision that depends on an open item waits for the next round.
 5. Repeat until nothing is open.
-6. Accepted answers go to DESIGN.md, or to an ADR at `proposed` when they pass the admission test below.
+6. Accepted answers go to DESIGN.md, or to an ADR written `accepted` when they pass the admission test below. The round is the ratification; only an ADR drafted outside a round goes to `proposed`.
 
 Not: `3. Cache store: which one do you want?`
 Yes: `3. Cache store: SQLite or JSON file. Recommend SQLite: survives restarts, one dependency already present. Yes?`
@@ -156,11 +156,11 @@ ADRs emerge during design and keep emerging during implementation as new knowled
 2. A later reader would not guess the reason without the record.
 3. Real alternatives were weighed.
 
-Examples that usually pass: persistence, protocol or API style, public-contract versioning, a constraint inherited from an external system, a security constraint on a crossed boundary.
+Examples that usually pass: persistence, protocol or API style, public-contract versioning. Also a constraint inherited from an external system, or a security constraint on a crossed boundary.
 
 Not an ADR: conventions go to the DESIGN.md Design section, inherited facts to Context, naming choices to the glossary.
 
-When options are weighed with external evidence (benchmarks, adoption, reviews, vendor claims), apply the [`bias-analysis`](../bias-analysis/SKILL.md) skill to that evidence before moving the ADR to `proposed`. In a judge panel, each panellist sweeps its own evidence.
+Options weighed with external evidence (benchmarks, adoption, reviews, vendor claims) get the [`bias-analysis`](../bias-analysis/SKILL.md) sweep. Run it before the ADR leaves `draft`. In a judge panel, each panellist sweeps its own evidence.
 
 ADRs link back to the requirements they address:
 
@@ -170,7 +170,7 @@ ADR status lifecycle: `draft` -> `proposed` -> `accepted` -> `superseded-by <ref
 
 - `draft` — the agent is still working the decision out.
 - `proposed` — the agent has finished analysis and has a recommendation, awaiting human ratification. **The agent may drive an ADR to `proposed` autonomously; only the human moves `proposed` -> `accepted`.**
-- `accepted` — ratified by the human; now part of the constitution.
+- `accepted` — ratified by the human, in a decision round or from `proposed`; now part of the constitution.
 - `superseded-by <ref>` — replaced by a later decision.
 
 ### Phase 4 — Write TASKS.md (autopilot-ready)
@@ -210,15 +210,16 @@ Template: [templates/TASKS.md](templates/TASKS.md). Read it before drafting.
 - A task stuck `uphill` is a signal: the task is not ready for autopilot. Go back to Phase 4a — either the analysis is incomplete or the task needs splitting.
 - **All tasks must be `downhill` before exiting Phase 4.** No `uphill` task may enter implementation.
 
-**Vertical slices.** Every task is one behaviour, end to end. It crosses every layer that behaviour touches (storage, domain, interface, test) and its verify command proves the behaviour alone, with no later task done. A task that covers one layer for several behaviours is not a task: split it by behaviour. The first task is the walking skeleton: the thinnest path that builds, runs, and is tested through the public surface.
+**Slices.** Every task is one slice, per the rule in [SKILL.md](SKILL.md#rules-for-both-routes). The named test enters through the public surface ([`tdd`](../tdd/SKILL.md)). The `Slice` field holds one value:
 
-The test a task names enters through the public surface: the CLI, the endpoint, the exported function. A test that only exercises an internal module marks a layer task, whatever the title says.
+- `<behaviour and layers>`: the behaviour and the layers it crosses, verified alone.
+- `prefactoring`: the task only makes the next slice easy; that slice depends on it.
+- `expand`, `migrate`, `contract`: one step of a wide mechanical change, sequenced below.
+- `whole — <reason>`: nothing can run before the whole exists; the reason is reviewable.
 
-- `Slice: whole — <reason>` is the only way out: nothing can run before the whole exists (a protocol wrong until complete, a cutover with no dual path, no partial delivery, a hardware bring-up). The reason is reviewable.
-- Prefactoring comes first: a task that only makes the next slice easy is allowed, named as such, and the slice depends on it.
-- `Depends on` carries the edges. A task whose dependencies are all done is ready; readiness, not numbering, decides the order.
-- Sized to one fresh context: the task text plus its links is all the agent needs (INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable).
-- Exception, the wide mechanical change: a rename or a retype whose one edit breaks many callers cannot land green as a slice. Sequence it expand, migrate, contract: add the new form beside the old; migrate callers in batches sized by blast radius, one task each, depending on the expand task; remove the old form in a task depending on every batch.
+A wide mechanical change is a rename or a retype whose one edit breaks many callers. Add the new form beside the old (`expand`). Migrate callers in batches sized by blast radius, one task each, depending on the expand task (`migrate`). Remove the old form in a task that depends on every batch (`contract`).
+
+`Depends on` carries the edges. A task whose dependencies are all done is ready; readiness, not numbering, decides the order. Size each task to one fresh context: the task text plus its links is all the agent needs. INVEST applies: Independent, Negotiable, Valuable, Estimable, Small, Testable.
 
 Not: `1. Schema  2. API  3. UI  4. Tests`
 Yes: `1. Create an order with one line (schema, API, UI, test)  2. Reject an empty order (API, UI, test)`
@@ -235,7 +236,7 @@ Work through TASKS.md session by session: the orchestrator runs a per-task subag
 
 ### Phase 6 — Integrate
 
-Promote the validated artifacts to their durable home `docs/YYYYMMDD_<NAME>/`, delete `docs/workspace/<NAME>/` (PREFLIGHT.md dies with TASKS.md), and remove the workspace entry from `CLAUDE.md` `## Active workspaces`. The 8 steps and the commit template are in [autopilot.md](autopilot.md).
+Promote the validated artifacts to their durable home `docs/YYYYMMDD_<NAME>/`. Delete `docs/workspace/<NAME>/` (PREFLIGHT.md dies with TASKS.md) and remove the workspace entry from `CLAUDE.md` `## Active workspaces`. The 8 steps and the commit template are in [autopilot.md](autopilot.md).
 
 ## Cross-referencing
 

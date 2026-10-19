@@ -46,7 +46,8 @@ Five phases, in order. No phase is skipped because the bug looks simple.
 4. Check what changed: `git diff`, recent commits, new dependencies, config, environment.
 5. Locate the code. Delegate to `ni:investigator` for "where is X", "what calls Y". It returns `path:line` rows only.
 6. Multi-component systems (CI, build, service, database): log what enters and leaves each boundary, run once, read where it breaks. Then investigate that component only.
-7. Bad value deep in the stack: trace it back to its origin with [root-cause-tracing.md](root-cause-tracing.md).
+7. Tag every temporary log line with one prefix per investigation, such as `[DEBUG-7f3a]`.
+8. Bad value deep in the stack: trace it back to its origin with [root-cause-tracing.md](root-cause-tracing.md).
 
 ### 2. Pattern
 
@@ -75,7 +76,7 @@ Five phases, in order. No phase is skipped because the bug looks simple.
 2. One fix, at the source found in phase 1, not at the symptom. No "while I'm here" changes.
 3. Run the whole test suite. Confirm the original symptom is gone, not only the new test.
 4. Fix failed: count attempts. Under 3, return to phase 1 with the new information. At 3, stop and question the design (below).
-5. Remove every probe: search the prefix chosen in [Instrumentation](root-cause-tracing.md#instrumentation). None reaches the commit.
+5. Remove every probe by searching the prefix. None reaches the commit.
 6. Commit with the [`git-conventions`](../git-conventions/SKILL.md) skill.
 
 ## Evidence block

@@ -19,11 +19,11 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 4. Refactor if needed
 5. Run the verify command
 6. Check off the acceptance criteria in TASKS.md — **only when green**
-7. Update the root `CLAUDE.md` `task N/M` pointer, then commit — **only on success**; the commit subject names the behaviour the slice makes work, never the layer
+7. Update the root `CLAUDE.md` `task N/M` pointer, then commit — **only on success**, per the [`git-conventions`](../git-conventions/SKILL.md) skill
 
 **Durability invariants** (these make execution compaction- and crash-proof):
 - **Check off a box only when its criterion is green; commit only on success.** A half-done task leaves no checkmark and no commit, so a re-run re-attempts it from clean state (idempotent).
-- **Advance the root `CLAUDE.md` `## Active workspaces` `task N/M` pointer after each task** — it is the durable resume anchor (see [Phase 0](SKILL.md#phase-0--resume-run-on-every-start)).
+- **Advance the root `CLAUDE.md` `## Active workspaces` `task N/M` pointer after each task** — it is the durable resume anchor (see [Phase 0](complex-plan.md#phase-0--resume-run-on-every-start)).
 - **The orchestrator re-runs the session checkpoint after each subagent returns** — verifying real green state rather than trusting a subagent's "done" (a subagent can stop mid-task from its own compaction).
 
 **The orchestrator loop** (documented subagents; the user's "go" at pre-flight is the trigger):
@@ -38,7 +38,7 @@ The loop is driven by the **on-disk checklist**, not conversational memory — s
 
 **Optional accelerator (research preview)**: where [Dynamic Workflows](https://code.claude.com/docs/en/workflows.md) is available, the same loop can run as one deterministic script — a `for` over tasks, one `agent()` call each, with `resumeFromRunId` replaying completed tasks instantly. This is a portability-optional speed-up; the orchestrator loop above is the baseline and works anywhere subagents do.
 
-**Autonomy model**: tasks define goals and constraints, not step-by-step scripts — the agent decides *how* to achieve them. The constitution (defined in [SKILL.md](SKILL.md)) is the boundary. See the constitution section for what the agent can and cannot do autonomously.
+**Autonomy model**: tasks define goals and constraints, not step-by-step scripts — the agent decides *how* to achieve them. The constitution (defined in [complex-plan.md](complex-plan.md#constitution)) is the boundary. See the constitution section for what the agent can and cannot do autonomously.
 
 **How the agent validates its own changes**: before moving to the next task, the agent checks:
 1. Does the change have a corresponding test that was red before the implementation?
@@ -79,6 +79,7 @@ Discovery during implementation means the planning phase missed something. If Ph
 ## Phase 6 — Integrate
 
 Promote the validated artifacts from the workspace to its durable home `docs/YYYYMMDD_<NAME>/` (folder prefixed with the integration date):
+0. Run the [`retro`](../retro/SKILL.md) skill on the sessions; in a delegated context, record its table at the checkpoint and continue.
 1. Create `docs/YYYYMMDD_<NAME>/` with a `README.md` index if it does not exist (an existing dated folder for this work means you are amending — append to it).
 2. Move ADRs to `docs/YYYYMMDD_<NAME>/adrs/` — rename each to `<slug>.md`, set status to `accepted`. No numbering.
 3. Move DESIGN.md to `docs/YYYYMMDD_<NAME>/designs/<name>.md`

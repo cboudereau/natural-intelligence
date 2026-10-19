@@ -43,6 +43,7 @@ Medians of 3 trials per scenario, [ni-bench](https://github.com/itsaspacestation
 | verbosity_score | 88% (88) | 88% (88) | 88% (88) | 🏆90% (90) | 88% (88) |
 | outcome | 100% (3/3) | 🏆100% (3/3) | 🏆100% (3/3) | 🏆100% (3/3) | 🏆100% (3/3) |
 | indeterminate | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 |
+
 ### Reply styles vs built-in styles
 
 | style | output tokens | reply chars | facts kept | words |
@@ -192,7 +193,10 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 - `plan`: every task is a vertical slice, one behaviour across every layer it touches, verifiable alone; a wide mechanical change goes expand, migrate, contract.
 - `git-conventions`: a change description carries a visual summary, before and after evidence, a reversibility call, and the checklist.
 - `debug`: a tight reproduction loop before any hypothesis, a minimise phase, tagged probes.
-- `code-review`: an Intent category, items 37 to 39, checks the diff against the request.
+- `tdd`: the acceptance test enters through the public surface.
+- `software-engineer`, `plan`: one commit per task in every context, headless included.
+- `code-review`: an Intent category, items 37 to 40, checks the diff against the request.
+- `code-review`: item 40 checks that each commit lands one behaviour end to end.
 - `retro`: new skill; turns a session's friction into checks, conventions, or pointers.
 
 ## Skills

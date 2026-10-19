@@ -10,7 +10,7 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 - [ ] Acceptance criteria are pass/fail with no subjective language
 - [ ] Time-box is set (split if > 90 min)
 - [ ] Dependencies on other tasks are declared
-- [ ] Each task's named test calls the public surface, or the task says `prefactoring`, `expand`, `migrate`, `contract`, or `whole` with its reason
+- [ ] Each task's named test enters through the public surface ([`tdd`](../../tdd/SKILL.md)), or its Slice is `prefactoring`, `expand`, `migrate`, `contract`, or `whole — <reason>`
 - [ ] Every planned domain type appears in the requirement traceability table
 - [ ] Task is `downhill` — no uncertainty remains
 

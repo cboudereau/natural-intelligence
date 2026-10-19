@@ -6,9 +6,11 @@ multi-session trigger (see the triage in SKILL.md).
 ## Format
 
 One markdown file, four sections, nothing else. No PREFLIGHT.md, no adrs/ folder, no
-Mermaid diagram. An ADR exists only for persistence or a wire protocol. Every other
-choice is an inline bullet: an additive flag, a CLI option, an output shape. This
-applies to build tasks too.
+Mermaid diagram. An ADR exists only for persistence or a wire protocol, the small
+route's shortcut. Both pass the admission test in
+[complex-plan.md](complex-plan.md#phase-3--write-adrs). Every other choice is an
+inline bullet: an additive flag, a CLI option, an output shape. This applies to build
+tasks too.
 
 ```markdown
 # <task> — plan
@@ -37,15 +39,12 @@ Resume: continue at the first unchecked task; re-run the last verify before trus
   compaction cases that the full TASKS.md protects on multi-session work.
 - Tasks are test-first by construction: each task names its test. Write no prose
   about TDD or the red run. No baseline task, no "run existing tests" task.
-- Each task names the file and the function it changes. One behaviour per task,
-  across every layer that behaviour touches, never a layer on its own: the flag
-  wiring, the output shape, each option interaction, the error path, and the
-  unchanged default are separate tasks. The five-bullet cap applies to Decisions,
-  never to Tasks.
+- Each task names the file and the function it changes. One behaviour per task
+  (slice rule in [`plan`](SKILL.md#rules-for-both-routes)). The flag wiring, the
+  output shape, each option interaction, the error path, and the unchanged default
+  are separate tasks. The five-bullet cap applies to Decisions, never to Tasks.
 - Each named test states its assertion with a concrete expected value.
-- Each task ends with its own commit once its test is green; the subject names the
-  behaviour, per the [`git-conventions`](../git-conventions/SKILL.md) skill. The
-  commit log is the record of the slices.
+- Commit each task per the [`git-conventions`](../git-conventions/SKILL.md) skill.
 - Never name a skill or plugin inside the document.
 - No documentation or help-text task unless the brief asks. Help text belongs to the
   task that adds the flag.
