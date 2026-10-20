@@ -228,9 +228,9 @@ Yes: `1. Create an order with one line (schema, API, UI, test)  2. Reject an emp
 
 #### Phase 4c — Pre-flight gate
 
-Before moving to Phase 5, the entire TASKS.md must pass the pre-flight gate. This is the last human checkpoint before autopilot.
+Before moving to Phase 5, the entire TASKS.md must pass the pre-flight gate. This is the last human checkpoint before autopilot: the human's "go" starts Phase 5. The plan commit is not that gate.
 
-Copy [templates/preflight.md](templates/preflight.md) to the workspace as `PREFLIGHT.md` with one substitution of `<NAME>` (a single shell command or one Write of the template text), never draft it. Tick every box on disk. Every box must be checked before autopilot starts. The plan-commit instruction lives in the template. The copied PREFLIGHT.md keeps the one-line link lint from the template; never expand it into per-shell variants.
+Copy [templates/preflight.md](templates/preflight.md) to the workspace as `PREFLIGHT.md` with one substitution of `<NAME>` (a single shell command or one Write of the template text), never draft it. Tick every box on disk. Every box must be checked before autopilot starts. The plan-commit instruction lives in the template: once the boxes are ticked, commit the plan in every context, delegated and headless included, and never ask whether to. The copied PREFLIGHT.md keeps the one-line link lint from the template; never expand it into per-shell variants.
 
 ### Phase 5 — Implement (autopilot)
 

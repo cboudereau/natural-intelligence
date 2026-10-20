@@ -37,7 +37,7 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 
 If any item fails, fix it before proceeding.
 
-**Plan commit**: once the pre-flight gate passes, commit all workspace artifacts (`docs/workspace/<NAME>/`) with message:
+**Plan commit**: once the pre-flight gate passes, commit all workspace artifacts (`docs/workspace/<NAME>/`) at once, in every context, without asking; the human's "go" is for Phase 5, not for this commit. Message:
 
 ```
 docs(<NAME>): plan ready for autopilot

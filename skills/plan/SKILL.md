@@ -70,10 +70,11 @@ test, capture the red run, make it green, tick its box, commit it. Only then ope
 next task. Never write every test first, never tick boxes in a batch at the end. The
 commit is part of the task, in every context: a headless or delegated run commits
 without asking, and the final report lists one commit per task. Message and staging
-rules live in [`git-conventions`](../git-conventions/SKILL.md#rules). A test that
-passes on its first run proves the slice already exists: fold that test into the
-previous task's commit, tick the task, and say so in the report. Never commit a
-tests-only slice; a commit without a red run is not a slice.
+rules live in [`git-conventions`](../git-conventions/SKILL.md#rules). Each task's
+implementation covers its own test only ([`tdd`](../tdd/SKILL.md) rule 5), so the
+next task goes red. When a test still passes on its first run, the previous slice
+overshot: fold that test into the previous task's commit, tick the task, and name
+the overshoot in the report. Never commit a tests-only slice.
 
 ## Boundaries
 

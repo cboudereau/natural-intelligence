@@ -195,6 +195,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 - `tdd`: the acceptance test enters through the public surface.
 - `plan`: one task at a time, each closed by its own commit, headless included; no batch of tests first, no boxes ticked at the end; a test green on its first run folds into the previous commit, never a tests-only commit.
 - `plan`: the small route's plan document stays untracked; task commits carry code and tests only.
+- `plan`, `tdd`: an implementation covers its own failing test only, so the next slice goes red; the complex route commits the plan at pre-flight in every context, without asking.
 - `git-conventions`: stage by path, never `git add -A`; generated files are never committed.
 - `plan`: a `Fit` field per task, `closed` or `open`; autopilot starts only when every task is closed, and a closed task runs on a cheaper subagent model.
 - `plan`: a task subagent returns `done`, `blocked: <question>`, or `gap: <adr>`; it never pauses or asks the user.
