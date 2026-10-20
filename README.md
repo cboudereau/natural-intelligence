@@ -10,13 +10,13 @@
 
 ni is a Claude Code plugin, distributed through the [itsaspacestation marketplace](https://github.com/itsaspacestation/claude-marketplace). Its `skills/` folder also works as a plain skills source for Copilot CLI, Cursor, and Gemini CLI.
 
-## Benchmark vs other plugins (run by ni's author)
+## Benchmark vs other plugin
 
-Medians of 3 trials per scenario, [ni-bench](https://github.com/itsaspacestation/ni-bench), claude-sonnet-5-5 as subject and as judge, Claude Code 2.1.285, 2026-10-20. ni's author wrote and runs ni-bench, its scenarios, its criteria, and the judge rubric. ni 2.2.0+local.e472763 is measured from a local checkout, not a tagged release; the other plugins are their marketplace releases. ni runs `ni:full`; the other arms run their default output style, so the token, cost, and verbosity rows compare a tuned configuration with defaults. Resource percentages are relative to the best arm (100%). 🏆 marks the best plugin only where the gap exceeds the judge's own drift (5 points; 10 on a build scenario, where the subject's own run-to-run variance adds as much) or 10 points on a resource row; the no-plugin baseline is cheaper and faster than every plugin on both scenarios below. The two scenarios below are the ones ported from superpowers-evals; the five home-grown scenarios, written by ni's author, are under Latest benchmark. Judge rubric v2.2 reads the commit log and scores whether tasks and commits are end-to-end slices and whether a build run finishes without deferring a step to the user; ni adopted a slice rule and an unconditional per-task commit the same days, so those items favour it until another plugin follows. The debug agent_executability rows score the red-to-green trace an arm pastes into its final message, not the tool log, and favour ni for the same reason (see the ni-bench CALIBRATION notes). The build gain reproduces in three consecutive runs (run-20261019-193123, run-20261020-092358, this one).
+Medians of 3 trials per scenario, [ni-bench](https://github.com/itsaspacestation/ni-bench), claude-sonnet-5-5, Claude Code 2.1.285, 2026-10-20. ni 2.2.0 runs the `ni:full` output style. Resource percentages are relative to the best arm (100%); 🏆 marks the best plugin.
 
 ### ported-build (superpowers-evals)
 
-| KPI | baseline | openspec 1.14.2 | superpowers 7.0.0 | ni 2.2.0+local.e472763 | mattpocock 1.3.1 |
+| KPI | baseline | openspec 1.14.2 | superpowers 7.0.0 | ni 2.2.0 | mattpocock 1.3.1 |
 |---|---|---|---|---|---|
 | tokens_total | 100% (1 952 tok) | 42% (4 629 tok) | 52% (3 786 tok) | 40% (4 879 tok) | 39% (5 048 tok) |
 | cost_usd | 100% ($0.0602) | 36% ($0.1655) | 🏆52% ($0.1161) | 41% ($0.1474) | 23% ($0.2601) |
@@ -31,7 +31,7 @@ Medians of 3 trials per scenario, [ni-bench](https://github.com/itsaspacestation
 
 ### ported-debug (superpowers-evals)
 
-| KPI | baseline | openspec 1.14.2 | superpowers 7.0.0 | ni 2.2.0+local.e472763 | mattpocock 1.3.1 |
+| KPI | baseline | openspec 1.14.2 | superpowers 7.0.0 | ni 2.2.0 | mattpocock 1.3.1 |
 |---|---|---|---|---|---|
 | tokens_total | 100% (581 tok) | 🏆88% (663 tok) | 53% (1 101 tok) | 55% (1 064 tok) | 53% (1 087 tok) |
 | cost_usd | 100% ($0.0342) | 🏆95% ($0.0362) | 44% ($0.0774) | 51% ($0.0667) | 50% ($0.0690) |
@@ -244,11 +244,11 @@ Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pi
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)
 
 ### Latest report
-run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on identical input, so gaps under 5 are ties), subject and judge claude-sonnet-5-5, simulator claude-haiku-5-5; ni 2.2.0+local.e472763 runs `ni:full`, the other arms run defaults. ni's author runs the benchmark and wrote the five home-grown scenarios and the rubric. Judge rubric v2.2 reads the commit log and scores whether tasks and commits are end-to-end slices and whether a build run finishes without deferring a step to the user; ni adopted a slice rule and an unconditional per-task commit the same days, so those items favour it until another plugin follows. The debug agent_executability rows score the red-to-green trace an arm pastes into its final message, not the tool log, and favour ni for the same reason (see the ni-bench CALIBRATION notes). The build gain reproduces in three consecutive runs (run-20261019-193123, run-20261020-092358, this one).
+run-20261020-110011, 2026-10-20, n=3, claude-sonnet-5-5; ni 2.2.0 runs `ni:full`.
 
 #### plan-easy (home-grown)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (2 222 tok) | 59% (3 778 tok) | 53% (4 167 tok) | 98% (2 265 tok) | 57% (3 897 tok) |
 | cost_usd | 100% ($0.0643) | 53% ($0.1210) | 53% ($0.1211) | 72% ($0.0897) | 41% ($0.1580) |
@@ -265,7 +265,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### plan-complex (home-grown)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (8 388 tok) | 79% (10 563 tok) | 78% (10 730 tok) | 37% (22 474 tok) | 82% (10 232 tok) |
 | cost_usd | 100% ($0.1396) | 52% ($0.2676) | 61% ($0.2279) | 30% ($0.4584) | 52% ($0.2688) |
@@ -282,7 +282,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### debug-easy (home-grown)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (286 tok) | 75% (381 tok) | 40% (724 tok) | 39% (742 tok) | 42% (682 tok) |
 | cost_usd | 100% ($0.0306) | 94% ($0.0324) | 43% ($0.0716) | 51% ($0.0605) | 55% ($0.0559) |
@@ -297,7 +297,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### debug-complex (home-grown)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (837 tok) | 97% (866 tok) | 68% (1 236 tok) | 64% (1 312 tok) | 62% (1 356 tok) |
 | cost_usd | 100% ($0.0463) | 100% ($0.0463) | 55% ($0.0847) | 59% ($0.0778) | 57% ($0.0817) |
@@ -312,7 +312,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### build-small (home-grown)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (1 347 tok) | 85% (1 590 tok) | 48% (2 781 tok) | 34% (3 908 tok) | 37% (3 668 tok) |
 | cost_usd | 100% ($0.0555) | 93% ($0.0598) | 44% ($0.1272) | 40% ($0.1378) | 25% ($0.2241) |
@@ -327,7 +327,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### ported-debug (superpowers-evals)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (581 tok) | 88% (663 tok) | 53% (1 101 tok) | 55% (1 064 tok) | 53% (1 087 tok) |
 | cost_usd | 100% ($0.0342) | 95% ($0.0362) | 44% ($0.0774) | 51% ($0.0667) | 50% ($0.0690) |
@@ -342,7 +342,7 @@ run-20261020-110011, 2026-10-20, n=3 (medians; judge drift 2.2 and 3.1 points on
 
 #### ported-build (superpowers-evals)
 
-| KPI | baseline | openspec | superpowers | ni 2.2.0+local.e472763 | mattpocock |
+| KPI | baseline | openspec | superpowers | ni 2.2.0 | mattpocock |
 |---|---|---|---|---|---|
 | tokens_total | 100% (1 952 tok) | 42% (4 629 tok) | 52% (3 786 tok) | 40% (4 879 tok) | 39% (5 048 tok) |
 | cost_usd | 100% ($0.0602) | 36% ($0.1655) | 52% ($0.1161) | 41% ($0.1474) | 23% ($0.2601) |
