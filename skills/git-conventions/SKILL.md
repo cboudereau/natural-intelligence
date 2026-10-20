@@ -58,7 +58,7 @@ Before committing, the code must compile and tests must pass, none failing or ig
 3. Never amend to modify files: add a fix commit and explain the reason.
 4. Use git freely when checking differences with the previous version.
 5. Commit each task as soon as its tests pass with assertions and coverage is checked. A headless or delegated run commits on its own: the commit is the user's ask, not a question for them ([`plan`](../plan/SKILL.md#rules-for-both-routes)).
-6. Stage by path: `git add <file> <file>`, never `git add -A` or `git add .`. Run `git status` first. Generated files (`__pycache__`, build output, caches) are never staged; add a `.gitignore` entry when the project lacks one.
+6. Stage by path: `git add <file> <file>`, never `git add -A` or `git add .`. Run `git status` first; status, add, and commit fit one shell call (`git status --short && git add <files> && git commit -m "<subject>"`). Generated files (`__pycache__`, build output, caches) are never staged; add a `.gitignore` entry when the project lacks one.
 
 ## Commit message
 

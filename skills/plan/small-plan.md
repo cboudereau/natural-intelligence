@@ -55,6 +55,9 @@ Resume: continue at the first unchecked task; re-run the last verify before trus
 - The document is the progress tracker: one task at a time, ticked and committed
   before the next starts (rule in [`plan`](SKILL.md#rules-for-both-routes)). A
   plan handed over with every box ticked at once was not driven, it was reported.
+- The document is working state, not a deliverable: it stays an untracked file in
+  the working tree. Never stage or commit it unless the brief asks for a plan in
+  the repository. The task commits carry the code and its tests only.
 
 ## Escalation
 
