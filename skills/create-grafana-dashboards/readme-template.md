@@ -1,6 +1,6 @@
 # Dashboard README template
 
-Back to [`grafana-dashboard`](SKILL.md). Copy the block, keep the section order, drop a
+Back to [`create-grafana-dashboards`](SKILL.md). Copy the block, keep the section order, drop a
 section only when the dashboard has no such row. Angle brackets mark what to fill in.
 No vendor figures: quotas, defaults, class sizes, and prices change, so each section
 links the page that holds them.

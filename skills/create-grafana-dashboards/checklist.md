@@ -1,6 +1,6 @@
 # Dashboard checklist
 
-Back to [`grafana-dashboard`](SKILL.md). Tick every line before handing over.
+Back to [`create-grafana-dashboards`](SKILL.md). Tick every line before handing over.
 
 ## Context
 
@@ -104,7 +104,7 @@ One per line, in this order, hidden unless the user needs it:
 
 ## README
 
-Written from the template linked in [`grafana-dashboard`](SKILL.md):
+Written from the template linked in [`create-grafana-dashboards`](SKILL.md):
 
 - [ ] Reference line first, URL identical to the dashboard links entry
 - [ ] Deployed variant section naming the infrastructure as code and its unknowns

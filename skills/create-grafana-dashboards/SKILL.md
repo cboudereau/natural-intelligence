@@ -1,5 +1,5 @@
 ---
-name: grafana-dashboard
+name: create-grafana-dashboards
 description: "Use when creating, reviewing, or extending a Grafana dashboard for a service, cloud resource, database, queue, or runtime: choosing metrics from the vendor's official monitoring page, laying out rows by RED or USE, trading paid metrics for log-derived panels, writing the dashboard README, or collecting screenshots. Also use when the user mentions CloudWatch, Prometheus, Loki, OpenTelemetry metrics, dashboard JSON, panel rows, RED method, or USE method."
 ---
 # Grafana dashboard
