@@ -10,7 +10,7 @@ description: "Use when the user asks to commit, stage, branch, diff, write a com
 - User asks to check differences with a previous version
 - User asks to describe or summarise a change for review (merge request, pull request)
 - User mentions "git", "commit", "branch", "diff", "MR", "PR", or "version control"
-- User is ready to commit after completing a task
+- A task is green and ready to commit, in any context, headless included
 
 ## Overview
 
@@ -57,7 +57,8 @@ Before committing, the code must compile and tests must pass, none failing or ig
 2. Never use `--force`.
 3. Never amend to modify files: add a fix commit and explain the reason.
 4. Use git freely when checking differences with the previous version.
-5. A task should be committed when tests pass (with assertions) and code coverage is verified.
+5. Commit each task as soon as its tests pass with assertions and coverage is checked. A headless or delegated run commits on its own: the commit is the user's ask, not a question for them ([`plan`](../plan/SKILL.md#rules-for-both-routes)).
+6. Stage by path: `git add <file> <file>`, never `git add -A` or `git add .`. Run `git status` first; status, add, and commit fit one shell call (`git status --short && git add <files> && git commit -m "<subject>"`). Generated files (`__pycache__`, build output, caches) are never staged; add a `.gitignore` entry when the project lacks one.
 
 ## Commit message
 
@@ -82,6 +83,8 @@ Types:
 Rules: imperative mood ("add", "fix", "remove", never "added" or "adds"), 50 characters
 when possible and 72 at most, no trailing period, no restating the file name when the
 scope already says it. Match the project convention for capitalisation after the colon.
+One commit per slice: the subject names the behaviour that now works, never the layer
+touched ([`plan`](../plan/SKILL.md#rules-for-both-routes)).
 
 ### Body
 
@@ -121,10 +124,23 @@ Examples:
 When asked to describe a change for review, whatever the forge calls it (merge
 request, pull request):
 
-1. Write a concise markdown description of the work done to a file.
-2. Route per [Forge routing](#forge-routing), then create or update the MR/PR from
-   that file with the forge CLI: commands in [gitlab.md](gitlab.md) or
+1. Write the description to a file. The body carries four parts, in this order:
+   1. Summary, led by the smallest visual that shows the change. A diff hunk, a
+      file tree, a call list, or a Mermaid diagram; one sentence when nothing
+      visual exists.
+   2. Evidence that it works, before and after: test output, a command and its
+      result, a screenshot.
+   3. Reversibility: one-way door (hard to undo: schema change, public contract,
+      data deletion, a release users pin) or two-way door. Then the blast radius
+      in one line: what breaks if it is wrong, who sees it.
+   4. A link to the review checklist in [`code-review`](../code-review/SKILL.md).
+2. Route per [Forge routing](#forge-routing). Create or update the MR/PR from that
+   file with the forge CLI: commands in [gitlab.md](gitlab.md) or
    [github.md](github.md).
+
+- Not: "Refactored the export module and fixed some tests."
+- Yes: the changed signature's hunk, the test red then green, "two-way door: one
+  caller, Finance sees nothing", the checklist link.
 
 ## Boundaries
 

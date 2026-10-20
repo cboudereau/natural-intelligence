@@ -45,7 +45,7 @@ deliverable; fixes go straight to the working tree on request, no suggestion fen
 2. **Checklist with two subagents in parallel.** Dispatch two subagents in the same
    message, each with the diff target and its half of the checklist below:
    - Subagent 1: Design, Readability & Maintainability, Tests (items 1-16)
-   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting (items 17-36)
+   - Subagent 2: Performance, Data Structures, Security, Correctness, Cross-cutting, Intent (items 17-40)
 
    Each subagent reads the actual code around every finding and returns one line per
    finding in the format below, prefixed with the item number; none without a `file:line`.
@@ -185,6 +185,15 @@ needs the why. Write the paragraph, then resume the one-line format.
 35. **UI / error messages** — Are user-visible messages clear, actionable, and tested?
 36. **Automated vs human review split** — Delegate formatting/style to linters; focus human review on design and logic
 
+### Intent
+
+Needs the originating request, ticket, or plan. When none is available, skip this category and say so in the report.
+
+37. **Request coverage** — Does every requirement of the originating request, ticket, or plan have a change in the diff?
+38. **Scope** — Does anything in the diff go beyond that request (scope creep, drive-by refactors, unrequested features)?
+39. **Preserved behaviours** — Is every behaviour the request says to preserve still exercised by a test?
+40. **Slice** — Does each commit land one behaviour end to end ([`plan`](../plan/SKILL.md#rules-for-both-routes)), tested through the public surface ([`tdd`](../tdd/SKILL.md))? Skip when the review target has no commits.
+
 ## Culture
 
 - Share tooling: IDE configs, linter rules, and CI checks should be committed and consistent
@@ -216,84 +225,10 @@ First review with no reviewer threads yet: use the checklist above.
 9. Comments may live on an **earlier** MR/PR while the fix lives in a follow-up.
    Reply and resolve on the one that carries the thread, not the one that carries the code.
 
-### Preview format
+### Preview format and after approval
 
-One row per thread, two tables. **Replies** to existing reviewer threads (main case):
-
-```markdown
-| # | File:line | Discussion | Reviewer comment (verbatim) | Reply | Suggestion | Resolve? |
-|---|---|---|---|---|---|---|
-| 1 | src/Domain/Booking.cs:42 | abc12345 | "Verbatim reviewer comment." | Agreed, null check added | line: `if (booking is null) return NotFound();` | yes |
-| 2 | src/Api/Handler.cs:17 | def67890 | "Verbatim reviewer comment." | Fixed, test still to add | range: one-line summary | no - test missing |
-| 3 | general | 0123abcd | "Verbatim reviewer comment." | Question back to reviewer | none | no - needs @user |
-```
-
-**New comments** on lines with no existing thread:
-
-```markdown
-| # | File:line | Comment | Suggestion |
-|---|---|---|---|
-| 4 | src/Domain/Booking.cs:58 | Same null check as thread 1 applies here | line: one-line summary |
-```
-
-End with **Not addressed:** item, reason.
-
-Column rules:
-- **File:line** is the path and line on the new side of the diff, or `general` for a non-diff thread.
-- **Discussion** is a short id prefix; keep the full id for the write.
-- **Reviewer comment** is quoted verbatim, trimmed with `...` only when long.
-- **Suggestion** is `line`, `range`, or `none`, plus the replacement when it fits one
-  line, otherwise a summary; the full fenced block goes in the markdown file or the
-  note body. The range syntax is forge-specific (see [gitlab.md](gitlab.md) or [github.md](github.md)).
-- **Resolve?** is `yes` for `reply + resolve`, or `no - reason` for `reply only` and
-  `leave open`. It maps to the Disposition below.
-
-Every thread in the preview carries a **Disposition**, whatever the output format.
-It is a required field with exactly one of three values:
-
-| Disposition | Meaning | Write on approval |
-|---|---|---|
-| `reply + resolve` | The comment is answered and the ask is done | reply, then resolve |
-| `reply only` | Answered, but something real is still outstanding — say what | reply, leave open |
-| `leave open` | Needs the user, another person, or a decision — say who or what | nothing |
-
-`reply + resolve` is the normal case for a comment whose ask has landed; defaulting to
-`reply only` to stay safe leaves the user closing threads by hand — the work this flow removes.
-
-When a markdown output is asked, create one section per unresolved thread in
-`<scratchpad>/<change-id>-suggestions.md`, where change-id is the MR iid or PR number:
-
-````markdown
-## 1. src/Domain/Booking.cs:42 - @reviewer  [discussion: abc12345]
-
-> Verbatim reviewer comment.
-
-**Assessment:** what the comment is actually asking, and whether it holds.
-
-**Disposition:** reply + resolve
-
-**Current code** (src/Domain/Booking.cs:40-44):
-```csharp
-<actual lines read from the file>
-```
-
-**Proposed reply** (the fence's range syntax is forge-specific):
-```suggestion
-<replacement for line 42>
-```
-````
-
-End the file with a short **Not addressed** list for anything skipped, with the reason.
-
-Then ask one question: which numbered items to write, taking the previewed dispositions
-as read. Write only those, and resolve exactly the approved `reply + resolve` ones.
-If the user narrows or overrides a disposition in their answer, theirs wins.
-
-### After approval
-
-Post the replies, resolve the approved threads, then verify and report in one message:
-posted note ids, threads now resolved, and threads left open with their disposition's
-reason. Commands: [gitlab.md](gitlab.md) or [github.md](github.md), per the [forge routing rule](../git-conventions/SKILL.md#forge-routing).
+Formats and the post-approval report: [answering.md](answering.md). Read it before
+writing the preview.
 
 ### Red flags - the write is not finished
 

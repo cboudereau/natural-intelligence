@@ -7,6 +7,7 @@ Addresses: [FR2](../DESIGN.md#fr2), [NFR1](../DESIGN.md#nfr1)
 
 ## Problem
 What needs to be decided and why.
+State why the decision passes the admission test: hard to reverse, surprising later, alternatives weighed.
 
 ## Options
 | Option | Pros | Cons |

@@ -22,7 +22,8 @@ command. The project's own files are the source of truth for its commands; the
    Reproduce those commands locally in the same order.
 6. **Repository conventions**: Makefile or justfile targets, project CLAUDE.md,
    CONTRIBUTING, editor configuration, pre-commit configuration. These override tool
-   defaults.
+   defaults. Read GLOSSARY.md at the repo root when present and use its terms. When
+   absent, proceed silently and never create it: the [`plan`](../plan/SKILL.md) skill owns it.
 7. **Test and coverage tooling**: framework, runner, coverage reporter, where reports
    land. Prefer the machine-readable format the toolchain already emits.
 8. **Variant selection**: when one language has several runtimes, toolchain

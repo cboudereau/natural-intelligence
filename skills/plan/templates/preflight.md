@@ -10,8 +10,10 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 - [ ] Acceptance criteria are pass/fail with no subjective language
 - [ ] Time-box is set (split if > 90 min)
 - [ ] Dependencies on other tasks are declared
+- [ ] Each task's named test enters through the public surface ([`tdd`](../../tdd/SKILL.md)), or its Slice is `prefactoring`, `expand`, `migrate`, `contract`, or `whole — <reason>`
 - [ ] Every planned domain type appears in the requirement traceability table
 - [ ] Task is `downhill` — no uncertainty remains
+- [ ] `Fit: closed` — a fresh subagent on a cheaper model finishes the task from its text alone; an `open` task goes back to Phase 3 or 4a before autopilot starts
 
 **Constitution completeness**:
 - [ ] Domain model covers every planned domain type in diagram and traceability table
@@ -35,7 +37,7 @@ Copy this file to `docs/workspace/<NAME>/PREFLIGHT.md` at Phase 4c, tick every b
 
 If any item fails, fix it before proceeding.
 
-**Plan commit**: once the pre-flight gate passes, commit all workspace artifacts (`docs/workspace/<NAME>/`) with message:
+**Plan commit**: once the pre-flight gate passes, commit all workspace artifacts (`docs/workspace/<NAME>/`) at once, in every context, without asking; the human's "go" is for Phase 5, not for this commit. Message:
 
 ```
 docs(<NAME>): plan ready for autopilot

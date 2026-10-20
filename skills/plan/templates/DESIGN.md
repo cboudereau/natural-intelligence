@@ -51,12 +51,15 @@ Each row that yields a rule becomes an error-path invariant in the TASKS.md
 transformations table, so error handling gets tests too.
 
 ## Design
-Architecture, C4 diagrams (levels 1-2 via Mermaid), data model, interfaces.
+Architecture, data model, interfaces. Diagrams scale with the system, not with the template.
 
-- Mark **trust boundaries** on the C4 diagram. For each boundary a flow crosses,
-  run a STRIDE pass and record the resulting constraints here or in an ADR.
-- Add one Mermaid `sequenceDiagram` per critical flow — the class diagram shows
-  structure, not ordering.
+- Draw a C4 diagram (levels 1-2, Mermaid) only when the system has more than one container.
+- Run a STRIDE pass only for a flow that crosses a trust boundary; mark the boundary on
+  the diagram. Record the resulting constraints here or in an ADR.
+- Add one Mermaid `sequenceDiagram` per flow the design names critical, and none for the rest.
+
+A one-container design marks the C4 diagram N/A; the STRIDE pass and the sequence
+diagrams follow their own conditions above.
 
 Decisions:
 - [Decision title](./adrs/decision-name.md)

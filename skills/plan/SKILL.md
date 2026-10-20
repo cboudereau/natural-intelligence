@@ -27,7 +27,9 @@ Assess the work against three triggers, in order:
 3. **Hard-to-reverse decision?** Persistence, protocol, public contract → that
    decision gets an ADR whatever the route; the route still follows trigger 2. On the
    small route an additive flag, a CLI option, or an output shape is a decision bullet,
-   not an ADR. The small route writes an ADR only for persistence or a wire protocol.
+   not an ADR. The small route writes an ADR only for persistence or a wire protocol,
+   the small route's shortcut. Both pass the admission test in
+   [complex-plan.md](complex-plan.md#phase-3--write-adrs).
 
 None of the above → small plan: load [small-plan.md](small-plan.md) and produce one
 document. Heavy scaffolding on a small task reads as noise to the human and costs
@@ -45,6 +47,15 @@ blocked by a genuine externality the codebase and brief cannot resolve (a creden
 an unstated business rule). Ratification questions in a delegated context burn turns
 without adding information.
 
+**A task is a behaviour, not a layer.** Every task is one slice: one behaviour across
+every layer it touches (Hunt and Thomas, *The Pragmatic Programmer*, "Tracer Bullets").
+The first task is the walking skeleton: the thinnest path through the public surface,
+end to end. Every later task widens it by one behaviour. Build layer by layer only when
+nothing can run before the whole exists. Four cases: a protocol wrong until complete, a
+cutover with no dual path, no partial delivery, a hardware bring-up. Then the task says
+`Slice: whole — <reason>` and a reviewer may contest the reason. The Slice values and
+their sequence live in [complex-plan.md](complex-plan.md#phase-4b--task-specification).
+
 **The machine layer never disappears, it shrinks.** Every plan ends with resumable
 state on disk: the full TASKS.md checklist on the complex route, the minimal task
 section on the small route. A plan an agent cannot resume from is a chat message,
@@ -53,6 +64,17 @@ not a plan.
 **Driving an implementation**: the [`tdd`](../tdd/SKILL.md) red run is a gate, not a
 suggestion — implementation starts after the failing run is captured, and the final
 report quotes it.
+
+**One task at a time, closed by its commit.** Take the first unchecked task. Write its
+test, capture the red run, make it green, tick its box, commit it. Only then open the
+next task. Never write every test first, never tick boxes in a batch at the end. The
+commit is part of the task, in every context: a headless or delegated run commits
+without asking, and the final report lists one commit per task. Message and staging
+rules live in [`git-conventions`](../git-conventions/SKILL.md#rules). Each task's
+implementation covers its own test only ([`tdd`](../tdd/SKILL.md) rule 5), so the
+next task goes red. When a test still passes on its first run, the previous slice
+overshot: fold that test into the previous task's commit, tick the task, and name
+the overshoot in the report. Never commit a tests-only slice.
 
 ## Boundaries
 

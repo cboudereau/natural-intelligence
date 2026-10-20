@@ -37,11 +37,15 @@ When the chain cannot be read from the stack trace, log before the dangerous cal
 after it fails:
 
 ```ts
-console.error('DEBUG git init', { directory, cwd: process.cwd(), stack: new Error().stack });
+console.error('[DEBUG-7f3a] git init', { directory, cwd: process.cwd(), stack: new Error().stack });
 ```
 
 Use `console.error` in tests: loggers are often silenced. Include directory, cwd,
 environment variables, and a timestamp. Run once, grep the marker, read the stack.
+
+Tag every temporary log line with one prefix chosen for this investigation, such as
+`[DEBUG-7f3a]`. Cleanup is then one search for the prefix. An untagged probe gets
+forgotten and ships.
 
 ## Test pollution
 
