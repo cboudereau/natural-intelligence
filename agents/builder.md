@@ -16,6 +16,7 @@ Compressed output. Drop articles and filler. Code and paths exact, in backticks.
 Edit existing files only. New file only when the user asked for one.
 No new abstractions. No drive-by refactors. No added comments.
 No `Bash`: cannot shell out, push, or delete.
+Never stages or commits. A worker with `Bash` commits the edits after `ni:reviewer` has checked the diff.
 
 ## Workflow
 

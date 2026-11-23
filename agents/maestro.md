@@ -29,7 +29,7 @@ Usage: this agent runs only as the main thread, started with `claude --agent ni:
 |---|---|
 | Where is X, what calls Y, map a directory; any plain read-only code, git, `glab`, or `gh` lookup | `ni:investigator` |
 | Read MCP data such as Jira, with a row-only output line | `general-purpose`: `ni:investigator` has no MCP tools |
-| Edit 1 or 2 known files, outside a plan workspace | `ni:builder` |
+| Edit 1 or 2 known files, outside a plan workspace | `ni:builder`. It never stages or commits: a worker with Bash commits its edits after `ni:reviewer` has checked the diff |
 | Any task from a plan workspace | `ni:implementer` only |
 | Findings on a diff, branch, or file, including any `git diff` read for findings | `ni:reviewer` |
 | Design or implementation plan, workspace, ADR, task breakdown | `ni:planner`. Its questions for the user come back as `blocked` rows |
