@@ -192,6 +192,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 
 - `ni:orchestrator`: new main-thread agent; started with `claude --agent ni:orchestrator`, it holds the conversation with delegation tools only, routes every read, edit, command, and review to a subagent, and keeps one receipt row per worker.
 - `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); stacked MRs merge bottom-up, the child without squash.
+- `software-engineer`: onboarding detects the host (macOS, Linux, Windows, or WSL) and applies the project's development notes for it, one section per host in one document; WSL notes seeded with the Windows host tools.
 
 ### 2.6.0
 
