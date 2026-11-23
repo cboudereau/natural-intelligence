@@ -59,6 +59,11 @@ Monitor tool, or foreground polling loops of 170 seconds or less. Observed in a 
 a foreground `sleep 600` is refused, and commands move to the background after about
 180 seconds. The worker never hands back while it waits.
 
+A brief whose precondition is "this content is already on the target" asks for proof by
+comparing trees once a squash merge, or a merge of the target, has happened: an empty
+`git diff <a> <b>`, or the GitLab compare with `straight=true`. Never ahead or behind
+counts, and never the default compare.
+
 Not: `fix the login bug`
 Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: handler at src/auth/login.ts:42. Output: status line, failing test line, passing test line.`
 

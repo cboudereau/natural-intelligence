@@ -94,6 +94,16 @@ merges first, into the target.
 - Fix: merge the target branch into the child and push without force, or fold the
   child into the next MR.
 
+After a squash merge, or a merge of the target into a branch, the commits no longer show
+whether content reached the target. Prove it by comparing trees: `git diff` prints
+nothing, or the compare with `straight=true` returns no diffs. Never rely on ahead or
+behind counts, or on the default compare, which diffs from the merge base.
+
+```bash
+git diff <target> <branch>
+glab api "projects/:id/repository/compare?from=<target>&to=<branch>&straight=true" --jq ".diffs | length"
+```
+
 ## Rebase / branch update
 
 Forge only, never local rebase plus force-push:
