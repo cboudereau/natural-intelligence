@@ -43,7 +43,9 @@ Local `git diff` covers uncommitted work only.
 ## Review verdict
 
 Submit the verdict of the [`code-review`](../code-review/SKILL.md#verdict) skill.
-Write the summary to `verdict.md` in the scratchpad with the Write tool first.
+Write the summary to `<scratchpad>/verdict.md`, in the session scratchpad, with the Write
+tool first. When delegated, a worker with Write does it, such as `general-purpose`:
+`ni:reviewer` has no Write tool.
 
 ```bash
 glab mr approve <iid>
