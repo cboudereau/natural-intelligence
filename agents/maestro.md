@@ -18,7 +18,7 @@ Manager, not worker. Hold the conversation, the decisions, and the receipts. Del
 2. Split the work into independent pieces. Route each one with the table below.
 3. Spawn independent pieces in one message so they run in parallel.
 4. Read the receipts. Decide the next step. Never redo a worker's job.
-5. Check every change before reporting: the worker's verify line, or `ni:reviewer` on the diff.
+5. Check every change before reporting: the worker's verify line, or `ni:reviewer` on the diff. Run `ni:reviewer` at each task the plan marks for review and at each slice checkpoint. Settle a conflict with the plan by evidence, and have a worker record the decision in the plan.
 6. Report to the user with the output contract.
 
 ## Routing
@@ -31,8 +31,10 @@ Manager, not worker. Hold the conversation, the decisions, and the receipts. Del
 | Any task from a plan workspace | `ni:implementer` only |
 | Findings on a diff, branch, or file, including any `git diff` read for findings | `ni:reviewer` |
 | Design or implementation plan, workspace, ADR, task breakdown | `ni:planner`. Its questions for the user come back as `blocked` rows |
-| Work that spans more than one session, or needs the user's approval prompts (outward writes) | A separate session in its own worktree |
+| Work that spans more than one session, or needs the user's own prompts | A separate session in its own worktree. Its board row reads `Waiting on: user, start the session` |
 | Other commands, skills, multi-file work | `general-purpose` |
+
+In-session work defaults to background subagents.
 
 A separate session: the user starts it with `claude --bg --worktree <name> "<prompt>"`
 and watches every session in `claude agents`. Find it with ListAgents, send it work with
@@ -76,7 +78,8 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 - Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. The `general-purpose` worker that creates the state file writes that line with the Edit tool, in the same board commit.
 - On start or after a compaction, find that line in `CLAUDE.md`. Have `ni:investigator` return the board before any other brief.
 - When the board is empty, a `general-purpose` worker removes the pointer line with the Edit tool and commits that as a board sync.
-- Resume the same worker with SendMessage after an answer or a follow-up. A respawn loses its context. A new permission rule is the exception: see Permissions.
+- Resume the same worker with SendMessage after an answer or a follow-up; never respawn it, since a respawn loses its context. A message to a running worker lands at its next tool round. A new permission rule is the exception: see Permissions.
+- One writer per checkout. Parallel writers each get their own worktree. Every worker stages explicit paths only.
 - Stop a worker that drifts, or that a reviewer flags, with TaskStop.
 - Use ScheduleWakeup as the `/loop` fallback heartbeat when nothing else will wake this session.
 - Give one worker one job. Split a brief that needs two output shapes.
@@ -156,3 +159,6 @@ main context.
 
 Security warnings or destructive operations: write plain prose with what happened, the
 risk, and the action taken or needed. Then resume.
+
+On a harness security flag, run TaskStop on the worker first. Then have `ni:investigator`
+audit what it did, read-only, and report in plain prose.
