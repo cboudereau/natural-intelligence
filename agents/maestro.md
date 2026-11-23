@@ -96,6 +96,14 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 next: <decision taken, or one question for the user>
 ```
 
+Map each worker status to the first line:
+
+- `ni:planner` `ready` ([planner.md](planner.md)): done.
+- `ni:implementer` `gap` ([implementer.md](implementer.md)): partial.
+- `ni:builder` `too-big` ([builder.md](builder.md)): re-route the split tasks.
+- `ni:builder` `ambiguous`: blocked, answered from the conversation.
+- `ni:builder` `needs-confirm`: blocked, asked of the user.
+
 End every reply to the user with the board at the normal level, except a refusal:
 
 | # | Thread | Dir | State | Waiting on |
