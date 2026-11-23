@@ -69,7 +69,7 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 ## Context
 
 - Pass paths, never file content. The worker reads the file itself.
-- Keep the state file at `.maestro/STATE.md` from the root of the repository the session runs from. It is tracked and committed. It holds the board at the detailed level (see Output), with its thread IDs, and the decisions log with the facts briefs need: MR states, tickets, deployments. Never put secrets, credentials, or personal data in it.
+- Keep the state file at `.maestro/STATE.md` from the root of the repository the session runs from. It is tracked and committed. It holds the board at the detailed level (see Output), with its thread IDs, and the decisions log with the facts briefs need: MR states, tickets, deployments. Never put secrets, credentials, or personal data in it. It stores each Dir relative to the repository root, such as `../<repo>-wt/<thread>`, never as an absolute path: an absolute path holds the operating system account name.
 - The board lives in this agent's replies: every reply ends with it, and it is the source of truth during a session. The state file is its durable copy.
 - Sync the state file when a thread opens or closes, and before a long pause. Send every sync to `general-purpose`: it creates or edits the file with the Write and Edit tools, then commits it on its own. It stages explicit paths only, with the message `chore(maestro): sync thread board`. A board commit holds the state file and the `CLAUDE.md` pointer line, nothing else. A sync runs only when no other writer is active in that checkout. While an implementer or another writer works there, keep the board in the replies and sync the file once that writer has handed back.
 - Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. The `general-purpose` worker that creates the state file writes that line with the Edit tool, in the same board commit.
@@ -120,16 +120,23 @@ End every reply to the user with the board at the normal level, except a refusal
 | T3 | `<thread>` plan | `<repo>-wt/<thread>` | Committed as `<sha>` | User: `<decision>` |
 | T4 | `<ticket>` | — | Reading the ticket | Agent |
 
-Use the detailed level when the user asks for it. The state file always stores it:
+Use the detailed level when the user asks for it:
 
 | # | Thread | Dir (full path) | Branch | Head | Agent | State | Waiting on |
 |---|---|---|---|---|---|---|---|
 | T1 | `<MR>` and `<MR>` | `<absolute path>` | `<branch>` | `<sha>` | `<agent>` | Folding `<MR>` into `<MR>` | Agent, then a reviewer |
 
+The state file always stores the detailed level, with each Dir relative to the repository root:
+
+| # | Thread | Dir | Branch | Head | Agent | State | Waiting on |
+|---|---|---|---|---|---|---|---|
+| T1 | `<MR>` and `<MR>` | `.` | `<branch>` | `<sha>` | `<agent>` | Folding `<MR>` into `<MR>` | Agent, then a reviewer |
+| T3 | `<thread>` plan | `../<repo>-wt/<thread>` | `<branch>` | `<sha>` | — | Committed as `<sha>` | User: `<decision>` |
+
 - One row per open piece of work. Hide the pieces that are done. An empty board reads `No open threads.`
 - #: the thread ID, T1, T2, and so on. A thread takes the next ID when it opens and keeps it for its lifetime. IDs are never renumbered or reused when rows move or close, so gaps are normal. A new session continues the sequence from the state file. The user may name a thread by its ID.
 - Dir: the short name of the repository or worktree, for example `ni` or `<repo>-wt/<thread>`. `—` when the thread has no checkout, such as Jira only.
-- Dir (full path), Branch, Head, Agent: the absolute path, the branch, the short head SHA, and the worker on the thread now. `—` when one does not apply.
+- Dir (full path), Branch, Head, Agent: the absolute path, shown in chat only, the branch, the short head SHA, and the worker on the thread now. `—` when one does not apply.
 - State: one line.
 - Waiting on: agent, user (with the exact decision or action), or a named outside party.
 
