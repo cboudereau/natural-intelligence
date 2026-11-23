@@ -7,8 +7,8 @@ command. The project's own files are the source of truth for its commands; the
 ## Checklist
 
 1. **Host**: operating system, shell in use, architecture. Detect it: `uname -s` names
-   macOS (`Darwin`) or Linux; Linux is WSL when `/proc/version` contains `microsoft`;
-   Windows sets `OS=Windows_NT`. Then apply the project's notes for that host
+   macOS (`Darwin`) or Linux; Linux is WSL when `grep -qi microsoft /proc/version`
+   succeeds; Windows sets `OS=Windows_NT`. Then apply the project's notes for that host
    ([Host notes](#host-notes)). Decides which command forms apply and whether the
    project's toolchain can run here at all.
 2. **Project stack**: languages, frameworks, runtime versions. Read the marker files at
@@ -42,17 +42,17 @@ command. The project's own files are the source of truth for its commands; the
 ## Host notes
 
 Read the project's DEVELOPMENT.md, or its equivalent such as CONTRIBUTING.md, and
-apply the section for the host. One document holds one section per host: macOS, Linux,
-Windows, and Windows with WSL; never one file per host. When the project has no such
-document or no section for the host, record what you learn in a host section of the
-project's document after asking the user, or in your local notes otherwise. Seed:
+apply the row for the host. One document holds one table with one row per host:
+macOS, Linux, Windows, and Windows with WSL; never one file per host. When the project
+has no such document or no row for the host, record what you learn in that table after
+asking the user, or in your local notes otherwise. Seed:
 
 <!-- platform-table -->
 | Host | Notes |
 |---|---|
-| macOS, Linux | Native tools. |
-| Windows | Native tools; shell forms in the table below. |
-| Windows with WSL | Run the Windows host tools, which carry the Windows credentials and toolchain: `git.exe` for fetch and push (plain `git fetch` can fail with an access error), `dotnet.exe`, and `npm.cmd` through `cmd.exe /c` (`npm.exe` is not on the WSL PATH). Start Docker Desktop before tests that need containers. |
+| macOS, Linux (not WSL) | Native tools. |
+| Windows | Native tools; shell forms in [Shell rules](#shell-rules). |
+| Windows with WSL | Run the Windows host tools, which carry the Windows credentials and toolchain: `git.exe` for fetch and push (plain `git fetch` can fail with an access error), `dotnet.exe`, and `npm.cmd` through `cmd.exe /c`, which a Windows Node install provides. Run `cmd.exe` and `.exe` tools from a working directory on a Windows drive (`/mnt/c/...`): a `\\wsl$` path fails. Start Docker Desktop before tests that need containers. |
 
 ## Shell rules
 
