@@ -296,20 +296,29 @@ A worker cannot show a permission prompt, so an outward call it needs fails unle
 {
   "permissions": {
     "allow": [
-      "Bash(git push:*)",
-      "Bash(glab mr merge:*)",
-      "Bash(glab mr approve:*)",
-      "mcp__atlassian__editJiraIssue"
+      "Bash(git push *)",
+      "Bash(git.exe push *)",
+      "Bash(glab mr merge *)",
+      "Bash(glab mr approve *)",
+      "mcp__claude_ai_Atlassian_MCP__editJiraIssue"
     ],
     "ask": [
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(glab mr rebase:*)"
+      "Bash(glab mr rebase *)"
+    ],
+    "deny": [
+      "Bash(git push *--force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * -f*)",
+      "Bash(git.exe push *--force*)",
+      "Bash(git.exe push -f*)",
+      "Bash(git.exe push * -f*)"
     ]
   }
 }
 ```
-A prefix rule such as `Bash(git push:*)` also matches a force flag placed later in the command. Keep force pushes, history rewrites, server-side rebases of shared branches, and production deployments under ask or deny, and approve each one.
+Copy each MCP tool name exactly from the worker's denial; the server part differs between setups.
+
+Claude Code checks deny rules first, then ask, then allow, and a `*` can sit anywhere in a Bash rule ([permissions docs](https://code.claude.com/docs/en/permissions.md#wildcard-patterns)). The deny lines above therefore refuse `--force`, `--force-with-lease`, and `-f` in any position after `push`, even though the allow line also matches. They still miss a `+` refspec such as `git push origin +main`, combined short flags such as `-uf`, and a push written another way, such as `git -C . push`. These rules reduce the risk; they are not a boundary. Keep history rewrites, server-side rebases of shared branches, and production deployments under ask or deny, and approve each one.
 
 ## Latest benchmark
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)

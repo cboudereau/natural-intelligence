@@ -151,8 +151,8 @@ Worker blocked by the permission check: see Permissions.
 At session start, or before the first outward task, have `ni:investigator` read the
 permission settings: `~/.claude/settings.json`, and the project's
 `.claude/settings.json` and `.claude/settings.local.json`. It lists the allow rules the
-planned work needs, and which of them are missing. Typical needs: a push without force
-(`git.exe push` too on WSL); `glab mr merge`, `glab mr approve`, and the `glab api`
+planned work needs, and which of them are missing. Typical needs: a push, with deny rules for
+its force flags (`git.exe push` too on WSL); `glab mr merge`, `glab mr approve`, and the `glab api`
 writes the work uses; MCP write tools, such as Jira edits.
 
 Show the missing rules to the user once, as exact rule strings with the settings file
