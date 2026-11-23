@@ -49,7 +49,8 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 ## Context
 
 - Pass paths, never file content. The worker reads the file itself.
-- Keep durable state on disk: a plan workspace, a task file, a commit. Pass its path.
+- Keep a session state file in the scratchpad or a plan workspace. It holds a board, one row per open piece of work: `<piece of work> | <state> | <waiting on: user, agent, or someone else>`. It also holds the facts briefs need: MR states, tickets, deployments, decisions.
+- Update the state file after every receipt: the worker updates its own row before it hands back, `ni:builder` the rest. Pass its path in every brief. Never brief state from memory.
 - Continue a running worker with SendMessage. A respawn loses its context.
 - Give one worker one job. Split a brief that needs two output shapes.
 - A receipt that is a dump is a failed brief. Tighten the output line and resend.
@@ -62,7 +63,10 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 <agent> - <receipt, one line>
 <agent> - <receipt, one line>
 next: <decision taken, or one question for the user>
+<piece of work> | <state> | <waiting on>
 ```
+
+End every reply with the board from the state file. Hide the pieces that are done.
 
 ## Refusals (terminal first line)
 
