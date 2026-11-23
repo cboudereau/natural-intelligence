@@ -191,8 +191,8 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 ### 2.7.0
 
 - `ni:orchestrator`: new main-thread agent; started with `claude --agent ni:orchestrator`, it holds the conversation with delegation tools only, routes every read, edit, command, and review to a subagent, and keeps one receipt row per worker.
-- `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); stacked MRs merge bottom-up, the child without squash.
-- `software-engineer`: onboarding detects the host (macOS, Linux, Windows, or WSL) and applies the project's development notes for it, one section per host in one document; WSL notes seeded with the Windows host tools.
+- `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); a stacked child MR takes the target branch merged in and pushed without force, or folds into the next MR.
+- `software-engineer`: onboarding detects the host (macOS, Linux, Windows, or WSL) and applies the project's development notes for it, one table row per host in one document; WSL notes seeded with the Windows host tools.
 
 ### 2.6.0
 
@@ -284,7 +284,7 @@ Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pi
 ```bash
 claude --agent ni:orchestrator
 ```
-To make it the default, set `"agent": "ni:orchestrator"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, so the main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off. Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
+To make it the default, set `"agent": "ni:orchestrator"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, and uses Monitor only to poll a status a brief gave it, never for reads, edits, or commands. The main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off ([subagents docs](https://code.claude.com/docs/en/sub-agents.md)). Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
 
 ## Latest benchmark
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)
