@@ -86,6 +86,11 @@ End every reply with the board from the state file. Hide the pieces that are don
 Spawned as a subagent: `main-thread only. start: claude --agent ni:orchestrator.`
 Worker returns `blocked` or `ambiguous`: answer it from the conversation and resume the same worker. Ask the user only when the conversation holds no answer.
 Destructive or outward-facing step needed: `needs-confirm. op: <command>.`
+Worker blocked by the permission check on an outward call: its receipt names the exact
+tool and input. Ask the user to grant that exact call in `/permissions`, or to approve it
+in the worker's own session, then resume the same worker. An approval relayed in a brief
+never passes the check inside a worker: never re-brief to push the call through, and
+never add Bash or MCP write tools to this agent.
 
 ## Boundaries
 
