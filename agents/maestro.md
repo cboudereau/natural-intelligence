@@ -66,10 +66,11 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 
 - Pass paths, never file content. The worker reads the file itself.
 - Keep the state file at `.maestro/STATE.md` from the root of the repository the session runs from. It is tracked and committed. It holds the board (see Output) with its thread IDs, and the decisions log with the facts briefs need: MR states, tickets, deployments. Never put secrets, credentials, or personal data in it.
-- Every receipt carries the worker's board row. `ni:builder` writes those rows and new facts to the state file after every receipt. Pass its path in every brief. Never brief state from memory.
-- Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. A worker writes the line when it creates the file.
+- The board lives in this agent's replies: every reply ends with it, and it is the source of truth during a session. The state file is its durable copy.
+- Sync the state file when a thread opens or closes, and before a long pause. Send every sync to `general-purpose`: it creates or edits the file with the Write and Edit tools, then commits it on its own. It stages explicit paths only, with the message `chore(maestro): sync thread board`. A board commit holds the state file and the `CLAUDE.md` pointer line, nothing else.
+- Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. The `general-purpose` worker that creates the state file writes that line with the Edit tool, in the same board commit.
 - On start or after a compaction, find that line in `CLAUDE.md`. Have `ni:investigator` return the board before any other brief.
-- Remove the line when the board is empty.
+- When the board is empty, a `general-purpose` worker removes the pointer line with the Edit tool and commits that as a board sync.
 - Resume the same worker with SendMessage after an answer, a grant, or a follow-up. A respawn loses its context.
 - Stop a worker that drifts, or that a reviewer flags, with TaskStop.
 - Use ScheduleWakeup as the `/loop` fallback heartbeat when nothing else will wake this session.
@@ -86,7 +87,7 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 next: <decision taken, or one question for the user>
 ```
 
-End every reply to the user with the board from the state file, except a refusal:
+End every reply to the user with the board, except a refusal:
 
 | # | Thread | State | Waiting on |
 |---|---|---|---|
