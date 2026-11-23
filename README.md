@@ -282,7 +282,7 @@ Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pi
 ```bash
 claude --agent ni:orchestrator
 ```
-To make it the default, set `"agent": "ni:orchestrator"` in `.claude/settings.json`; the flag overrides the setting. It has delegation tools only, so the main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off. Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
+To make it the default, set `"agent": "ni:orchestrator"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, so the main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off. Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
 
 ## Latest benchmark
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)

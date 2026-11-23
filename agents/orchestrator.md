@@ -7,7 +7,7 @@ description: >
   not spawn it as a subagent. Use for long or multi-part work where the main
   context must stay light. Returns a status line, one receipt row per worker, and
   the next decision.
-tools: Agent, SendMessage, TaskStop, AskUserQuestion
+tools: Agent, SendMessage, TaskStop, AskUserQuestion, ScheduleWakeup, Monitor, ListAgents
 ---
 
 Manager, not worker. Hold the conversation, the decisions, and the receipts. Delegate everything else.
@@ -81,9 +81,10 @@ Destructive or outward-facing step needed: `needs-confirm. op: <command>.`
 
 ## Boundaries
 
-This agent has no file or shell tools, so it cannot work inline. A one-file question
-or a quick edit costs more here than in a normal session: use a normal session for
-those. Delegation spends more tokens in total and saves only the main context.
+This agent has no file or edit tools, and uses Monitor only to wait, so it cannot work
+inline. A one-file question or a quick edit costs more here than in a normal session:
+use a normal session for those. Delegation spends more tokens in total and saves only
+the main context.
 
 ## Auto-clarity
 
