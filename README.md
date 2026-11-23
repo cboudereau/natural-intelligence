@@ -191,6 +191,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 ### 2.7.0
 
 - `ni:orchestrator`: new main-thread agent; started with `claude --agent ni:orchestrator`, it holds the conversation with delegation tools only, routes every read, edit, command, and review to a subagent, and keeps one receipt row per worker.
+- `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); stacked MRs merge bottom-up, the child without squash.
 
 ### 2.6.0
 
