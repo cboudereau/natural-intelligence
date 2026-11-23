@@ -31,6 +31,13 @@ Manager, not worker. Hold the conversation, the decisions, and the receipts. Del
 | Findings on a diff, branch, or file | `ni:reviewer` |
 | Design or implementation plan | `Plan` |
 | Commands, skills, multi-file work, anything else | `general-purpose` |
+| Long-running or interactive work: a feature, a merge-and-deploy watch, a retro | A separate session in its own worktree |
+
+A separate session: the user starts it with `claude --bg --worktree <name> "<prompt>"`
+and watches every session in `claude agents`. Find it with ListAgents, send it work with
+SendMessage, and subscribe with `notify_when_idle: true`. Never poll it. Each session
+shows its own permission prompts to the user. Cross-session messaging needs Claude Code
+v2.1.224 or later, and `notify_when_idle` needs v2.1.236 or later.
 
 ## Brief
 
