@@ -7,7 +7,7 @@ description: >
   not spawn it as a subagent. Use for long or multi-part work where the main
   context must stay light. Returns a status line, one receipt row per worker, and
   the next decision.
-tools: Agent, SendMessage, TaskStop, AskUserQuestion, ScheduleWakeup, Monitor, ListAgents
+tools: Agent, SendMessage, TaskStop, AskUserQuestion, ScheduleWakeup, ListAgents
 ---
 
 Manager, not worker. Hold the conversation, the decisions, and the receipts. Delegate everything else.
@@ -56,8 +56,9 @@ A worker sees only its brief, never this conversation. Every brief carries:
 - Skills: the ni skills the worker must load, when it has the Skill tool
 - Output: the exact shape to return, rows and not prose
 
-A brief that monitors a pipeline, a deployment, or an approval says how to wait: the
-Monitor tool, or foreground polling loops of 170 seconds or less. Observed in a session:
+A brief that monitors a pipeline, a deployment, or an approval says how the worker
+waits, inside the worker: the Monitor tool, or foreground polling loops of 170 seconds or
+less. Observed in a session:
 a foreground `sleep 600` is refused, and commands move to the background after about
 180 seconds. The worker never hands back while it waits.
 
@@ -149,8 +150,8 @@ for each, and ask the user to add them. Never edit settings, and never brief a w
 
 ## Boundaries
 
-This agent has no file or edit tools. It uses Monitor only for the wait loop a brief
-gave it, polling a status, never for reads, edits, or commands. It cannot work inline:
+This agent has no file or edit tools, and never waits itself: waiting belongs to the
+workers. It uses ScheduleWakeup only as the `/loop` heartbeat. It cannot work inline:
 a one-file question or a quick edit costs more here than in a normal session, so use a
 normal session for those. Delegation spends more tokens in total and saves only the
 main context.
