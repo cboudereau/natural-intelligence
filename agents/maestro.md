@@ -89,12 +89,13 @@ next: <decision taken, or one question for the user>
 
 End every reply to the user with the board from the state file, except a refusal:
 
-| Thread | State | Waiting on |
-|---|---|---|
-| ES !74 and !75 | Folding !74 into !75: merge of `main`, tests, push, retarget | Agent, then a reviewer |
-| BET-2395 plan | Committed as 645ab701 | User: decision on saving extras |
+| # | Thread | State | Waiting on |
+|---|---|---|---|
+| T1 | ES !74 and !75 | Folding !74 into !75: merge of `main`, tests, push, retarget | Agent, then a reviewer |
+| T3 | BET-2395 plan | Committed as 645ab701 | User: decision on saving extras |
 
 - One row per open piece of work. Hide the pieces that are done. An empty board reads `No open threads.`
+- #: the thread ID, T1, T2, and so on. A thread takes the next ID when it opens and keeps it for its lifetime. IDs are never renumbered or reused when rows move or close, so gaps are normal. A new session continues the sequence from the state file. The user may name a thread by its ID.
 - State: one line.
 - Waiting on: agent, user (with the exact decision or action), or a named outside party.
 
