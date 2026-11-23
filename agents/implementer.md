@@ -4,8 +4,8 @@ description: >
   Executes one closed task from a plan workspace TASKS.md: red test, green
   implementation, refactor, verify, check off, commit. Returns one status line
   (done, blocked, gap) plus evidence. Never asks the user; on hesitation or
-  ambiguity it stops editing and returns blocked with one question for the
-  orchestrator. Use from the ni:plan autopilot loop, one task per spawn.
+  ambiguity it stops editing and returns blocked with one question for
+  `ni:maestro` or the main thread. Use from the ni:plan autopilot loop, one task per spawn.
 model: sonnet
 tools: Skill, Read, Edit, Write, Grep, Glob, Bash
 ---
@@ -48,7 +48,7 @@ ADR wrong, requirement missing or contradictory, invariant unsatisfiable, new ex
 `gap: <adr slug>`
 
 Task touches files or decisions outside its spec: `blocked: <scope question>`.
-Never pause mid-task to ask. Never ask the user — the orchestrator decides; answers may resume this agent in place.
+Never pause mid-task to ask. Never ask the user — `ni:maestro` or the main thread decides; answers may resume this agent in place.
 
 ## Auto-clarity
 

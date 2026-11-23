@@ -43,12 +43,12 @@ Local `git diff` covers uncommitted work only.
 ## Review verdict
 
 Submit the verdict of the [`code-review`](../code-review/SKILL.md#verdict) skill.
-Write the summary to `verdict.md` with the Write tool first.
+Write the summary to `verdict.md` in the scratchpad with the Write tool first.
 
 ```bash
 glab mr approve <iid>
 glab mr revoke <iid>
-glab api --method POST "projects/:id/merge_requests/<iid>/notes" -F body=@verdict.md
+glab api --method POST "projects/:id/merge_requests/<iid>/notes" -F body=@<scratchpad>/verdict.md
 ```
 
 `approve` runs the first line. `changes required` posts the summary note, and runs

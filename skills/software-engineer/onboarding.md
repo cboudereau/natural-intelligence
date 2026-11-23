@@ -44,8 +44,8 @@ command. The project's own files are the source of truth for its commands; the
 Read the project's DEVELOPMENT.md, or its equivalent such as CONTRIBUTING.md, and
 apply the row for the host. One document holds one table with one row per host:
 macOS, Linux, Windows, and Windows with WSL; never one file per host. When the project
-has no such document or no row for the host, record what you learn in that table after
-asking the user, or in your local notes otherwise. Seed:
+has no such document or no row for the host, ask the user, then record what you learn in
+that table. Seed:
 
 <!-- platform-table -->
 | Host | Notes |

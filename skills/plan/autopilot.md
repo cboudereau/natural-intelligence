@@ -15,7 +15,7 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 **Durability invariants** (these make execution compaction- and crash-proof):
 - **Check off a box only when its criterion is green; commit only on success.** A half-done task leaves no checkmark and no commit, so a re-run re-attempts it from clean state (idempotent).
 - **Advance the root `CLAUDE.md` `## Active workspaces` `task N/M` pointer after each task** — it is the durable resume anchor (see [Phase 0](complex-plan.md#phase-0--resume-run-on-every-start)).
-- **The orchestrator re-runs the session checkpoint after each subagent returns** — verifying real green state rather than trusting a subagent's "done" (a subagent can stop mid-task from its own compaction).
+- **The main thread, or `ni:maestro` through a worker, re-runs the session checkpoint after each subagent returns** — verifying real green state rather than trusting a subagent's "done" (a subagent can stop mid-task from its own compaction).
 
 **The orchestrator loop** (documented subagents; the user's "go" at pre-flight is the trigger):
 
@@ -25,7 +25,7 @@ Work through TASKS.md session by session. **Execution is delegated — the orche
 4. On a `blocked` result, decide in a delegated context, record the decision and its reason in the task, then **resume the same implementer with the answer** (SendMessage to the agent, where available — its context survives) or re-spawn fresh as the fallback; otherwise park the task and batch the question for the session checkpoint (see severity 2 below). On a `gap` result, draft/collect the `proposed` ADR, park that task and its dependents, and pick the next independent task (see severity 3 below).
 5. Repeat until the session's tasks are done, then run the session checkpoint and commit.
 
-The loop is driven by the **on-disk checklist**, not conversational memory — so a restart (new session, `/clear`, compaction) resumes by re-reading TASKS.md (Phase 0), not by remembering where it was. Long runs can be paced with [`/loop`](https://code.claude.com/docs/en/scheduled-tasks.md) so the orchestrator wakes, advances one task, and checkpoints. Sessions that must run concurrently can use [worktrees](https://code.claude.com/docs/en/worktrees.md) for isolation.
+The loop is driven by the **on-disk checklist**, not conversational memory — so a restart (new session, `/clear`, compaction) resumes by re-reading TASKS.md (Phase 0), not by remembering where it was. Long runs can be paced with [`/loop`](https://code.claude.com/docs/en/scheduled-tasks.md) so the main thread, or `ni:maestro`, wakes, advances one task, and checkpoints. Sessions that must run concurrently can use [worktrees](https://code.claude.com/docs/en/worktrees.md) for isolation.
 
 **Optional accelerator (research preview)**: where [Dynamic Workflows](https://code.claude.com/docs/en/workflows.md) is available, the same loop can run as one deterministic script — a `for` over tasks, one `agent()` call each, with `resumeFromRunId` replaying completed tasks instantly. This is a portability-optional speed-up; the orchestrator loop above is the baseline and works anywhere subagents do.
 

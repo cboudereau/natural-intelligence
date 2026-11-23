@@ -204,8 +204,8 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 
 ### 2.5.0
 
-- `ni:implementer`: new agent; executes one closed task from a plan workspace (red, green, refactor, verify, check off, commit) on `sonnet` by default, returns `done` / `blocked: <question>` / `gap: <adr slug>` plus evidence, and never asks the user — ambiguity goes back to the orchestrator.
-- `plan`: autopilot Phase 5 spawns `ni:implementer` per task (the agent file owns the per-task contract); on `blocked`, the orchestrator answers and resumes the same implementer where SendMessage is available, re-spawn as fallback.
+- `ni:implementer`: new agent; executes one closed task from a plan workspace (red, green, refactor, verify, check off, commit) on `sonnet` by default, returns `done` / `blocked: <question>` / `gap: <adr slug>` plus evidence, and never asks the user — ambiguity goes back to the calling thread, such as `ni:maestro`.
+- `plan`: autopilot Phase 5 spawns `ni:implementer` per task (the agent file owns the per-task contract); on `blocked`, the calling thread, such as `ni:maestro`, answers and resumes the same implementer where SendMessage is available, re-spawn as fallback.
 
 ### 2.4.1
 
@@ -287,6 +287,8 @@ Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pi
 claude --agent ni:maestro
 ```
 To make it the default, set `"agent": "ni:maestro"` in `.claude/settings.json`; the flag overrides the setting. Its only tools are Agent, SendMessage, TaskStop, AskUserQuestion, ScheduleWakeup, and ListAgents. Workers do the waiting; ScheduleWakeup serves only as the `/loop` heartbeat. The main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off ([subagents docs](https://code.claude.com/docs/en/sub-agents.md)). Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
+
+Note, checked on 2026-11-23: a separate session that `ni:maestro` messages needs Claude Code v2.1.224 or later for cross-session messaging, and v2.1.236 or later for `notify_when_idle`. Sources: [cross-session messaging](https://code.claude.com/docs/en/cross-session-messaging.md), [agent view](https://code.claude.com/docs/en/agent-view.md), and [worktrees](https://code.claude.com/docs/en/worktrees.md).
 
 ### Permissions for delegated work
 A worker cannot show a permission prompt, so an outward call it needs fails unless an allow rule covers it. `ni:maestro` lists the missing rules once at the start; you add them to `~/.claude/settings.json` or the project's `.claude/settings.json`, and it spawns fresh workers, since a rule binds only agents spawned after it. Example only, to adapt to your forge, tools, and host (`git.exe push` on WSL):
