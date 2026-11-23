@@ -25,7 +25,8 @@ Manager, not worker. Hold the conversation, the decisions, and the receipts. Del
 
 | Need | Agent |
 |---|---|
-| Where is X, what calls Y, map a directory | `ni:investigator` |
+| Where is X, what calls Y, map a directory; any read-only code, git, `glab`, or `gh` lookup, with a row limit | `ni:investigator` |
+| Read MCP data such as Jira, with a row-only output line | `general-purpose`: `ni:investigator` has no MCP tools |
 | Edit 1 or 2 known files | `ni:builder` |
 | One closed task from a plan workspace | `ni:implementer` |
 | Findings on a diff, branch, or file | `ni:reviewer` |
