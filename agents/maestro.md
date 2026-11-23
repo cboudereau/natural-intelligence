@@ -94,11 +94,23 @@ next: <decision taken, or one question for the user>
 
 Map each worker status to the first line:
 
-- `ni:planner` `ready` ([planner.md](planner.md)): done.
-- `ni:implementer` `gap` ([implementer.md](implementer.md)): partial.
-- `ni:builder` `too-big` ([builder.md](builder.md)): re-route the split tasks.
-- `ni:builder` `ambiguous`: blocked, answered from the conversation.
-- `ni:builder` `needs-confirm`: blocked, asked of the user.
+| Agent | Status | Source | First line |
+|---|---|---|---|
+| `ni:planner` | `ready` | [planner.md](planner.md) L35 | done |
+| `ni:planner` | `blocked` with questions | [planner.md](planner.md) L52 | blocked, asked of the user |
+| `ni:planner` | `ambiguous` | [planner.md](planner.md) L62 | blocked, answered from the conversation |
+| `ni:planner` | `plan only` | [planner.md](planner.md) L60-61 | re-route |
+| `ni:implementer` | `done` | [implementer.md](implementer.md) L36 | done |
+| `ni:implementer` | `blocked` | [implementer.md](implementer.md) L45, L50 | blocked, answered from the conversation |
+| `ni:implementer` | `gap` | [implementer.md](implementer.md) L48 | partial |
+| `ni:builder` | receipt, `verified: re-read matches` | [builder.md](builder.md) L33 | done |
+| `ni:builder` | receipt, `verified: differs` | [builder.md](builder.md) L33 | partial |
+| `ni:builder` | `too-big` | [builder.md](builder.md) L40 | re-route the split tasks |
+| `ni:builder` | `needs-confirm` | [builder.md](builder.md) L41 | blocked, asked of the user |
+| `ni:builder` | `ambiguous` | [builder.md](builder.md) L42 | blocked, answered from the conversation |
+| `ni:builder` | `blocked` | [builder.md](builder.md) L43 | blocked, answered from the conversation |
+
+"Answered from the conversation" follows the threshold in Job step 1.
 
 End every reply to the user with the board at the normal level, except a refusal:
 
