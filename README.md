@@ -282,7 +282,7 @@ Subagent results land in the main context verbatim, so these five return structu
 Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pick the vanilla agent.
 
 ### Maestro
-`ni:maestro` is not a worker: it runs as the main thread and delegates everything to the agents above. Planning goes to `ni:planner`, plan tasks to `ni:implementer`. It keeps its board of open threads in `.maestro/STATE.md`, committed to the repository, and references it under `## Maestro state` in the project's root `CLAUDE.md`.
+`ni:maestro` is not a worker: it runs as the main thread and delegates everything to the agents above. Planning goes to `ni:planner`, plan tasks to `ni:implementer`. It keeps its board of open threads in `.maestro/STATE.md`, committed to the repository, and references it under `## Maestro state` in the project's root `CLAUDE.md`. Every reply ends with the board at the normal level, one row per thread with its ID and working directory. The detailed level adds the full path, branch, head SHA, and current worker; ask for it at any time, and the state file always stores it.
 ```bash
 claude --agent ni:maestro
 ```
