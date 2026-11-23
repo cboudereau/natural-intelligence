@@ -190,7 +190,8 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 
 ### 2.7.0
 
-- `ni:orchestrator`: new main-thread agent; started with `claude --agent ni:orchestrator`, it holds the conversation with delegation tools only, routes every read, edit, command, and review to a subagent, and keeps one receipt row per worker.
+- `ni:maestro`: new main-thread agent; started with `claude --agent ni:maestro`, it holds the conversation with delegation tools only, routes every read, edit, command, review, and plan to a subagent, and keeps one receipt row per worker. Its board lives in a `maestro.md` state file referenced from the project's root `CLAUDE.md`, so a new session or a compaction resumes from it.
+- `ni:planner`: new agent; runs the `plan` skill in its own context up to the pre-flight gate, returns `ready` or `blocked` with every open question in one receipt, and never implements.
 - `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); a stacked child MR takes the target branch merged in and pushed without force, or folds into the next MR.
 - `software-engineer`: onboarding detects the host (macOS, Linux, Windows, or WSL) and applies the project's development notes for it, one table row per host in one document; WSL notes seeded with the Windows host tools.
 
@@ -268,7 +269,7 @@ User-invoked only; none loads on its own.
 | `/ni:merge-loop` | Merge my MRs or PRs approved by every reviewer in a /loop, report merged and blocked ones |
 
 ## Agents
-Subagent results land in the main context verbatim, so these four return structured one-liners instead of prose.
+Subagent results land in the main context verbatim, so these five return structured one-liners instead of prose.
 
 | Agent | Use for | Returns |
 |---|---|---|
@@ -276,15 +277,16 @@ Subagent results land in the main context verbatim, so these four return structu
 | `ni:builder` | Surgical edit of 1 or 2 known files | Diff receipt, or `too-big.` / `ambiguous.` |
 | `ni:reviewer` | Findings-only review of a diff, branch, or file | `path:L42: severity: problem. fix.` rows |
 | `ni:implementer` | One closed task from a plan workspace (autopilot Phase 5) | `done` / `blocked: question` / `gap: slug` + evidence |
+| `ni:planner` | Running the `ni:plan` skill off the main thread, up to the pre-flight gate | `ready` / `blocked` + workspace path and artefact rows |
 
 Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pick the vanilla agent.
 
-### Orchestrator
-`ni:orchestrator` is not a worker: it runs as the main thread and delegates everything to the agents above.
+### Maestro
+`ni:maestro` is not a worker: it runs as the main thread and delegates everything to the agents above. Planning goes to `ni:planner`, plan tasks to `ni:implementer`. It keeps its board of open threads in a `maestro.md` state file and references it under `## Maestro state` in the project's root `CLAUDE.md`.
 ```bash
-claude --agent ni:orchestrator
+claude --agent ni:maestro
 ```
-To make it the default, set `"agent": "ni:orchestrator"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, and uses Monitor only to poll a status a brief gave it, never for reads, edits, or commands. The main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off ([subagents docs](https://code.claude.com/docs/en/sub-agents.md)). Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
+To make it the default, set `"agent": "ni:maestro"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, and uses Monitor only to poll a status a brief gave it, never for reads, edits, or commands. The main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off ([subagents docs](https://code.claude.com/docs/en/sub-agents.md)). Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
 
 ## Latest benchmark
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)
