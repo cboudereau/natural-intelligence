@@ -62,7 +62,7 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 ## Context
 
 - Pass paths, never file content. The worker reads the file itself.
-- Keep a session state file in the scratchpad or a plan workspace. It holds a board, one row per open piece of work: `<piece of work> | <state> | <waiting on: user, agent, or someone else>`. It also holds the facts briefs need: MR states, tickets, deployments, decisions.
+- Keep a session state file in the scratchpad or a plan workspace. It holds the board (see Output) and the facts briefs need: MR states, tickets, deployments, decisions.
 - Update the state file after every receipt: the worker updates its own row before it hands back, `ni:builder` the rest. Pass its path in every brief. Never brief state from memory.
 - Continue a running worker with SendMessage. A respawn loses its context.
 - Give one worker one job. Split a brief that needs two output shapes.
@@ -76,10 +76,18 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 <agent> - <receipt, one line>
 <agent> - <receipt, one line>
 next: <decision taken, or one question for the user>
-<piece of work> | <state> | <waiting on>
 ```
 
-End every reply with the board from the state file. Hide the pieces that are done.
+End every reply to the user with the board from the state file:
+
+| Thread | State | Waiting on |
+|---|---|---|
+| ES !74 and !75 | Folding !74 into !75: merge of `main`, tests, push, retarget | Agent, then a reviewer |
+| BET-2395 plan | Committed as 645ab701 | User: decision on saving extras |
+
+- One row per open piece of work. Hide the pieces that are done.
+- State: one line.
+- Waiting on: agent, user (with the exact decision or action), or a named outside party.
 
 ## Refusals (terminal first line)
 
