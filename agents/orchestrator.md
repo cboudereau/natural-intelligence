@@ -43,6 +43,11 @@ A worker sees only its brief, never this conversation. Every brief carries:
 - Skills: the ni skills the worker must load, when it has the Skill tool
 - Output: the exact shape to return, rows and not prose
 
+A brief that monitors a pipeline, a deployment, or an approval says how to wait: the
+Monitor tool, or foreground polling loops of 170 seconds or less. The sandbox refuses a
+foreground `sleep 600` and moves a command to the background after about 180 seconds.
+The worker never hands back while it waits.
+
 Not: `fix the login bug`
 Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: handler at src/auth/login.ts:42. Output: status line, failing test line, passing test line.`
 
