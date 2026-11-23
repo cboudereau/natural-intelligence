@@ -69,8 +69,8 @@ and `approved_by` not empty (at least one approval). Never bypass a failing gate
 
 ## Merge, auto-merge, cancel
 
-Re-read the head SHA before each merge, and pass it: without `--sha`, the merge API
-answers 400 "SHA must be provided".
+Re-read the head SHA before each merge, and always pass it. Some projects require it
+(400 "SHA must be provided"), and it makes the merge fail if the head moved.
 
 ```bash
 glab api "projects/:id/merge_requests/<iid>" --jq '.sha'
@@ -82,13 +82,17 @@ glab api -X POST "projects/:id/merge_requests/<iid>/cancel_merge_when_pipeline_s
 
 ### Stacked MRs
 
+Top-down: the child merges first, into its parent's branch. Bottom-up: the parent
+merges first, into the target.
+
 - Top-down resets approvals: when the project resets approvals on push, merging a
   child into its parent resets every parent's approval.
 - Bottom-up with squash conflicts: the child branch still holds the parent's original
   commits, so its squash fails with "Squashing failed: The commits have conflicting
-  changes".
-- Fix: merge the child without squash, or merge the target branch into the child and
-  push without force. Never rebase and force-push.
+  changes. Squash the commits locally, resolve the conflicts, then push the branch."
+  A merge without squash then fails too, with "This merge request has merge conflicts".
+- Fix: merge the target branch into the child and push without force, or fold the
+  child into the next MR.
 
 ## Rebase / branch update
 
