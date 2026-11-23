@@ -190,7 +190,7 @@ The marketplace entry tracks the default branch, so the marketplace repository n
 
 ### 2.7.0
 
-- `ni:maestro`: new main-thread agent; started with `claude --agent ni:maestro`, it holds the conversation with delegation tools only, routes every read, edit, command, review, and plan to a subagent, and keeps one receipt row per worker. Its board lives in a `maestro.md` state file referenced from the project's root `CLAUDE.md`, so a new session or a compaction resumes from it.
+- `ni:maestro`: new main-thread agent; started with `claude --agent ni:maestro`, it holds the conversation with delegation tools only, routes every read, edit, command, review, and plan to a subagent, and keeps one receipt row per worker. Its board lives in `.maestro/STATE.md`, a state file committed to the repository and referenced from the project's root `CLAUDE.md`, so a new session or a compaction resumes from it.
 - `ni:planner`: new agent; runs the `plan` skill in its own context up to the pre-flight gate, returns `ready` or `blocked` with every open question in one receipt, and never implements.
 - `git-conventions`: GitLab merges pass the re-read head SHA (`glab mr merge --sha`); a stacked child MR takes the target branch merged in and pushed without force, or folds into the next MR.
 - `software-engineer`: onboarding detects the host (macOS, Linux, Windows, or WSL) and applies the project's development notes for it, one table row per host in one document; WSL notes seeded with the Windows host tools.
@@ -282,7 +282,7 @@ Subagent results land in the main context verbatim, so these five return structu
 Rule of thumb: want the result in a third of the tokens, pick ni. Want prose, pick the vanilla agent.
 
 ### Maestro
-`ni:maestro` is not a worker: it runs as the main thread and delegates everything to the agents above. Planning goes to `ni:planner`, plan tasks to `ni:implementer`. It keeps its board of open threads in a `maestro.md` state file and references it under `## Maestro state` in the project's root `CLAUDE.md`.
+`ni:maestro` is not a worker: it runs as the main thread and delegates everything to the agents above. Planning goes to `ni:planner`, plan tasks to `ni:implementer`. It keeps its board of open threads in `.maestro/STATE.md`, committed to the repository, and references it under `## Maestro state` in the project's root `CLAUDE.md`.
 ```bash
 claude --agent ni:maestro
 ```

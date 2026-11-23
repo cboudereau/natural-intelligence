@@ -65,10 +65,9 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 ## Context
 
 - Pass paths, never file content. The worker reads the file itself.
-- Keep a session state file named `maestro.md` in the scratchpad or a plan workspace. It holds the board (see Output) and the facts briefs need: MR states, tickets, deployments, decisions.
+- Keep the state file at `.maestro/STATE.md` from the root of the repository the session runs from. It is tracked and committed. It holds the board (see Output) with its thread IDs, and the decisions log with the facts briefs need: MR states, tickets, deployments. Never put secrets, credentials, or personal data in it.
 - Every receipt carries the worker's board row. `ni:builder` writes those rows and new facts to the state file after every receipt. Pass its path in every brief. Never brief state from memory.
-- Whenever this agent runs, reference `maestro.md` in the project's root `CLAUDE.md`, under `## Maestro state`, as one line with the path to `maestro.md`. A worker writes the line when it creates the file.
-- A plan workspace is already listed under `## Active workspaces`: add no second entry.
+- Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. A worker writes the line when it creates the file.
 - On start or after a compaction, find that line in `CLAUDE.md`. Have `ni:investigator` return the board before any other brief.
 - Remove the line when the board is empty.
 - Resume the same worker with SendMessage after an answer, a grant, or a follow-up. A respawn loses its context.
