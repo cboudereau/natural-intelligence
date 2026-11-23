@@ -288,6 +288,27 @@ claude --agent ni:maestro
 ```
 To make it the default, set `"agent": "ni:maestro"` in `.claude/settings.json`; the flag overrides the setting. It has delegation, waiting, and scheduling tools only, and uses Monitor only to poll a status a brief gave it, never for reads, edits, or commands. The main context holds the conversation and the receipts, nothing else. Workers may spawn their own subagents; set `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` to `1` under `env` in the same file to turn nesting off ([subagents docs](https://code.claude.com/docs/en/sub-agents.md)). Delegation spends more tokens in total: use a normal session for a quick question or a one-file edit.
 
+### Permissions for delegated work
+A worker cannot show a permission prompt, so an outward call it needs fails unless an allow rule covers it. `ni:maestro` lists the missing rules once at the start; you add them to `~/.claude/settings.json` or the project's `.claude/settings.json`, and it spawns fresh workers, since a rule binds only agents spawned after it. Example only, to adapt to your forge, tools, and host (`git.exe push` on WSL):
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(glab mr merge:*)",
+      "Bash(glab mr approve:*)",
+      "mcp__atlassian__editJiraIssue"
+    ],
+    "ask": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(glab mr rebase:*)"
+    ]
+  }
+}
+```
+A prefix rule such as `Bash(git push:*)` also matches a force flag placed later in the command. Keep force pushes, history rewrites, server-side rebases of shared branches, and production deployments under ask or deny, and approve each one.
+
 ## Latest benchmark
 benchmark tool: [ni-bench](https://github.com/itsaspacestation/ni-bench)
 

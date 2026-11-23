@@ -52,7 +52,7 @@ asking the user, or in your local notes otherwise. Seed:
 |---|---|
 | macOS, Linux (not WSL) | Native tools. |
 | Windows | Native tools; shell forms in [Shell rules](#shell-rules). |
-| Windows with WSL | Run the Windows host tools, which carry the Windows credentials and toolchain: `git.exe` for fetch and push (plain `git fetch` can fail with an access error), `dotnet.exe`, and `npm.cmd` through `cmd.exe /c`, which a Windows Node install provides. Run `cmd.exe` and `.exe` tools from a working directory on a Windows drive (`/mnt/c/...`): a `\\wsl$` path fails. Start Docker Desktop before tests that need containers. |
+| Windows with WSL | Run the Windows host tools, which carry the Windows credentials and toolchain: `git.exe` for fetch and push (plain `git fetch` can fail with an access error), `dotnet.exe`, and `npm.cmd` through `cmd.exe /c`, which a Windows Node install provides. Run `cmd.exe` and `.exe` tools from a working directory on a Windows drive (`/mnt/c/...`): a `\\wsl$` path fails. Start Docker Desktop before tests that need containers. A refused push is a permission gap, not a host problem: return `blocked` with the exact command and the missing rule. |
 
 ## Shell rules
 

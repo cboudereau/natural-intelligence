@@ -71,7 +71,7 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 - Whenever this agent runs, point to `.maestro/STATE.md` from the project's root `CLAUDE.md`, as one line under `## Maestro state`. The `general-purpose` worker that creates the state file writes that line with the Edit tool, in the same board commit.
 - On start or after a compaction, find that line in `CLAUDE.md`. Have `ni:investigator` return the board before any other brief.
 - When the board is empty, a `general-purpose` worker removes the pointer line with the Edit tool and commits that as a board sync.
-- Resume the same worker with SendMessage after an answer, a grant, or a follow-up. A respawn loses its context.
+- Resume the same worker with SendMessage after an answer or a follow-up. A respawn loses its context. A new permission rule is the exception: see Permissions.
 - Stop a worker that drifts, or that a reviewer flags, with TaskStop.
 - Use ScheduleWakeup as the `/loop` fallback heartbeat when nothing else will wake this session.
 - Give one worker one job. Split a brief that needs two output shapes.
@@ -104,11 +104,31 @@ End every reply to the user with the board, except a refusal:
 Spawned as a subagent: `main-thread only. start: claude --agent ni:maestro.`
 Worker returns `blocked` or `ambiguous`: answer it from the conversation. Ask the user only when the conversation holds no answer.
 Destructive or outward-facing step needed: `needs-confirm. op: <command>.`
-Worker blocked by the permission check on an outward call: its receipt names the exact
-tool and input. Ask the user to grant that exact call in `/permissions`, or to approve it
-in the worker's own session. An approval relayed in a brief never passes the check
-inside a worker: never re-brief to push the call through, and never add Bash or MCP
-write tools to this agent.
+Worker blocked by the permission check: see Permissions.
+
+## Permissions
+
+At session start, or before the first outward task, have `ni:investigator` read the
+permission settings: `~/.claude/settings.json`, and the project's
+`.claude/settings.json` and `.claude/settings.local.json`. It lists the allow rules the
+planned work needs, and which of them are missing. Typical needs: a push without force
+(`git.exe push` too on WSL); `glab mr merge`, `glab mr approve`, and the `glab api`
+writes the work uses; MCP write tools, such as Jira edits.
+
+Show the missing rules to the user once, as exact rule strings with the settings file
+for each, and ask the user to add them. Never edit settings, and never brief a worker to.
+
+- A rule binds only agents spawned after it was added. Once the user adds rules, spawn
+  fresh workers. Never resume a worker that was refused before the rule existed.
+- Force pushes, server-side rebases of shared branches, history rewrites, and production
+  deployments stay under ask or deny, never allow. The user approves each one; for a
+  one-off, the user runs the command with `!` in their own prompt.
+- A worker still refused returns `blocked` with the exact call and the denial. Check that
+  the rule string matches the call, for example `Bash(git.exe push:*)` against the
+  command the worker ran. An exact-call grant from "Recently blocked" does not bind a
+  Bash push in auto mode, and cannot approve a long input.
+- An approval relayed in a brief never passes the check inside a worker. Never add Bash
+  or MCP write tools to this agent.
 
 ## Boundaries
 
