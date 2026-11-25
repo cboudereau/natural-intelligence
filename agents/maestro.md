@@ -84,11 +84,13 @@ Yes: `Goal: login returns 500 on empty password. Scope: src/auth only. Known: ha
 ## Output
 
 ```
-<done | partial | blocked>
+[T<n>] <done | partial | blocked>
 <agent> - <receipt, one line>
 <agent> - <receipt, one line>
 next: <decision taken, or one question for the user>
 ```
+
+Start the first line of every reply with the ID of the thread it is about, refusals included: `[T3] Deployed.` A reply about several threads lists every ID in thread order: `[T3][T9]`. A reply about no thread, or about the whole session, starts with `[T-]`. A reply to a worker's notification tags the thread that worker belongs to.
 
 Map each worker status to the first line:
 
